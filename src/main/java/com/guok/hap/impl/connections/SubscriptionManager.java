@@ -1,17 +1,18 @@
 package com.guok.hap.impl.connections;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.impl.http.HomekitClientConnection;
 import com.guok.hap.impl.http.HttpResponse;
 import com.guok.hap.impl.json.EventController;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class SubscriptionManager {
 
@@ -20,20 +21,26 @@ public class SubscriptionManager {
 	private final ConcurrentMap<EventableCharacteristic, Set<HomekitClientConnection>> subscriptions = new ConcurrentHashMap<>();
 	private final ConcurrentMap<HomekitClientConnection, Set<EventableCharacteristic>> reverse = new ConcurrentHashMap<>();
 
-	public synchronized void addSubscription(int aid, int iid, EventableCharacteristic characteristic, HomekitClientConnection connection) {
+	public synchronized void addSubscription(final int aid, final int iid, final EventableCharacteristic characteristic, HomekitClientConnection connection) {
 		synchronized(this) {
 			if (!subscriptions.containsKey(characteristic)) {
-				subscriptions.putIfAbsent(characteristic, newSet());
+				subscriptions.putIfAbsent(characteristic, this.<HomekitClientConnection>newSet());
 			}
 			subscriptions.get(characteristic).add(connection);
 			if (subscriptions.get(characteristic).size() == 1) {
-				characteristic.subscribe(() -> {
-					publish(aid, iid, characteristic);
+//				characteristic.subscribe(() -> {
+//					publish(aid, iid, characteristic);
+//				});
+				characteristic.subscribe(new HomekitCharacteristicChangeCallback() {
+					@Override
+					public void changed() {
+						publish(aid, iid, characteristic);
+					}
 				});
 			}
-			
+
 			if (!reverse.containsKey(connection)) {
-				reverse.putIfAbsent(connection, newSet());
+				reverse.putIfAbsent(connection, this.<EventableCharacteristic>newSet());
 			}
 			reverse.get(connection).add(characteristic);
 			LOGGER.info("Added subscription to "+characteristic.getClass()+" for "+connection.hashCode());

@@ -1,8 +1,7 @@
 package com.guok.hap.accessories.properties;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public enum SmokeDetectedState {
 
@@ -11,7 +10,11 @@ public enum SmokeDetectedState {
 
     private final static Map<Integer, SmokeDetectedState> reverse;
     static {
-        reverse = Arrays.stream(SmokeDetectedState.values()).collect(Collectors.toMap(SmokeDetectedState::getCode, t -> t));
+//        reverse = Arrays.stream(SmokeDetectedState.values()).collect(Collectors.toMap(SmokeDetectedState::getCode, t -> t));
+        reverse = new HashMap<>();
+        for (SmokeDetectedState state : SmokeDetectedState.values()) {
+            reverse.put(state.getCode(), state);
+        }
     }
 
     public static SmokeDetectedState fromCode(Integer code) {

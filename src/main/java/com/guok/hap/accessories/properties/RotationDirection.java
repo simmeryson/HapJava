@@ -1,8 +1,7 @@
 package com.guok.hap.accessories.properties;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public enum RotationDirection {
 	CLOCKWISE(0),
@@ -11,7 +10,12 @@ public enum RotationDirection {
 	
 	private final static Map<Integer, RotationDirection> reverse;
 	static {
-		reverse = Arrays.stream(RotationDirection.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+//		reverse = Arrays.stream(RotationDirection.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+
+		reverse = new HashMap<>();
+		for (RotationDirection state : RotationDirection.values()) {
+			reverse.put(state.getCode(), state);
+		}
 	}
 	
 	public static RotationDirection fromCode(Integer code) {

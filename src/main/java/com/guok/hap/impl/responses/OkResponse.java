@@ -1,10 +1,10 @@
 package com.guok.hap.impl.responses;
 
+import com.guok.hap.impl.http.AbstractHttpResponse;
+
 import java.nio.ByteBuffer;
 
-import com.guok.hap.impl.http.HttpResponse;
-
-public class OkResponse implements HttpResponse {
+public class OkResponse extends AbstractHttpResponse {
 
 	private final ByteBuffer body;
 	

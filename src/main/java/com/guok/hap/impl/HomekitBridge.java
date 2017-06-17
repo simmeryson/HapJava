@@ -1,10 +1,10 @@
 package com.guok.hap.impl;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import com.guok.hap.Service;
 import com.guok.hap.impl.accessories.Bridge;
+
+import java.util.Collection;
+import java.util.Collections;
 
 public class HomekitBridge implements Bridge {
 
@@ -51,4 +51,7 @@ public class HomekitBridge implements Bridge {
 		return 1;
 	}
 
+	@Override
+	public void identify() {
+	}
 }

@@ -1,10 +1,9 @@
 package com.guok.hap.accessories.properties;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.guok.hap.accessories.TemperatureSensor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The temperature unit used by a {@link TemperatureSensor}.
@@ -19,7 +18,11 @@ public enum TemperatureUnit {
 	
 	private final static Map<Integer, TemperatureUnit> reverse;
 	static {
-		reverse = Arrays.stream(TemperatureUnit.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+//		reverse = Arrays.stream(TemperatureUnit.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+		reverse = new HashMap<>();
+		for (TemperatureUnit state : TemperatureUnit.values()) {
+			reverse.put(state.getCode(), state);
+		}
 	}
 	
 	static TemperatureUnit fromCode(Integer code) {

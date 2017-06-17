@@ -28,7 +28,7 @@ public class HomekitRootTest {
 		accessory = mock(HomekitAccessory.class);
 		when(accessory.getId()).thenReturn(2);
 		webHandler = mock(HomekitWebHandler.class);
-		when(webHandler.start(any())).thenReturn(CompletableFuture.completedFuture(PORT));
+		when(webHandler.start(any(HomekitClientConnectionFactory.class))).thenReturn(CompletableFuture.completedFuture(PORT));
 		advertiser = mock(JmdnsHomekitAdvertiser.class);
 		authInfo = mock(HomekitAuthInfo.class);
 		root = new HomekitRoot(LABEL, webHandler, authInfo, advertiser);

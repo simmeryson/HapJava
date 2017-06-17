@@ -1,5 +1,8 @@
 package com.guok.hap.impl.jmdns;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -8,9 +11,6 @@ import java.util.Map;
 
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class JmdnsHomekitAdvertiser {
 	
@@ -43,10 +43,13 @@ public class JmdnsHomekitAdvertiser {
 	
 		registerService();
 		
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-    		logger.info("Stopping advertising in response to shutdown.");
-    		jmdns.unregisterAllServices();
-    	}));
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			@Override
+			public void run() {
+				logger.info("Stopping advertising in response to shutdown.");
+				jmdns.unregisterAllServices();
+			}
+		}));
 		isAdvertising = true;
 	}
 	

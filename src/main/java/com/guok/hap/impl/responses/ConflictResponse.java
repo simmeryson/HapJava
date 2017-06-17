@@ -1,8 +1,8 @@
 package com.guok.hap.impl.responses;
 
-import com.guok.hap.impl.http.HttpResponse;
+import com.guok.hap.impl.http.AbstractHttpResponse;
 
-public class ConflictResponse implements HttpResponse {
+public class ConflictResponse extends AbstractHttpResponse {
 
 	@Override
 	public int getStatusCode() {

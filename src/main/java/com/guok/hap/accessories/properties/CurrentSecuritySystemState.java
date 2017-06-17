@@ -2,13 +2,12 @@ package com.guok.hap.accessories.properties;
 
 import com.guok.hap.accessories.SecuritySystem;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
- * The current state of a {@link SecuritySystem}. Unlike {@link TargetSecuritySystemState}, this enum
- * includes a triggered state.
+ * The current state of a {@link SecuritySystem}. Unlike {@link TargetSecuritySystemState}, this
+ * enum includes a triggered state.
  *
  * @author Gaston Dombiak
  */
@@ -36,9 +35,15 @@ public enum CurrentSecuritySystemState {
     TRIGGERED(4);
 
     private final static Map<Integer, CurrentSecuritySystemState> reverse;
+
     static {
-        reverse = Arrays.stream(CurrentSecuritySystemState.values()).collect(Collectors
-                .toMap(CurrentSecuritySystemState::getCode, t -> t));
+//        reverse = Arrays.stream(CurrentSecuritySystemState.values()).collect(Collectors
+//                .toMap(CurrentSecuritySystemState::getCode, t -> t));
+
+        reverse = new HashMap<>();
+        for (CurrentSecuritySystemState state : CurrentSecuritySystemState.values()) {
+            reverse.put(state.getCode(), state);
+        }
     }
 
     public static CurrentSecuritySystemState fromCode(Integer code) {

@@ -1,10 +1,9 @@
 package com.guok.hap.accessories.properties;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.guok.hap.accessories.LockMechanism;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The state of a {@link LockMechanism}.
@@ -21,7 +20,11 @@ public enum LockMechanismState {
 	
 	private final static Map<Integer, LockMechanismState> reverse;
 	static {
-		reverse = Arrays.stream(LockMechanismState.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+//		reverse = Arrays.stream(LockMechanismState.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+		reverse = new HashMap<>();
+		for (LockMechanismState state : LockMechanismState.values()) {
+			reverse.put(state.getCode(), state);
+		}
 	}
 	
 	public static LockMechanismState fromCode(Integer code) {

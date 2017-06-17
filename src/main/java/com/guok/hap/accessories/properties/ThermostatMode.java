@@ -1,10 +1,9 @@
 package com.guok.hap.accessories.properties;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.guok.hap.accessories.thermostat.BasicThermostat;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The mode used by a {@link BasicThermostat}
@@ -21,7 +20,11 @@ public enum ThermostatMode {
 	
 	private final static Map<Integer, ThermostatMode> reverse;
 	static {
-		reverse = Arrays.stream(ThermostatMode.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+//		reverse = Arrays.stream(ThermostatMode.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+		reverse = new HashMap<>();
+		for (ThermostatMode state : ThermostatMode.values()) {
+			reverse.put(state.getCode(), state);
+		}
 	}
 	
 	public static ThermostatMode fromCode(Integer code) {

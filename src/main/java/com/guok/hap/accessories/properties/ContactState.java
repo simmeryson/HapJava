@@ -1,8 +1,7 @@
 package com.guok.hap.accessories.properties;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public enum ContactState {
 
@@ -11,7 +10,11 @@ public enum ContactState {
 
     private final static Map<Integer, ContactState> reverse;
     static {
-        reverse = Arrays.stream(ContactState.values()).collect(Collectors.toMap(ContactState::getCode, t -> t));
+//        reverse = Arrays.stream(ContactState.values()).collect(Collectors.toMap(ContactState::getCode, t -> t));
+        reverse = new HashMap<>();
+        for (ContactState state : ContactState.values()) {
+            reverse.put(state.getCode(), state);
+        }
     }
 
     public static ContactState fromCode(Integer code) {

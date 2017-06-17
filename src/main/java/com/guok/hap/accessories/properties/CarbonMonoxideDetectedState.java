@@ -1,8 +1,7 @@
 package com.guok.hap.accessories.properties;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public enum CarbonMonoxideDetectedState {
 
@@ -10,8 +9,13 @@ public enum CarbonMonoxideDetectedState {
     ABNORMAL(1);
 
     private final static Map<Integer, CarbonMonoxideDetectedState> reverse;
+
     static {
-        reverse = Arrays.stream(CarbonMonoxideDetectedState.values()).collect(Collectors.toMap(CarbonMonoxideDetectedState::getCode, t -> t));
+//        reverse = Arrays.stream(CarbonMonoxideDetectedState.values()).collect(Collectors.toMap(CarbonMonoxideDetectedState::getCode, t -> t));
+        reverse = new HashMap<>();
+        for (CarbonMonoxideDetectedState state : CarbonMonoxideDetectedState.values()) {
+            reverse.put(state.getCode(), state);
+        }
     }
 
     public static CarbonMonoxideDetectedState fromCode(Integer code) {

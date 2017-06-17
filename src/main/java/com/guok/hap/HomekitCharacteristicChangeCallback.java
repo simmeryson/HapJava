@@ -10,7 +10,6 @@ import com.guok.hap.characteristics.EventableCharacteristic;
  *
  * @author Andy Lintner
  */
-@FunctionalInterface
 public interface HomekitCharacteristicChangeCallback {
 
 	/**

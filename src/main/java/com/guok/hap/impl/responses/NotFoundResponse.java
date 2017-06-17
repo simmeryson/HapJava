@@ -1,12 +1,12 @@
 package com.guok.hap.impl.responses;
 
-import com.guok.hap.impl.http.HttpResponse;
+import com.guok.hap.impl.http.AbstractHttpResponse;
 
-public class NotFoundResponse implements HttpResponse {
+public class NotFoundResponse extends AbstractHttpResponse {
 
-	@Override
-	public int getStatusCode() {
-		return 404;
-	}
+    @Override
+    public int getStatusCode() {
+        return 404;
+    }
 
 }

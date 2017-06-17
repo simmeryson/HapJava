@@ -2,9 +2,8 @@ package com.guok.hap.accessories.properties;
 
 import com.guok.hap.accessories.SecuritySystem;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Type of alarm of a {@link SecuritySystem}.
@@ -24,8 +23,13 @@ public enum SecuritySystemAlarmType {
 
     private final static Map<Integer, SecuritySystemAlarmType> reverse;
     static {
-        reverse = Arrays.stream(SecuritySystemAlarmType.values()).collect(Collectors
-                .toMap(SecuritySystemAlarmType::getCode, t -> t));
+//        reverse = Arrays.stream(SecuritySystemAlarmType.values()).collect(Collectors
+//                .toMap(SecuritySystemAlarmType::getCode, t -> t));
+
+        reverse = new HashMap<>();
+        for (SecuritySystemAlarmType state : SecuritySystemAlarmType.values()) {
+            reverse.put(state.getCode(), state);
+        }
     }
 
     public static SecuritySystemAlarmType fromCode(Integer code) {

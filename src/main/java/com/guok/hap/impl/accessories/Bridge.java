@@ -4,7 +4,7 @@ import com.guok.hap.HomekitAccessory;
 
 public interface Bridge extends HomekitAccessory {
 
-	@Override
-	default void identify() {}
-	
+    @Override
+    void identify();
+
 }

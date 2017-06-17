@@ -77,5 +77,5 @@ public interface HomekitAuthInfo {
 	 * 
 	 * @return whether a user has been created and stored
 	 */
-	default boolean hasUser() { return false; };
+	boolean hasUser();
 }

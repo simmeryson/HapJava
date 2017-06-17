@@ -2,9 +2,8 @@ package com.guok.hap.accessories.properties;
 
 import com.guok.hap.accessories.SecuritySystem;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * The target state of a {@link SecuritySystem}.
@@ -32,8 +31,12 @@ public enum TargetSecuritySystemState {
 
     private final static Map<Integer, TargetSecuritySystemState> reverse;
     static {
-        reverse = Arrays.stream(TargetSecuritySystemState.values()).collect(Collectors
-                .toMap(TargetSecuritySystemState::getCode, t -> t));
+//        reverse = Arrays.stream(TargetSecuritySystemState.values()).collect(Collectors
+//                .toMap(TargetSecuritySystemState::getCode, t -> t));
+        reverse = new HashMap<>();
+        for (TargetSecuritySystemState state : TargetSecuritySystemState.values()) {
+            reverse.put(state.getCode(), state);
+        }
     }
 
     public static TargetSecuritySystemState fromCode(Integer code) {

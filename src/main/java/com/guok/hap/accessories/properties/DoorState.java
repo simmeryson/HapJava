@@ -1,8 +1,7 @@
 package com.guok.hap.accessories.properties;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public enum DoorState {
 
@@ -15,7 +14,11 @@ public enum DoorState {
 
 	private final static Map<Integer, DoorState> reverse;
 	static {
-		reverse = Arrays.stream(DoorState.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+//		reverse = Arrays.stream(DoorState.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+		reverse = new HashMap<>();
+		for (DoorState state : DoorState.values()) {
+			reverse.put(state.getCode(), state);
+		}
 	}
 	
 	public static DoorState fromCode(Integer code) {

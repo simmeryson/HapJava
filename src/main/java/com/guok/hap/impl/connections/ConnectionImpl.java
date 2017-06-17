@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.function.Consumer;
 
 import org.bouncycastle.util.Pack;
@@ -71,14 +72,26 @@ class ConnectionImpl implements HomekitClientConnection {
 			return new byte[0];
 		} else {
 			try(ByteArrayOutputStream decrypted = new ByteArrayOutputStream()) {
-				res.stream().map(msg -> decrypt(msg))
-						.forEach(bytes -> {
-							try {
-								decrypted.write(bytes);
-							} catch (Exception e) {
-								throw new RuntimeException(e);
-							}
-						});
+				Collection<byte[]> messages = new LinkedList<>();
+				for (byte[] msg : res) {
+					byte[] decrypt = decrypt(msg);
+					messages.add(decrypt);
+				}
+				for (byte[] bytes : messages) {
+					try {
+						decrypted.write(bytes);
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+//				res.stream().map(msg -> decrypt(msg))
+//						.forEach(bytes -> {
+//							try {
+//								decrypted.write(bytes);
+//							} catch (Exception e) {
+//								throw new RuntimeException(e);
+//							}
+//						});
 				return decrypted.toByteArray();
 			} catch (Exception e) {
 				throw new RuntimeException(e);

@@ -1,10 +1,9 @@
 package com.guok.hap.accessories.properties;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.guok.hap.accessories.WindowCovering;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The position state used by a {@link WindowCovering}
@@ -19,7 +18,11 @@ public enum WindowCoveringPositionState {
 	
 	private final static Map<Integer, WindowCoveringPositionState> reverse;
 	static {
-		reverse = Arrays.stream(WindowCoveringPositionState.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+//		reverse = Arrays.stream(WindowCoveringPositionState.values()).collect(Collectors.toMap(t -> t.getCode(), t -> t));
+		reverse = new HashMap<>();
+		for (WindowCoveringPositionState state : WindowCoveringPositionState.values()) {
+			reverse.put(state.getCode(), state);
+		}
 	}
 	
 	public static WindowCoveringPositionState fromCode(Integer code) {
