@@ -12,7 +12,7 @@ import com.guok.hap.impl.services.HumiditySensorService;
  *
  * @author Andy Lintner
  */
-public interface HumiditySensor extends HomekitAccessory {
+public abstract class HumiditySensor implements HomekitAccessory {
 
 	/**
 	 * Retrieves the current relative humidity.
@@ -21,19 +21,19 @@ public interface HumiditySensor extends HomekitAccessory {
 	CompletableFuture<Double> getCurrentRelativeHumidity();
 	
 	@Override
-	default Collection<Service> getServices() {
-		return Collections.singleton(new HumiditySensorService(this));
+	public Collection<Service> getServices() {
+		return Collections.singleton((Service)new HumiditySensorService(this));
 	}
 	
 	/**
 	 * Subscribes to changes in the current relative humidity.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeCurrentRelativeHumidity(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeCurrentRelativeHumidity(HomekitCharacteristicChangeCallback callback);
 
 	/**
 	 * Unsubscribes from changes in the current relative humidity.
 	 */
-	void unsubscribeCurrentRelativeHumidity();
+	public abstract void unsubscribeCurrentRelativeHumidity();
 	
 }

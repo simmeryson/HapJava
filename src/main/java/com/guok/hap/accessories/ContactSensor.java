@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author Gaston Dombiak
  */
-public interface ContactSensor extends HomekitAccessory {
+public abstract class ContactSensor implements HomekitAccessory {
 
     /**
      * Retrieves the state of the contact. This is whether the contact is detected or not.
@@ -31,8 +31,8 @@ public interface ContactSensor extends HomekitAccessory {
     CompletableFuture<ContactState> getCurrentState();
 
     @Override
-    default Collection<Service> getServices() {
-        return Collections.singleton(new ContactSensorService(this));
+    public Collection<Service> getServices() {
+        return Collections.singleton((Service) new ContactSensorService(this));
     }
 
     /**
@@ -40,10 +40,10 @@ public interface ContactSensor extends HomekitAccessory {
      *
      * @param callback the function to call when the state changes.
      */
-    void subscribeContactState(HomekitCharacteristicChangeCallback callback);
+    public abstract void subscribeContactState(HomekitCharacteristicChangeCallback callback);
 
     /**
      * Unsubscribes from changes in the contact state.
      */
-    void unsubscribeContactState();
+    public abstract void unsubscribeContactState();
 }

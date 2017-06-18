@@ -18,18 +18,19 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author Gaston Dombiak
  */
-public interface CarbonMonoxideSensor extends HomekitAccessory {
+public abstract class CarbonMonoxideSensor implements HomekitAccessory {
 
     /**
      * Retrieves the state of the sensor that indicates if carbon monoxide has been detected.
      *
      * @return a future that will contain the carbon monoxide sensor's state
      */
-    CompletableFuture<CarbonMonoxideDetectedState> getCarbonMonoxideDetectedState();
+    public abstract CompletableFuture<CarbonMonoxideDetectedState> getCarbonMonoxideDetectedState();
 
     @Override
-    default Collection<Service> getServices() {
-        return Collections.singleton(new CarbonMonoxideSensorService(this));
+    public Collection<Service> getServices() {
+        CarbonMonoxideSensorService carbonMonoxideSensorService = new CarbonMonoxideSensorService(this);
+        return Collections.singleton((Service)carbonMonoxideSensorService);
     }
 
     /**
@@ -37,10 +38,10 @@ public interface CarbonMonoxideSensor extends HomekitAccessory {
      *
      * @param callback the function to call when the state changes.
      */
-    void subscribeCarbonMonoxideDetectedState(HomekitCharacteristicChangeCallback callback);
+    public abstract void subscribeCarbonMonoxideDetectedState(HomekitCharacteristicChangeCallback callback);
 
     /**
      * Unsubscribes from changes in the carbon monoxide's state.
      */
-    void unsubscribeCarbonMonoxideDetectedState();
+    public abstract void unsubscribeCarbonMonoxideDetectedState();
 }

@@ -13,7 +13,7 @@ import com.guok.hap.impl.services.WindowCoveringService;
  *
  * @author Andy Lintner
  */
-public interface WindowCovering extends HomekitAccessory {
+public abstract class WindowCovering implements HomekitAccessory {
 
 	/**
 	 * Retrieves the current position
@@ -40,8 +40,8 @@ public interface WindowCovering extends HomekitAccessory {
 	CompletableFuture<Boolean> getObstructionDetected();
 	
 	@Override
-	default Collection<Service> getServices() {
-		return Collections.singleton(new WindowCoveringService(this));
+	public Collection<Service> getServices() {
+		return Collections.singleton((Service)new WindowCoveringService(this));
 	}
 	
 	/**
@@ -64,43 +64,43 @@ public interface WindowCovering extends HomekitAccessory {
 	 * Subscribes to changes in the current position.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeCurrentPosition(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeCurrentPosition(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Subscribes to changes in the target position.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeTargetPosition(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeTargetPosition(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Subscribes to changes in the position state: increasing, decreasing, or stopped
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribePositionState(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribePositionState(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Subscribes to changes in the obstruction detected state
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeObstructionDetected(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeObstructionDetected(HomekitCharacteristicChangeCallback callback);
 
 	/**
 	 * Unsubscribes from changes in the current position.
 	 */
-	void unsubscribeCurrentPosition();
+	public abstract void unsubscribeCurrentPosition();
 	
 	/**
 	 * Unsubscribes from changes in the target position.
 	 */
-	void unsubscribeTargetPosition();
+	public abstract void unsubscribeTargetPosition();
 	
 	/**
 	 * Unsubscribes from changes in the position state
 	 */
-	void unsubscribePositionState();
+	public abstract void unsubscribePositionState();
 	
 	/**
 	 * Unsubscribes from changes in the obstruction detected state
 	 */
-	void unsubscribeObstructionDetected();
+	public abstract void unsubscribeObstructionDetected();
 }

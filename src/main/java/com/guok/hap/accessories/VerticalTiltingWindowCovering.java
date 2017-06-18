@@ -9,7 +9,7 @@ import com.guok.hap.HomekitCharacteristicChangeCallback;
  *
  * @author Andy Lintner
  */
-public interface VerticalTiltingWindowCovering extends WindowCovering {
+public abstract class VerticalTiltingWindowCovering extends WindowCovering {
 
 	/**
 	 * Retrieves the current vertical tilt angle
@@ -35,21 +35,21 @@ public interface VerticalTiltingWindowCovering extends WindowCovering {
 	 * Subscribes to changes in the current vertical tilt angle.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeCurrentVerticalTiltAngle(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeCurrentVerticalTiltAngle(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Subscribes to changes in the target vertical tilt angle.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeTargetVerticalTiltAngle(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeTargetVerticalTiltAngle(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Unsubscribes from changes in the current vertical tilt angle
 	 */
-	void unsubscribeCurrentVerticalTiltAngle();
+	public abstract void unsubscribeCurrentVerticalTiltAngle();
 	
 	/**
 	 * Unsubscribes from changes in the target vertical tilt angle
 	 */
-	void unsubscribeTargetVerticalTiltAngle();
+	public abstract void unsubscribeTargetVerticalTiltAngle();
 }

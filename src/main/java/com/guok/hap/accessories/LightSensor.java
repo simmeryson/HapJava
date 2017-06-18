@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author Gaston Dombiak
  */
-public interface LightSensor extends HomekitAccessory {
+public abstract class LightSensor implements HomekitAccessory {
 
     /**
      * Retrieves the current ambient light level.
@@ -24,8 +24,8 @@ public interface LightSensor extends HomekitAccessory {
     CompletableFuture<Double> getCurrentAmbientLightLevel();
 
     @Override
-    default Collection<Service> getServices() {
-        return Collections.singleton(new LightSensorService(this));
+    public Collection<Service> getServices() {
+        return Collections.singleton((Service)new LightSensorService(this));
     }
 
     /**
@@ -33,10 +33,10 @@ public interface LightSensor extends HomekitAccessory {
      *
      * @param callback the function to call when the state changes.
      */
-    void subscribeCurrentAmbientLightLevel(HomekitCharacteristicChangeCallback callback);
+    public abstract void subscribeCurrentAmbientLightLevel(HomekitCharacteristicChangeCallback callback);
 
     /**
      * Unsubscribes from changes in the current ambient light level.
      */
-    void unsubscribeCurrentAmbientLightLevel();
+    public abstract void unsubscribeCurrentAmbientLightLevel();
 }

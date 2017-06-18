@@ -13,7 +13,7 @@ import com.guok.hap.impl.services.FanService;
  *
  * @author Andy Lintner
  */
-public interface Fan extends HomekitAccessory {
+public abstract class Fan implements HomekitAccessory {
 
 	/**
 	 * Retrieves the current binary state of the fan's power.
@@ -59,40 +59,40 @@ public interface Fan extends HomekitAccessory {
 	CompletableFuture<Void> setRotationSpeed(Integer speed) throws Exception;
 	
 	@Override
-	default Collection<Service> getServices() {
-		return Collections.singleton(new FanService(this));
+	public Collection<Service> getServices() {
+		return Collections.singleton((Service)new FanService(this));
 	}
 	
 	/**
 	 * Subscribes to changes in the binary state of the fan's power.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeFanPower(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeFanPower(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Subscribes to changes in the rotation direction of the fan.
 	 * @param callback the function to call when the direction changes.
 	 */
-	void subscribeRotationDirection(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeRotationDirection(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Subscribes to changes in the rotation speed of the fan.
 	 * @param callback the function to call when the speed changes.
 	 */
-	void subscribeRotationSpeed(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeRotationSpeed(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Unsubscribes from changes in the binary state of the fan's power.
 	 */
-	void unsubscribeFanPower();
+	public abstract void unsubscribeFanPower();
 	
 	/**
 	 * Unsubscribes from changes in the rotation direction of the fan.
 	 */
-	void unsubscribeRotationDirection();
+	public abstract void unsubscribeRotationDirection();
 	
 	/**
 	 * Unsubscribes from changes in the fan's rotation speed.
 	 */
-	void unsubscribeRotationSpeed();
+	public abstract void unsubscribeRotationSpeed();
 }

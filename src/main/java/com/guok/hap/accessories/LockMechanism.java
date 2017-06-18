@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author Andy Lintner
  */
-public interface LockMechanism extends HomekitAccessory {
+public abstract class LockMechanism implements HomekitAccessory {
 
 	/**
 	 * Retrieves the current binary state of the lock.
@@ -31,15 +31,15 @@ public interface LockMechanism extends HomekitAccessory {
 	 * Subscribes to changes in the binary state of the lock.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeCurrentMechanismState(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeCurrentMechanismState(HomekitCharacteristicChangeCallback callback);
 
 	/**
 	 * Unsubscribes from changes in the binary state of the lock.
 	 */
-	void unsubscribeCurrentMechanismState();
+	public abstract void unsubscribeCurrentMechanismState();
 
 	@Override
-	default Collection<Service> getServices() {
-		return Collections.singleton(new LockMechanismService(this));
+	public Collection<Service> getServices() {
+		return Collections.singleton((Service)new LockMechanismService(this));
 	}
 }

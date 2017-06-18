@@ -12,7 +12,7 @@ import com.guok.hap.impl.services.SwitchService;
  *
  * @author Andy Lintner
  */
-public interface Switch extends HomekitAccessory {
+public abstract class Switch implements  HomekitAccessory {
 
 	/**
 	 * Retrieves the current binary state of the switch.
@@ -29,18 +29,18 @@ public interface Switch extends HomekitAccessory {
 	CompletableFuture<Void> setSwitchState(boolean state) throws Exception;
 	
 	@Override
-	default Collection<Service> getServices() {
-		return Collections.singleton(new SwitchService(this));
+	public Collection<Service> getServices() {
+		return Collections.singleton((Service)new SwitchService(this));
 	}
 	
 	/**
 	 * Subscribes to changes in the binary state of the switch.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeSwitchState(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeSwitchState(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Unsubscribes from changes in the binary state of the switch.
 	 */
-	void unsubscribeSwitchState();
+	public abstract void unsubscribeSwitchState();
 }

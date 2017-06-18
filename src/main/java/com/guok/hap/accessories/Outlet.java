@@ -12,11 +12,11 @@ import com.guok.hap.impl.services.OutletService;
  *
  * @author Andy Lintner
  */
-public interface Outlet extends HomekitAccessory {
+public abstract class Outlet implements HomekitAccessory {
 
 	@Override
-	default Collection<Service> getServices() {
-		return Collections.singleton(new OutletService(this));
+	public Collection<Service> getServices() {
+		return Collections.singleton((Service)new OutletService(this));
 	}
 
 	/**
@@ -43,22 +43,22 @@ public interface Outlet extends HomekitAccessory {
 	 * Subscribes to changes in the binary state of the outlet's power.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribePowerState(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribePowerState(HomekitCharacteristicChangeCallback callback);
 
 	/**
 	 * Subscribes to changes in the binary state indicating whether the outlet is in use.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeOutletInUse(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeOutletInUse(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Unsubscribes from changes in the binary state of the outlet's power.
 	 */
-	void unsubscribePowerState();
+	public abstract void unsubscribePowerState();
 
 	/**
 	 * Unsubscribes from changes in the binary state indicating whether hte outlet is in use.
 	 */
-	void unsubscribeOutletInUse();
+	public abstract void unsubscribeOutletInUse();
 
 }
