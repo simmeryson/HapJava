@@ -1,6 +1,6 @@
 package com.guok.hap.accessories;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 
@@ -15,13 +15,13 @@ public abstract class VerticalTiltingWindowCovering extends WindowCovering {
 	 * Retrieves the current vertical tilt angle
 	 * @return a future that will contain the position as a value between -90 and 90
 	 */
-	CompletableFuture<Integer> getCurrentVerticalTiltAngle();
+	public abstract ListenableFuture<Integer> getCurrentVerticalTiltAngle();
 	
 	/**
 	 * Retrieves the target vertical tilt angle
 	 * @return a future that will contain the target position as a value between -90 and 90
 	 */
-	CompletableFuture<Integer> getTargetVerticalTiltAngle();
+	public abstract ListenableFuture<Integer> getTargetVerticalTiltAngle();
 	
 	/**
 	 * Sets the target position
@@ -29,7 +29,7 @@ public abstract class VerticalTiltingWindowCovering extends WindowCovering {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	CompletableFuture<Void> setTargetVerticalTiltAngle(int angle) throws Exception;
+	public abstract ListenableFuture<Void> setTargetVerticalTiltAngle(int angle) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the current vertical tilt angle.

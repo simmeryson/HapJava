@@ -1,6 +1,6 @@
 package com.guok.hap.impl.characteristics.outlet;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.Outlet;
@@ -22,7 +22,7 @@ public class OutletInUseCharacteristic  extends BooleanCharacteristic implements
 	}
 
 	@Override
-	protected CompletableFuture<Boolean> getValue() {
+	protected ListenableFuture<Boolean> getValue() {
 		return outlet.getOutletInUse();
 	}
 

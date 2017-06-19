@@ -1,12 +1,16 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
+import com.guok.hap.HomekitAccessory;
+import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.Service;
+import com.guok.hap.accessories.properties.RotationDirection;
+import com.guok.hap.impl.services.FanService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
-
-import com.guok.hap.*;
-import com.guok.hap.accessories.properties.RotationDirection;
-import com.guok.hap.impl.services.FanService;
 
 /**
  * A fan, with power and rotational characteristics.
@@ -19,19 +23,19 @@ public abstract class Fan implements HomekitAccessory {
 	 * Retrieves the current binary state of the fan's power.
 	 * @return a future that will contain the binary state
 	 */
-	CompletableFuture<Boolean> getFanPower();
-	
+	public abstract ListenableFuture<Boolean> getFanPower();
+
 	/**
 	 * Retrieves the current rotation direction of the fan.
 	 * @return a future that will contain the direction
 	 */
-	CompletableFuture<RotationDirection> getRotationDirection();
-	
+	public abstract ListenableFuture<RotationDirection> getRotationDirection();
+
 	/**
 	 * Retrieves the current speed of the fan's rotation
 	 * @return a future that will contain the speed, expressed as an integer between 0 and 100.
 	 */
-	CompletableFuture<Integer> getRotationSpeed();
+	public abstract ListenableFuture<Integer> getRotationSpeed();
 	
 	/**
 	 * Sets the binary state of the fan's power
@@ -39,7 +43,7 @@ public abstract class Fan implements HomekitAccessory {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	CompletableFuture<Void> setFanPower(boolean state) throws Exception;
+	public abstract ListenableFuture<Void> setFanPower(boolean state) throws Exception;
 	
 	/**
 	 * Sets the rotation direction of the fan
@@ -47,7 +51,7 @@ public abstract class Fan implements HomekitAccessory {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	CompletableFuture<Void> setRotationDirection(RotationDirection direction) throws Exception;
+	public abstract ListenableFuture<Void> setRotationDirection(RotationDirection direction) throws Exception;
 	
 	
 	/**
@@ -56,7 +60,7 @@ public abstract class Fan implements HomekitAccessory {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	CompletableFuture<Void> setRotationSpeed(Integer speed) throws Exception;
+	public abstract ListenableFuture<Void> setRotationSpeed(Integer speed) throws Exception;
 	
 	@Override
 	public Collection<Service> getServices() {

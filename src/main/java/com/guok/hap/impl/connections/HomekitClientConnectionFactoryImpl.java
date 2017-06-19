@@ -1,6 +1,5 @@
 package com.guok.hap.impl.connections;
 
-import java.util.function.Consumer;
 
 import com.guok.hap.HomekitAuthInfo;
 import com.guok.hap.impl.HomekitRegistry;
@@ -8,6 +7,8 @@ import com.guok.hap.impl.http.HomekitClientConnection;
 import com.guok.hap.impl.http.HomekitClientConnectionFactory;
 import com.guok.hap.impl.http.HttpResponse;
 import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
+
+import com.guok.hap.impl.Consumer;
 
 public class HomekitClientConnectionFactoryImpl implements HomekitClientConnectionFactory{
 

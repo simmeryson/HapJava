@@ -38,7 +38,7 @@ public class HomekitRegistry {
 				newServices.addAll(accessory.getServices());
 			} catch (Exception e) {
 				logger.error("Could not instantiate services for accessory "+accessory.getLabel(), e);
-				services.put(accessory, Collections.emptyList());
+				services.put(accessory, Collections.<Service>emptyList());
 				continue;
 			}
 			Map<Integer, Characteristic> newCharacteristics = new HashMap<>();

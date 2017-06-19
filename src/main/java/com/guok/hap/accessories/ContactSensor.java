@@ -1,5 +1,7 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.Service;
@@ -8,7 +10,6 @@ import com.guok.hap.impl.services.ContactSensorService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>A contact sensor that reports whether contact is detected or not. Typical
@@ -28,7 +29,7 @@ public abstract class ContactSensor implements HomekitAccessory {
      *
      * @return a future that will contain the contact's state
      */
-    CompletableFuture<ContactState> getCurrentState();
+    public abstract ListenableFuture<ContactState> getCurrentState();
 
     @Override
     public Collection<Service> getServices() {

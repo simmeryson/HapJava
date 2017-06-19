@@ -1,6 +1,6 @@
 package com.guok.hap.impl.http.impl;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.impl.HomekitWebHandler;
 import com.guok.hap.impl.http.HomekitClientConnectionFactory;
@@ -24,7 +24,7 @@ public class HomekitHttpServer implements HomekitWebHandler {
 	}
 
 	@Override
-	public CompletableFuture<Integer> start(HomekitClientConnectionFactory clientConnectionFactory) {
+	public ListenableFuture<Integer> start(HomekitClientConnectionFactory clientConnectionFactory) {
 		if (service == null) {
 			this.service = NettyHomekitHttpService.create(port, nThreads);
 			return this.service.create(clientConnectionFactory);

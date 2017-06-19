@@ -1,9 +1,12 @@
 package com.guok.hap.impl.characteristics.thermostat;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.accessories.thermostat.BasicThermostat;
 import com.guok.hap.characteristics.EnumCharacteristic;
+
+import java.util.concurrent.CompletableFuture;
 
 public class TemperatureUnitsCharacteristic extends EnumCharacteristic {
 
@@ -20,8 +23,8 @@ public class TemperatureUnitsCharacteristic extends EnumCharacteristic {
 	}
 
 	@Override
-	protected CompletableFuture<Integer> getValue() {
-		return CompletableFuture.completedFuture(thermostat.getTemperatureUnit().getCode());
+	protected ListenableFuture<Integer> getValue() {
+		return Futures.immediateFuture(thermostat.getTemperatureUnit().getCode());
 	}
 
 }

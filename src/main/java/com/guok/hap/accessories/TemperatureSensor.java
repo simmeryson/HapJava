@@ -1,53 +1,56 @@
 package com.guok.hap.accessories;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
-import com.guok.hap.*;
+import com.guok.hap.HomekitAccessory;
+import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.Service;
 import com.guok.hap.accessories.properties.TemperatureUnit;
 import com.guok.hap.impl.services.TemperatureSensorService;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * A temperature sensor that reports the current temperature
  *
  * @author Andy Lintner
  */
-public interface TemperatureSensor extends HomekitAccessory {
+public abstract class TemperatureSensor implements HomekitAccessory {
 
 	/**
 	 * Retrieves the current temperature, in celsius degrees.
 	 * @return a future that will contain the temperature.
 	 */
-	CompletableFuture<Double> getCurrentTemperature();
+	public abstract ListenableFuture<Double> getCurrentTemperature();
 	
 	@Override
-	default Collection<Service> getServices() {
-		return Collections.singleton(new TemperatureSensorService(this));
+	public Collection<Service> getServices() {
+		return Collections.singleton((Service) new TemperatureSensorService(this));
 	}
 	
 	/**
 	 * Subscribes to changes in the current temperature.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeCurrentTemperature(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeCurrentTemperature(HomekitCharacteristicChangeCallback callback);
 
 	/**
 	 * Unsubscribes from changes in the current temperature.
 	 */
-	void unsubscribeCurrentTemperature();
+	public abstract void unsubscribeCurrentTemperature();
 	
 	/**
 	 * Retrieves the minimum temperature, in celsius degrees, the thermostat can be set to.
 	 * @return the minimum temperature.
 	 */
-	double getMinimumTemperature();
+	public abstract double getMinimumTemperature();
 
 	/**
 	 * Retrieves the maximum temperature, in celsius degrees, the thermostat can be set to.
 	 * @return the maximum temperature.
 	 */
-	double getMaximumTemperature();
+	public abstract double getMaximumTemperature();
 	
 	/**
 	 * Retrieves the temperature unit of the thermostat. The impact of this is unclear, as the actual temperature
@@ -55,5 +58,5 @@ public interface TemperatureSensor extends HomekitAccessory {
 	 * the unit to convert to.
 	 * @return the temperature unit of the thermostat.
 	 */
-	default TemperatureUnit getTemperatureUnit() { return TemperatureUnit.CELSIUS; }
+	public TemperatureUnit getTemperatureUnit() { return TemperatureUnit.CELSIUS; }
 }

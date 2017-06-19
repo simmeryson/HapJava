@@ -1,6 +1,8 @@
 package com.guok.hap.characteristics;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import javax.json.JsonNumber;
 import javax.json.JsonObjectBuilder;
@@ -41,13 +43,16 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected CompletableFuture<JsonObjectBuilder> makeBuilder(int iid) {
-		return super.makeBuilder(iid).thenApply(builder -> {
-			return builder
-					.add("minValue", minValue)
-					.add("maxValue", maxValue)
-					.add("minStep", 1)
-					.add("unit", unit);
+	protected ListenableFuture<JsonObjectBuilder> makeBuilder(int iid) {
+		return Futures.transform(super.makeBuilder(iid), new Function<JsonObjectBuilder, JsonObjectBuilder>() {
+			@Override
+			public JsonObjectBuilder apply(JsonObjectBuilder jsonObjectBuilder) {
+				return jsonObjectBuilder
+						.add("minValue", minValue)
+						.add("maxValue", maxValue)
+						.add("minStep", 1)
+						.add("unit", unit);
+			}
 		});
 	}
 	

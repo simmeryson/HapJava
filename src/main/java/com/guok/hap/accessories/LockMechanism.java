@@ -1,5 +1,7 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.Service;
@@ -8,7 +10,6 @@ import com.guok.hap.impl.services.LockMechanismService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>A lock capable of exposing its binary locked state. For a lock that can be locked/unlocked, use
@@ -25,7 +26,7 @@ public abstract class LockMechanism implements HomekitAccessory {
 	 * Retrieves the current binary state of the lock.
 	 * @return a future that will contain the binary state.
 	 */
-	CompletableFuture<LockMechanismState> getCurrentMechanismState();
+	public abstract ListenableFuture<LockMechanismState> getCurrentMechanismState();
 
 	/**
 	 * Subscribes to changes in the binary state of the lock.

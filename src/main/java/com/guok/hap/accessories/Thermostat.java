@@ -9,7 +9,9 @@ import com.guok.hap.accessories.thermostat.*;
  * @deprecated Use {@link BasicThermostat}, {@link HeatingThermostat}, and {@link CoolingThermostat} instead
  */
 @Deprecated
-public interface Thermostat extends BasicThermostat, HeatingThermostat, CoolingThermostat {
+public abstract class Thermostat
+//        extends BasicThermostat, HeatingThermostat, CoolingThermostat
+{
 
 	
 

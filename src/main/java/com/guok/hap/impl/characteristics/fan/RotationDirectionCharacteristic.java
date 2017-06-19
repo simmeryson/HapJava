@@ -1,6 +1,8 @@
 package com.guok.hap.impl.characteristics.fan;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.Fan;
@@ -23,8 +25,13 @@ public class RotationDirectionCharacteristic extends EnumCharacteristic implemen
 	}
 
 	@Override
-	protected CompletableFuture<Integer> getValue() {
-		return fan.getRotationDirection().thenApply(s -> s.getCode());
+	protected ListenableFuture<Integer> getValue() {
+		return Futures.transform(fan.getRotationDirection(), new Function<RotationDirection, Integer>() {
+			@Override
+			public Integer apply(RotationDirection rotationDirection) {
+				return rotationDirection.getCode();
+			}
+		});
 	}
 
 	@Override

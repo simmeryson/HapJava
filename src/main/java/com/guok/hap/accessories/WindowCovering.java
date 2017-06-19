@@ -1,12 +1,15 @@
 package com.guok.hap.accessories;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
-import com.guok.hap.*;
+import com.guok.hap.HomekitAccessory;
+import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.Service;
 import com.guok.hap.accessories.properties.WindowCoveringPositionState;
 import com.guok.hap.impl.services.WindowCoveringService;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * A window covering, like blinds, which can be remotely controlled.
@@ -19,25 +22,25 @@ public abstract class WindowCovering implements HomekitAccessory {
 	 * Retrieves the current position
 	 * @return a future that will contain the position as a value between 0 and 100
 	 */
-	CompletableFuture<Integer> getCurrentPosition();
+	public abstract ListenableFuture<Integer> getCurrentPosition();
 	
 	/**
 	 * Retrieves the target position
 	 * @return a future that will contain the target position as a value between 0 and 100
 	 */
-	CompletableFuture<Integer> getTargetPosition();
+	public abstract ListenableFuture<Integer> getTargetPosition();
 	
 	/**
 	 * Retrieves the state of the position: increasing, decreasing, or stopped
 	 * @return a future that will contain the current state
 	 */
-	CompletableFuture<WindowCoveringPositionState> getPositionState();
+	public abstract ListenableFuture<WindowCoveringPositionState> getPositionState();
 	
 	/**
 	 * Retrieves an indication that the window covering is obstructed from moving
 	 * @return a future that will contain a boolean indicating whether an obstruction is present
 	 */
-	CompletableFuture<Boolean> getObstructionDetected();
+	public abstract ListenableFuture<Boolean> getObstructionDetected();
 	
 	@Override
 	public Collection<Service> getServices() {
@@ -50,7 +53,7 @@ public abstract class WindowCovering implements HomekitAccessory {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	CompletableFuture<Void> setTargetPosition(int position) throws Exception;
+	public abstract ListenableFuture<Void> setTargetPosition(int position) throws Exception;
 	
 	/**
 	 * Sets the hold position state
@@ -58,7 +61,7 @@ public abstract class WindowCovering implements HomekitAccessory {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	CompletableFuture<Void> setHoldPosition(boolean hold) throws Exception;
+	public abstract ListenableFuture<Void> setHoldPosition(boolean hold) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the current position.

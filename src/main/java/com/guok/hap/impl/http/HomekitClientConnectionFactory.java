@@ -1,6 +1,6 @@
 package com.guok.hap.impl.http;
 
-import java.util.function.Consumer;
+import com.guok.hap.impl.Consumer;
 
 public interface HomekitClientConnectionFactory {
 

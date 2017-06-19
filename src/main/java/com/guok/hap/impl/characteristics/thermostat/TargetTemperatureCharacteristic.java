@@ -1,6 +1,6 @@
 package com.guok.hap.impl.characteristics.thermostat;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.thermostat.BasicThermostat;
@@ -26,7 +26,7 @@ public class TargetTemperatureCharacteristic extends
 	}
 
 	@Override
-	protected CompletableFuture<Double> getDoubleValue() {
+	protected ListenableFuture<Double> getDoubleValue() {
 		return thermostat.getTargetTemperature();
 	}
 

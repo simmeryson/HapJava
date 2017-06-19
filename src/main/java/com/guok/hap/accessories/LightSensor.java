@@ -1,5 +1,7 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.Service;
@@ -7,7 +9,6 @@ import com.guok.hap.impl.services.LightSensorService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * A light sensor that reports current ambient light level.
@@ -21,7 +22,7 @@ public abstract class LightSensor implements HomekitAccessory {
      *
      * @return a future that will contain the luminance level expressed in LUX.
      */
-    CompletableFuture<Double> getCurrentAmbientLightLevel();
+    public abstract ListenableFuture<Double> getCurrentAmbientLightLevel();
 
     @Override
     public Collection<Service> getServices() {

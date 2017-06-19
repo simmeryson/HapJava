@@ -1,6 +1,8 @@
 package com.guok.hap.characteristics;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
@@ -38,8 +40,13 @@ public class StaticStringCharacteristic extends BaseCharacteristic<String> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected CompletableFuture<JsonObjectBuilder> makeBuilder(int iid) {
-		return super.makeBuilder(iid).thenApply(builder -> builder.add("maxLen", MAX_LEN));
+	protected ListenableFuture<JsonObjectBuilder> makeBuilder(int iid) {
+		return Futures.transform(super.makeBuilder(iid), new Function<JsonObjectBuilder, JsonObjectBuilder>() {
+			@Override
+			public JsonObjectBuilder apply(JsonObjectBuilder builder) {
+				return builder.add("maxLen", MAX_LEN);
+			}
+		});
 	}
 
 	/**
@@ -62,8 +69,14 @@ public class StaticStringCharacteristic extends BaseCharacteristic<String> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected CompletableFuture<String> getValue() {
-		return CompletableFuture.completedFuture(value).thenApply(s -> s != null ? s : "Unavailable");
+	protected ListenableFuture<String> getValue() {
+		ListenableFuture<String> future = Futures.immediateFuture(value);
+		return Futures.transform(future, new Function<String, String>() {
+			@Override
+			public String apply(String s) {
+				return s != null ? s : "Unavailable";
+			}
+		});
 	}
 	
 	/**

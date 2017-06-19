@@ -1,6 +1,6 @@
 package com.guok.hap.impl.characteristics.lightbulb;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.DimmableLightbulb;
@@ -33,7 +33,7 @@ public class BrightnessCharacteristic extends IntegerCharacteristic implements E
 	}
 
 	@Override
-	protected CompletableFuture<Integer> getValue() {
+	protected ListenableFuture<Integer> getValue() {
 		return lightbulb.getBrightness();
 	}
 

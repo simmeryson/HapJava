@@ -1,9 +1,12 @@
 package com.guok.hap.impl.characteristics.windowcovering;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.WindowCovering;
+import com.guok.hap.accessories.properties.WindowCoveringPositionState;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
 
@@ -22,8 +25,13 @@ public class PositionStateCharacteristic extends EnumCharacteristic implements E
 	}
 
 	@Override
-	protected CompletableFuture<Integer> getValue() {
-		return windowCovering.getPositionState().thenApply(v -> v.getCode());
+	protected ListenableFuture<Integer> getValue() {
+		return Futures.transform(windowCovering.getPositionState(), new Function<WindowCoveringPositionState, Integer>() {
+			@Override
+			public Integer apply(WindowCoveringPositionState windowCoveringPositionState) {
+				return windowCoveringPositionState.getCode();
+			}
+		});
 	}
 
 	@Override

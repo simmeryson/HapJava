@@ -1,6 +1,6 @@
 package com.guok.hap.characteristics;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -32,7 +32,7 @@ public interface Characteristic {
 	 * @param iid The instance ID of the characteristic to be included in the serialization.
 	 * @return the future completing with the resulting JSON.
 	 */
-	CompletableFuture<JsonObject> toJson(int iid);
+	ListenableFuture<JsonObject> toJson(int iid);
 
 	/**
 	 * Invoked by the remote client, this updates the current value of the characteristic.

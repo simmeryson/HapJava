@@ -1,10 +1,14 @@
 package com.guok.hap.impl.characteristics.thermostat;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.accessories.properties.ThermostatMode;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
+
+import java.util.concurrent.CompletableFuture;
 
 abstract class AbstractHeatingCoolingModeCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
@@ -18,13 +22,18 @@ abstract class AbstractHeatingCoolingModeCharacteristic extends EnumCharacterist
 	}
 
 	@Override
-	protected final CompletableFuture<Integer> getValue() {
-		return getModeValue().thenApply(t -> t.getCode());
+	protected final ListenableFuture<Integer> getValue() {
+		return Futures.transform(getModeValue(), new Function<ThermostatMode, Integer>() {
+			@Override
+			public Integer apply(ThermostatMode thermostatMode) {
+				return thermostatMode.getCode();
+			}
+		});
 	}
 
 	protected abstract void setModeValue(ThermostatMode mode) throws Exception;
 	
-	protected abstract CompletableFuture<ThermostatMode> getModeValue();
+	protected abstract ListenableFuture<ThermostatMode> getModeValue();
 	
 	
 }

@@ -1,22 +1,24 @@
 package com.guok.hap.impl.characteristics.common;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.characteristics.BooleanCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
+import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.ExceptionalConsumer;
+import com.guok.hap.impl.Supplier;
+
 
 public class PowerStateCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
-	private final Supplier<CompletableFuture<Boolean>> getter;
+	private final Supplier<ListenableFuture<Boolean>> getter;
 	private final ExceptionalConsumer<Boolean> setter;
 	private final Consumer<HomekitCharacteristicChangeCallback> subscriber;
 	private final Runnable unsubscriber;
 	
-	public PowerStateCharacteristic(Supplier<CompletableFuture<Boolean>> getter, ExceptionalConsumer<Boolean> setter, 
+	public PowerStateCharacteristic(Supplier<ListenableFuture<Boolean>> getter, ExceptionalConsumer<Boolean> setter,
 			Consumer<HomekitCharacteristicChangeCallback> subscriber, Runnable unsubscriber) {
 		super("00000025-0000-1000-8000-0026BB765291",
 				true,
@@ -34,7 +36,7 @@ public class PowerStateCharacteristic extends BooleanCharacteristic implements E
 	}
 
 	@Override
-	protected CompletableFuture<Boolean> getValue() {
+	protected ListenableFuture<Boolean> getValue() {
 		return getter.get();
 	}
 

@@ -1,9 +1,14 @@
 package com.guok.hap.impl.services;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitAccessory;
+import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.Service;
 import com.guok.hap.accessories.BatteryAccessory;
 import com.guok.hap.characteristics.Characteristic;
+import com.guok.hap.impl.Consumer;
+import com.guok.hap.impl.Supplier;
 import com.guok.hap.impl.characteristics.common.BatteryLevelCharacteristic;
 import com.guok.hap.impl.characteristics.common.Name;
 
@@ -51,11 +56,26 @@ abstract class AbstractServiceImpl implements Service {
 
 			// If battery operated accessory then add BatteryLevelCharacteristic
 			if (accessory instanceof BatteryAccessory) {
-				BatteryAccessory batteryAccessory = (BatteryAccessory) accessory;
+				final BatteryAccessory batteryAccessory = (BatteryAccessory) accessory;
 				addCharacteristic(new BatteryLevelCharacteristic(
-						batteryAccessory::getBatteryLevelState,
-						batteryAccessory::subscribeBatteryLevelState,
-						batteryAccessory::unsubscribeBatteryLevelState
+						new Supplier<ListenableFuture<Integer>>() {
+							@Override
+							public ListenableFuture<Integer> get() {
+								return batteryAccessory.getBatteryLevelState();
+							}
+						},
+						new Consumer<HomekitCharacteristicChangeCallback>() {
+							@Override
+							public void accept(HomekitCharacteristicChangeCallback homekitCharacteristicChangeCallback) {
+								batteryAccessory.subscribeBatteryLevelState(homekitCharacteristicChangeCallback);
+							}
+						},
+						new Runnable() {
+							@Override
+							public void run() {
+								batteryAccessory.unsubscribeBatteryLevelState();
+							}
+						}
 				));
 			}
 		}

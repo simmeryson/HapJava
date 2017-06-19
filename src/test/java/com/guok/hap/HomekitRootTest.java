@@ -1,16 +1,21 @@
 package com.guok.hap;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
-import java.util.concurrent.CompletableFuture;
-
-import org.junit.*;
+import com.google.common.util.concurrent.Futures;
 
 import com.guok.hap.impl.HomekitWebHandler;
 import com.guok.hap.impl.http.HomekitClientConnectionFactory;
 import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class HomekitRootTest {
 	
@@ -28,7 +33,7 @@ public class HomekitRootTest {
 		accessory = mock(HomekitAccessory.class);
 		when(accessory.getId()).thenReturn(2);
 		webHandler = mock(HomekitWebHandler.class);
-		when(webHandler.start(any(HomekitClientConnectionFactory.class))).thenReturn(CompletableFuture.completedFuture(PORT));
+		when(webHandler.start(any(HomekitClientConnectionFactory.class))).thenReturn(Futures.immediateFuture(PORT));
 		advertiser = mock(JmdnsHomekitAdvertiser.class);
 		authInfo = mock(HomekitAuthInfo.class);
 		root = new HomekitRoot(LABEL, webHandler, authInfo, advertiser);

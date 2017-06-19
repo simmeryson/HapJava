@@ -1,11 +1,15 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
+import com.guok.hap.HomekitAccessory;
+import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.Service;
+import com.guok.hap.impl.services.SwitchService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
-
-import com.guok.hap.*;
-import com.guok.hap.impl.services.SwitchService;
 
 /**
  * A simple switch with a binary state.
@@ -18,7 +22,7 @@ public abstract class Switch implements  HomekitAccessory {
 	 * Retrieves the current binary state of the switch.
 	 * @return a future that will contain the binary state
 	 */
-	CompletableFuture<Boolean> getSwitchState();
+	public abstract ListenableFuture<Boolean> getSwitchState();
 	
 	/**
 	 * Sets the binary state of the switch
@@ -26,7 +30,7 @@ public abstract class Switch implements  HomekitAccessory {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	CompletableFuture<Void> setSwitchState(boolean state) throws Exception;
+	public abstract ListenableFuture<Void> setSwitchState(boolean state) throws Exception;
 	
 	@Override
 	public Collection<Service> getServices() {

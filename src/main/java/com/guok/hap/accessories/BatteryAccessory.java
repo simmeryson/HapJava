@@ -1,8 +1,8 @@
 package com.guok.hap.accessories;
 
-import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.google.common.util.concurrent.ListenableFuture;
 
-import java.util.concurrent.CompletableFuture;
+import com.guok.hap.HomekitCharacteristicChangeCallback;
 
 /**
  * An accessory that runs on batteries. Accessories that run on batteries are able to report
@@ -17,7 +17,7 @@ public interface BatteryAccessory {
      *
      * @return a future that will contain the accessory's battery state
      */
-    CompletableFuture<Integer> getBatteryLevelState();
+    ListenableFuture<Integer> getBatteryLevelState();
 
     /**
      * Subscribes to changes in the battery level.

@@ -1,9 +1,12 @@
 package com.guok.hap.impl.characteristics.windowcovering;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.accessories.WindowCovering;
 import com.guok.hap.characteristics.BooleanCharacteristic;
+
+import java.util.concurrent.CompletableFuture;
 
 public class HoldPositionCharacteristic extends BooleanCharacteristic {
 
@@ -20,9 +23,9 @@ public class HoldPositionCharacteristic extends BooleanCharacteristic {
 	}
 
 	@Override
-	protected CompletableFuture<Boolean> getValue() {
+	protected ListenableFuture<Boolean> getValue() {
 		//Write only
-		return CompletableFuture.completedFuture(null);
+		return Futures.immediateFuture(null);
 	}
 
 }

@@ -1,24 +1,26 @@
 package com.guok.hap.impl.connections;
 
+import com.guok.hap.HomekitAuthInfo;
+import com.guok.hap.impl.Consumer;
+import com.guok.hap.impl.HomekitRegistry;
+import com.guok.hap.impl.crypto.ChachaDecoder;
+import com.guok.hap.impl.crypto.ChachaEncoder;
+import com.guok.hap.impl.http.HomekitClientConnection;
+import com.guok.hap.impl.http.HttpRequest;
+import com.guok.hap.impl.http.HttpResponse;
+import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
+import com.guok.hap.impl.pairing.UpgradeResponse;
+
+import org.bouncycastle.util.Pack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.function.Consumer;
-
-import org.bouncycastle.util.Pack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.guok.hap.HomekitAuthInfo;
-import com.guok.hap.impl.HomekitRegistry;
-import com.guok.hap.impl.crypto.ChachaDecoder;
-import com.guok.hap.impl.crypto.ChachaEncoder;
-import com.guok.hap.impl.http.*;
-import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
-import com.guok.hap.impl.pairing.UpgradeResponse;
 
 class ConnectionImpl implements HomekitClientConnection {
 

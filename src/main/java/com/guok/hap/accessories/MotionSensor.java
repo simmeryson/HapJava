@@ -1,5 +1,7 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.Service;
@@ -7,7 +9,6 @@ import com.guok.hap.impl.services.MotionSensorService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>A motion sensor that reports whether motion has been detected.</p>
@@ -17,18 +18,18 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author Gaston Dombiak
  */
-public interface MotionSensor extends HomekitAccessory {
+public abstract class MotionSensor implements HomekitAccessory {
 
     /**
      * Retrieves the state of the motion sensor. If true then motion has been detected.
      *
      * @return a future that will contain the motion sensor's state
      */
-    CompletableFuture<Boolean> getMotionDetected();
+    public abstract ListenableFuture<Boolean> getMotionDetected();
 
     @Override
-    default Collection<Service> getServices() {
-        return Collections.singleton(new MotionSensorService(this));
+    public Collection<Service> getServices() {
+        return Collections.singleton((Service) new MotionSensorService(this));
     }
 
     /**
@@ -36,10 +37,10 @@ public interface MotionSensor extends HomekitAccessory {
      *
      * @param callback the function to call when the state changes.
      */
-    void subscribeMotionDetected(HomekitCharacteristicChangeCallback callback);
+    public abstract void subscribeMotionDetected(HomekitCharacteristicChangeCallback callback);
 
     /**
      * Unsubscribes from changes in the motion sensor.
      */
-    void unsubscribeMotionDetected();
+    public abstract void unsubscribeMotionDetected();
 }

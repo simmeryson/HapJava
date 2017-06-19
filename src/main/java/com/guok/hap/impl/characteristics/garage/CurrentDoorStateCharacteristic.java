@@ -1,6 +1,8 @@
 package com.guok.hap.impl.characteristics.garage;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.GarageDoor;
@@ -23,8 +25,13 @@ public class CurrentDoorStateCharacteristic extends EnumCharacteristic implement
 	}
 
 	@Override
-	protected CompletableFuture<Integer> getValue() {
-		return door.getTargetDoorState().thenApply(s -> s.getCode());
+	protected ListenableFuture<Integer> getValue() {
+		return Futures.transform(door.getTargetDoorState(), new Function<DoorState, Integer>() {
+			@Override
+			public Integer apply(DoorState doorState) {
+				return doorState.getCode();
+			}
+		});
 	}
 
 	@Override

@@ -1,12 +1,14 @@
 package com.guok.hap.impl.characteristics.carbonmonoxide;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.CarbonMonoxideSensor;
 import com.guok.hap.accessories.properties.CarbonMonoxideDetectedState;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
-
-import java.util.concurrent.CompletableFuture;
 
 public class CarbonMonoxideDetectedCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
@@ -18,8 +20,13 @@ public class CarbonMonoxideDetectedCharacteristic extends EnumCharacteristic imp
     }
 
     @Override
-    protected CompletableFuture<Integer> getValue() {
-        return carbonMonoxideSensor.getCarbonMonoxideDetectedState().thenApply(CarbonMonoxideDetectedState::getCode);
+    protected ListenableFuture<Integer> getValue() {
+        return Futures.transform(carbonMonoxideSensor.getCarbonMonoxideDetectedState(), new Function<CarbonMonoxideDetectedState, Integer>() {
+            @Override
+            public Integer apply(CarbonMonoxideDetectedState carbonMonoxideDetectedState) {
+                return carbonMonoxideDetectedState.getCode();
+            }
+        });
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.Service;
@@ -8,7 +10,6 @@ import com.guok.hap.impl.services.SmokeSensorService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>A smoke sensor reports whether smoke has been detected or not.</p>
@@ -18,18 +19,18 @@ import java.util.concurrent.CompletableFuture;
  *
  * @author Gaston Dombiak
  */
-public interface SmokeSensor extends HomekitAccessory {
+public abstract class SmokeSensor implements HomekitAccessory {
 
     /**
      * Retrieves the state of the smoke sensor. This is whether smoke has been detected or not.
      *
      * @return a future that will contain the smoke sensor's state
      */
-    CompletableFuture<SmokeDetectedState> getSmokeDetectedState();
+    public abstract ListenableFuture<SmokeDetectedState> getSmokeDetectedState();
 
     @Override
-    default Collection<Service> getServices() {
-        return Collections.singleton(new SmokeSensorService(this));
+    public Collection<Service> getServices() {
+        return Collections.singleton((Service) new SmokeSensorService(this));
     }
 
     /**
@@ -37,10 +38,10 @@ public interface SmokeSensor extends HomekitAccessory {
      *
      * @param callback the function to call when the state changes.
      */
-    void subscribeSmokeDetectedState(HomekitCharacteristicChangeCallback callback);
+    public abstract void subscribeSmokeDetectedState(HomekitCharacteristicChangeCallback callback);
 
     /**
      * Unsubscribes from changes in the smoke sensor's state.
      */
-    void unsubscribeSmokeDetectedState();
+    public abstract void unsubscribeSmokeDetectedState();
 }

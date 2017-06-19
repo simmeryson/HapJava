@@ -1,6 +1,6 @@
 package com.guok.hap.accessories;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.properties.LockMechanismState;
@@ -10,7 +10,7 @@ import com.guok.hap.accessories.properties.LockMechanismState;
  *
  * @author Andy Lintner
  */
-public interface LockableLockMechanism extends LockMechanism {
+public abstract class LockableLockMechanism extends LockMechanism {
 
 	/**
 	 * Sets the binary state of the lock mechanism.
@@ -18,22 +18,22 @@ public interface LockableLockMechanism extends LockMechanism {
 	 * @param state true for a locked mechanism, false for unlocked.
 	 * @throws Exception when the change cannot be made.
 	 */
-	void setTargetMechanismState(LockMechanismState state) throws Exception;
+	public abstract void setTargetMechanismState(LockMechanismState state) throws Exception;
 
 	/**
 	 * Retrieves the pending, but not yet completed, state of the lock mechanism.
 	 * @return the binary state
 	 */
-	CompletableFuture<LockMechanismState> getTargetMechanismState();
+	public abstract ListenableFuture<LockMechanismState> getTargetMechanismState();
 
 	/**
 	 * Subscribes to changes in the pending, but not yet completed, binary state. 
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeTargetMechanismState(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeTargetMechanismState(HomekitCharacteristicChangeCallback callback);
 
 	/**
 	 * Unsubscribes from changes in the pending, but not yet completed, binary state.
 	 */
-	void unsubscribeTargetMechanismState();
+	public abstract void unsubscribeTargetMechanismState();
 }

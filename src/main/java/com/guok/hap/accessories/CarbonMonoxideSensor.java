@@ -1,5 +1,7 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.Service;
@@ -8,7 +10,6 @@ import com.guok.hap.impl.services.CarbonMonoxideSensorService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>A carbon monoxide sensor reports whether carbon monoxide has been detected or not.</p>
@@ -25,7 +26,7 @@ public abstract class CarbonMonoxideSensor implements HomekitAccessory {
      *
      * @return a future that will contain the carbon monoxide sensor's state
      */
-    public abstract CompletableFuture<CarbonMonoxideDetectedState> getCarbonMonoxideDetectedState();
+    public abstract ListenableFuture<CarbonMonoxideDetectedState> getCarbonMonoxideDetectedState();
 
     @Override
     public Collection<Service> getServices() {

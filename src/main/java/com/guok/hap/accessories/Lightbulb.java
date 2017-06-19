@@ -1,24 +1,28 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
+import com.guok.hap.HomekitAccessory;
+import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.Service;
+import com.guok.hap.impl.services.LightbulbService;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
-
-import com.guok.hap.*;
-import com.guok.hap.impl.services.LightbulbService;
 
 /**
  * A simple light with a binary state.
  *
  * @author Andy Lintner
  */
-public interface Lightbulb extends HomekitAccessory {
+public abstract class Lightbulb implements HomekitAccessory {
 
 	/**
 	 * Retrieves the current binary state of the light.
 	 * @return a future that will contain the binary state
 	 */
-	CompletableFuture<Boolean> getLightbulbPowerState();
+	public abstract ListenableFuture<Boolean> getLightbulbPowerState();
 	
 	/**
 	 * Sets the binary state of the light
@@ -26,21 +30,21 @@ public interface Lightbulb extends HomekitAccessory {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	CompletableFuture<Void> setLightbulbPowerState(boolean powerState) throws Exception;
+	public abstract ListenableFuture<Void> setLightbulbPowerState(boolean powerState) throws Exception;
 	
 	@Override
-	default Collection<Service> getServices() {
-		return Collections.singleton(new LightbulbService(this));
+	public Collection<Service> getServices() {
+		return Collections.singleton((Service) new LightbulbService(this));
 	}
 	
 	/**
 	 * Subscribes to changes in the binary state of the light.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeLightbulbPowerState(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeLightbulbPowerState(HomekitCharacteristicChangeCallback callback);
 	
 	/**
 	 * Unsubscribes from changes in the binary state of the light.
 	 */
-	void unsubscribeLightbulbPowerState();
+	public abstract void unsubscribeLightbulbPowerState();
 }

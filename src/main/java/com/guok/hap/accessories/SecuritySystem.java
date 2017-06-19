@@ -1,5 +1,7 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.Service;
@@ -10,7 +12,6 @@ import com.guok.hap.impl.services.SecuritySystemService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>A security system that can be armed so that when a contact sensor is opened or a motion
@@ -28,7 +29,7 @@ public abstract class SecuritySystem implements HomekitAccessory {
      *
      * @return current state of the security system.
      */
-    CompletableFuture<CurrentSecuritySystemState> getCurrentSecuritySystemState();
+    public abstract ListenableFuture<CurrentSecuritySystemState> getCurrentSecuritySystemState();
 
     /**
      * Subscribes to changes to the state of the security system.
@@ -56,7 +57,7 @@ public abstract class SecuritySystem implements HomekitAccessory {
      *
      * @return target state of the security system.
      */
-    public abstract CompletableFuture<TargetSecuritySystemState> getTargetSecuritySystemState();
+    public abstract ListenableFuture<TargetSecuritySystemState> getTargetSecuritySystemState();
 
     /**
      * Subscribes to changes in the pending, but not yet completed, state of the security system.
@@ -75,7 +76,7 @@ public abstract class SecuritySystem implements HomekitAccessory {
      *
      * @return alarm type of the security system.
      */
-    CompletableFuture<SecuritySystemAlarmType> getAlarmTypeState();
+    public abstract ListenableFuture<SecuritySystemAlarmType> getAlarmTypeState();
 
     /**
      * Subscribes to changes to the alarm type of the security system.

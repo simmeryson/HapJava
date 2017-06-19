@@ -1,6 +1,7 @@
 package com.guok.hap.characteristics;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import javax.json.JsonObjectBuilder;
 
@@ -27,7 +28,7 @@ public abstract class WriteOnlyBooleanCharacteristic extends BooleanCharacterist
 	}
 	
 	@Override
-	protected final CompletableFuture<Boolean> getValue() { return CompletableFuture.completedFuture(false); }
+	protected final ListenableFuture<Boolean> getValue() { return Futures.immediateFuture(false); }
 
 	@Override
 	protected final void setJsonValue(JsonObjectBuilder builder, Boolean value) {

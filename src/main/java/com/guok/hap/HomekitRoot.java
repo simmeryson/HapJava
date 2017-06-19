@@ -1,5 +1,8 @@
 package com.guok.hap;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+
 import com.guok.hap.impl.HomekitRegistry;
 import com.guok.hap.impl.HomekitWebHandler;
 import com.guok.hap.impl.accessories.Bridge;
@@ -98,14 +101,18 @@ public class HomekitRoot {
 	public void start() {
 		started = true;
 		registry.reset();
-		webHandler.start(new HomekitClientConnectionFactoryImpl(authInfo,
-				registry, subscriptions, advertiser)).thenAccept(port -> {
-					try {
-						refreshAuthInfo();
-						advertiser.advertise(label, authInfo.getMac(), port, configurationIndex);
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
+
+		Futures.transform(webHandler.start(new HomekitClientConnectionFactoryImpl(authInfo, registry, subscriptions, advertiser)), new Function<Integer, Object>() {
+			@Override
+			public Object apply(Integer port) {
+				try {
+					refreshAuthInfo();
+					advertiser.advertise(label, authInfo.getMac(), port, configurationIndex);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+				return null;
+			}
 		});
 	}
 	
@@ -140,7 +147,7 @@ public class HomekitRoot {
 	
 	/**
 	 * By default, the bridge advertises itself at revision 1. If you make changes to the accessories you're
-	 * including in the bridge after your first call to {@link start()}, you should increment this number. The 
+	 * including in the bridge after your first call to {@link #start()}, you should increment this number. The
 	 * behavior of the client if the configuration index were to decrement is undefined, so this implementation will
 	 * not manage the configuration index by automatically incrementing - preserving this state across invocations should
 	 * be handled externally.

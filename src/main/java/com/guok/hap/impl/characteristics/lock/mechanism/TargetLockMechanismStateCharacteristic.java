@@ -1,6 +1,8 @@
 package com.guok.hap.impl.characteristics.lock.mechanism;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.LockableLockMechanism;
@@ -23,8 +25,13 @@ public class TargetLockMechanismStateCharacteristic extends EnumCharacteristic i
 	}
 
 	@Override
-	protected CompletableFuture<Integer> getValue() {
-		return lock.getTargetMechanismState().thenApply(s -> s.getCode());
+	protected ListenableFuture<Integer> getValue() {
+		return Futures.transform(lock.getTargetMechanismState(), new Function<LockMechanismState, Integer>() {
+			@Override
+			public Integer apply(LockMechanismState lockMechanismState) {
+				return lockMechanismState.getCode();
+			}
+		});
 	}
 
 	@Override

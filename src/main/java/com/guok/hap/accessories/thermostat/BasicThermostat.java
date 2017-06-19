@@ -1,83 +1,86 @@
 package com.guok.hap.accessories.thermostat;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
-import com.guok.hap.*;
+import com.guok.hap.HomekitAccessory;
+import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.Service;
 import com.guok.hap.accessories.TemperatureSensor;
 import com.guok.hap.accessories.properties.ThermostatMode;
 import com.guok.hap.impl.services.ThermostatService;
 
-public interface BasicThermostat extends HomekitAccessory, TemperatureSensor {
+import java.util.Collection;
+import java.util.Collections;
+
+public abstract class BasicThermostat extends TemperatureSensor implements HomekitAccessory {
 
 	/**
 	 * Retrieves the current {@link ThermostatMode} of the thermostat.
 	 * @return a future that will contain the mode.
 	 */
-	CompletableFuture<ThermostatMode> getCurrentMode();
+	public abstract ListenableFuture<ThermostatMode> getCurrentMode();
 
 	/**
 	 * Subscribes to changes in the {@link ThermostatMode} of the thermostat.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeCurrentMode(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeCurrentMode(HomekitCharacteristicChangeCallback callback);
 
 	/**
 	 * Unsubscribes from changes in the mode of the thermostat.
 	 */
-	void unsubscribeCurrentMode();
+	public abstract void unsubscribeCurrentMode();
 
 	/**
 	 * Sets the {@link ThermostatMode} of the thermostat.
 	 * @param mode The {@link ThermostatMode} to set.
 	 * @throws Exception when the change cannot be made.
 	 */
-	void setTargetMode(ThermostatMode mode) throws Exception;
+	public abstract void setTargetMode(ThermostatMode mode) throws Exception;
 
 	/**
 	 * Retrieves the pending, but not yet complete, {@link ThermostatMode} of the thermostat.
 	 * @return a future that will contain the target mode.
 	 */
-	CompletableFuture<ThermostatMode> getTargetMode();
+	public abstract ListenableFuture<ThermostatMode> getTargetMode();
 
 	/**
 	 * Subscribes to changes in the pending, but not yet complete, {@link ThermostatMode} of the thermostat.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeTargetMode(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeTargetMode(HomekitCharacteristicChangeCallback callback);
 
 	/**
 	 * Unsubscribes from changes in the pending, but not yet complete, {@link ThermostatMode} of the thermostat.
 	 */
-	void unsubscribeTargetMode();
+	public abstract void unsubscribeTargetMode();
 
 	/**
 	 * Retrieves the target temperature, in celsius degrees.
 	 * @return a future that will contain the target temperature.
 	 */
-	CompletableFuture<Double> getTargetTemperature();
+	public abstract ListenableFuture<Double> getTargetTemperature();
 
 	/**
 	 * Sets the target temperature.
 	 * @param value the target temperature, in celsius degrees.
 	 * @throws Exception when the temperature cannot be changed.
 	 */
-	void setTargetTemperature(Double value) throws Exception;
+	public abstract void setTargetTemperature(Double value) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the target temperature.
 	 * @param callback the function to call when the state changes.
 	 */
-	void subscribeTargetTemperature(HomekitCharacteristicChangeCallback callback);
+	public abstract void subscribeTargetTemperature(HomekitCharacteristicChangeCallback callback);
 
 	/**
 	 * Unsubscribes from changes in the target temperature.
 	 */
-	void unsubscribeTargetTemperature();
+	public abstract void unsubscribeTargetTemperature();
 	
 	@Override
-	default Collection<Service> getServices() {
-		return Collections.singleton(new ThermostatService(this));
+	public Collection<Service> getServices() {
+		return Collections.singleton((Service) new ThermostatService(this));
 	}
 }

@@ -1,12 +1,14 @@
 package com.guok.hap.impl.characteristics.contactsensor;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.ContactSensor;
 import com.guok.hap.accessories.properties.ContactState;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
-
-import java.util.concurrent.CompletableFuture;
 
 public class ContactSensorStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
@@ -18,8 +20,13 @@ public class ContactSensorStateCharacteristic extends EnumCharacteristic impleme
     }
 
     @Override
-    protected CompletableFuture<Integer> getValue() {
-        return contactSensor.getCurrentState().thenApply(ContactState::getCode);
+    protected ListenableFuture<Integer> getValue() {
+        return Futures.transform(contactSensor.getCurrentState(), new Function<ContactState, Integer>() {
+            @Override
+            public Integer apply(ContactState contactState) {
+                return contactState.getCode();
+            }
+        });
     }
 
     @Override

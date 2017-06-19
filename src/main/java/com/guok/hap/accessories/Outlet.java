@@ -1,11 +1,14 @@
 package com.guok.hap.accessories;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
+import com.guok.hap.HomekitAccessory;
+import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.Service;
+import com.guok.hap.impl.services.OutletService;
+
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
-
-import com.guok.hap.*;
-import com.guok.hap.impl.services.OutletService;
 
 /**
  * A power outlet with boolean power and usage states.
@@ -23,13 +26,13 @@ public abstract class Outlet implements HomekitAccessory {
 	 * Retrieves the current binary state of the outlet's power.
 	 * @return a future that will contain the binary state
 	 */
-	CompletableFuture<Boolean> getPowerState();
+	public abstract ListenableFuture<Boolean> getPowerState();
 	
 	/**
 	 * Retrieves the current binary state indicating whether the outlet is in use.
 	 * @return a future that will contain the binary state
 	 */
-	CompletableFuture<Boolean> getOutletInUse();
+	public abstract ListenableFuture<Boolean> getOutletInUse();
 	
 	/**
 	 * Sets the binary state of the outlet's power.
@@ -37,7 +40,7 @@ public abstract class Outlet implements HomekitAccessory {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	CompletableFuture<Void> setPowerState(boolean state) throws Exception;
+	public abstract ListenableFuture<Void> setPowerState(boolean state) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the binary state of the outlet's power.

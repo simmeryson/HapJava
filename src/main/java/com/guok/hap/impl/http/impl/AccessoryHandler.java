@@ -1,19 +1,27 @@
 package com.guok.hap.impl.http.impl;
 
+import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.http.HomekitClientConnection;
 import com.guok.hap.impl.http.HomekitClientConnectionFactory;
 import com.guok.hap.impl.http.HttpResponse;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelPipeline;
-import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+
+import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
 
 class AccessoryHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
@@ -29,9 +37,14 @@ class AccessoryHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		final Channel channel = ctx.pipeline().channel();
-		this.connection = homekitClientConnectionFactory.createConnection(response -> {
-			if (!channel.isActive()) { return; }
-			channel.writeAndFlush(NettyResponseUtil.createResponse(response));
+		this.connection = homekitClientConnectionFactory.createConnection(new Consumer<HttpResponse>() {
+			@Override
+			public void accept(HttpResponse response) {
+				if (!channel.isActive()) {
+					return;
+				}
+				channel.writeAndFlush(NettyResponseUtil.createResponse(response));
+			}
 		});
 		LOGGER.info("New homekit connection from "+ctx.channel().remoteAddress().toString());
 		super.channelActive(ctx);

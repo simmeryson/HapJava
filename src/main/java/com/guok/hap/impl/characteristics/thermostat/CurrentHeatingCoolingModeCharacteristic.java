@@ -1,6 +1,6 @@
 package com.guok.hap.impl.characteristics.thermostat;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.properties.ThermostatMode;
@@ -22,7 +22,7 @@ public class CurrentHeatingCoolingModeCharacteristic extends
 	}
 
 	@Override
-	protected CompletableFuture<ThermostatMode> getModeValue() {
+	protected ListenableFuture<ThermostatMode> getModeValue() {
 		return thermostat.getCurrentMode();
 	}
 

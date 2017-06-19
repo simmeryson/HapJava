@@ -1,5 +1,15 @@
 package com.guok.hap.impl.json;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
+import com.guok.hap.HomekitAccessory;
+import com.guok.hap.Service;
+import com.guok.hap.characteristics.Characteristic;
+import com.guok.hap.impl.HomekitRegistry;
+import com.guok.hap.impl.http.HttpResponse;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,18 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.CompletableFuture;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-
-import com.guok.hap.HomekitAccessory;
-import com.guok.hap.Service;
-import com.guok.hap.characteristics.Characteristic;
-import com.guok.hap.impl.HomekitRegistry;
-import com.guok.hap.impl.http.HttpResponse;
 
 public class AccessoryController {
 
@@ -31,10 +34,10 @@ public class AccessoryController {
 	public HttpResponse listing() throws Exception {
 		JsonArrayBuilder accessories = Json.createArrayBuilder();
 		
-		Map<Integer, List<CompletableFuture<JsonObject>>> accessoryServiceFutures = new HashMap<>();
+		Map<Integer, List<ListenableFuture<JsonObject>>> accessoryServiceFutures = new HashMap<>();
 		for (HomekitAccessory accessory: registry.getAccessories()) {
 			int iid = 0;
-			List<CompletableFuture<JsonObject>> serviceFutures = new ArrayList<>();
+			List<ListenableFuture<JsonObject>> serviceFutures = new ArrayList<>();
 			for (Service service: registry.getServices(accessory.getId())) {
 				serviceFutures.add(toJson(service, iid));
 				iid += service.getCharacteristics().size() + 1;
@@ -43,10 +46,10 @@ public class AccessoryController {
 		}
 		
 		Map<Integer, JsonArrayBuilder> serviceArrayBuilders = new HashMap<>();
-		for (Entry<Integer, List<CompletableFuture<JsonObject>>> entry: accessoryServiceFutures.entrySet()) {
+		for (Entry<Integer, List<ListenableFuture<JsonObject>>> entry: accessoryServiceFutures.entrySet()) {
 			JsonArrayBuilder arr = Json.createArrayBuilder();
-			for (CompletableFuture<JsonObject> future: entry.getValue()) {
-				arr.add(future.join());
+			for (ListenableFuture<JsonObject> future: entry.getValue()) {
+				arr.add(future.get());
 			}
 			serviceArrayBuilders.put(entry.getKey(), arr);
 		}
@@ -63,22 +66,26 @@ public class AccessoryController {
 		}
 	}
 	
-	private CompletableFuture<JsonObject> toJson(Service service, int interfaceId) throws Exception {
-		JsonObjectBuilder builder = Json.createObjectBuilder()
+	private ListenableFuture<JsonObject> toJson(Service service, int interfaceId) throws Exception {
+		final JsonObjectBuilder builder = Json.createObjectBuilder()
 			.add("iid", ++interfaceId)
 			.add("type", service.getType());
 		List<Characteristic> characteristics = service.getCharacteristics();
-		Collection<CompletableFuture<JsonObject>> characteristicFutures = new ArrayList<>(characteristics.size());
+		Collection<ListenableFuture<JsonObject>> characteristicFutures = new ArrayList<>(characteristics.size());
 		for (Characteristic characteristic: characteristics) {
 			characteristicFutures.add(characteristic.toJson(++interfaceId));
 		}
-		
-		return CompletableFuture.allOf(characteristicFutures.toArray(new CompletableFuture<?>[characteristicFutures.size()]))
-			.thenApply(v -> {
+		ListenableFuture<List<JsonObject>> successfulAsList = Futures.successfulAsList((ListenableFuture<? extends JsonObject>[]) characteristicFutures.toArray());
+		return Futures.transform(successfulAsList, new Function<List<JsonObject>, JsonObject>() {
+			@Override
+			public JsonObject apply(List<JsonObject> jsonObjects) {
 				JsonArrayBuilder jsonCharacteristics = Json.createArrayBuilder();
-				characteristicFutures.stream().map(future -> future.join()).forEach(c -> jsonCharacteristics.add(c));
+				for (JsonObject jsonObject : jsonObjects) {
+					jsonCharacteristics.add(jsonObject);
+				}
 				builder.add("characteristics", jsonCharacteristics);
 				return builder.build();
-			});
+			}
+		});
 	}
 }

@@ -1,11 +1,11 @@
 package com.guok.hap.impl.characteristics.light;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.LightSensor;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.characteristics.FloatCharacteristic;
-
-import java.util.concurrent.CompletableFuture;
 
 public class AmbientLightLevelCharacteristic extends FloatCharacteristic implements EventableCharacteristic {
 
@@ -33,7 +33,7 @@ public class AmbientLightLevelCharacteristic extends FloatCharacteristic impleme
     }
 
     @Override
-    protected CompletableFuture<Double> getDoubleValue() {
+    protected ListenableFuture<Double> getDoubleValue() {
         return lightSensor.getCurrentAmbientLightLevel();
     }
 }

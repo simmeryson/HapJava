@@ -1,6 +1,6 @@
 package com.guok.hap.impl.characteristics.lightbulb;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.ColorfulLightbulb;
@@ -22,7 +22,7 @@ public class HueCharacteristic extends FloatCharacteristic implements EventableC
 	}
 
 	@Override
-	protected CompletableFuture<Double> getDoubleValue() {
+	protected ListenableFuture<Double> getDoubleValue() {
 		return lightbulb.getHue();
 	}
 

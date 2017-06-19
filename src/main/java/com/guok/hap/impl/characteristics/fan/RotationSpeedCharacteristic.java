@@ -1,6 +1,6 @@
 package com.guok.hap.impl.characteristics.fan;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.Fan;
@@ -33,7 +33,7 @@ public class RotationSpeedCharacteristic extends IntegerCharacteristic implement
 	}
 
 	@Override
-	protected CompletableFuture<Integer> getValue() {
+	protected ListenableFuture<Integer> getValue() {
 		return fan.getRotationSpeed();
 	}
 

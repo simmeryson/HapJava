@@ -1,11 +1,11 @@
 package com.guok.hap.impl.characteristics.motionsensor;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.MotionSensor;
 import com.guok.hap.characteristics.BooleanCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
-
-import java.util.concurrent.CompletableFuture;
 
 public class MotionDetectedStateCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
@@ -17,7 +17,7 @@ public class MotionDetectedStateCharacteristic extends BooleanCharacteristic imp
     }
 
     @Override
-    protected CompletableFuture<Boolean> getValue() {
+    protected ListenableFuture<Boolean> getValue() {
         return motionSensor.getMotionDetected();
     }
 

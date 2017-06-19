@@ -1,6 +1,6 @@
 package com.guok.hap.impl.characteristics.windowcovering;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.WindowCovering;
@@ -22,7 +22,7 @@ public class CurrentPositionCharacteristic extends IntegerCharacteristic impleme
 	}
 
 	@Override
-	protected CompletableFuture<Integer> getValue() {
+	protected ListenableFuture<Integer> getValue() {
 		return windowCovering.getCurrentPosition();
 	}
 

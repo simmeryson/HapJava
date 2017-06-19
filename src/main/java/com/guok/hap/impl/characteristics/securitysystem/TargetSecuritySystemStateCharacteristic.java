@@ -1,12 +1,14 @@
 package com.guok.hap.impl.characteristics.securitysystem;
 
+import com.google.common.base.Function;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.SecuritySystem;
 import com.guok.hap.accessories.properties.TargetSecuritySystemState;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
-
-import java.util.concurrent.CompletableFuture;
 
 public class TargetSecuritySystemStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
@@ -18,8 +20,13 @@ public class TargetSecuritySystemStateCharacteristic extends EnumCharacteristic 
     }
 
     @Override
-    protected CompletableFuture<Integer> getValue() {
-        return securitySystem.getTargetSecuritySystemState().thenApply(TargetSecuritySystemState::getCode);
+    protected ListenableFuture<Integer> getValue() {
+        return Futures.transform(securitySystem.getTargetSecuritySystemState(), new Function<TargetSecuritySystemState, Integer>() {
+            @Override
+            public Integer apply(TargetSecuritySystemState targetSecuritySystemState) {
+                return targetSecuritySystemState.getCode();
+            }
+        });
     }
 
     @Override
