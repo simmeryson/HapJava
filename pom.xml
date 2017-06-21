@@ -42,7 +42,11 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.51</version>
         </dependency>
-
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.13</version>
+        </dependency>
         <dependency>
             <groupId>net.vrallev.ecc</groupId>
             <artifactId>ecc-25519-java</artifactId>
@@ -129,7 +133,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.1</version>
                 <configuration>
-                    <excludePackageNames>com.beowulfe.hap.impl</excludePackageNames>
+                    <excludePackageNames>com.guok.hap.impl</excludePackageNames>
                 </configuration>
                 <executions>
                     <execution>
@@ -158,24 +162,24 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-scm-publish-plugin</artifactId>
-                <version>1.1</version>
-                <executions>
-                    <execution>
-                        <id>scm-publish</id>
-                        <phase>site-deploy</phase>
-                        <goals>
-                            <goal>publish-scm</goal>
-                        </goals>
-                        <configuration>
-                            <pubScmUrl>scm:git:git@github.com:beowulfe/HAP-Java.git</pubScmUrl>
-                            <scmBranch>gh-pages</scmBranch>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-scm-publish-plugin</artifactId>-->
+                <!--<version>1.1</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>scm-publish</id>-->
+                        <!--<phase>site-deploy</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>publish-scm</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<pubScmUrl>scm:git:git@github.com:beowulfe/HAP-Java.git</pubScmUrl>-->
+                            <!--<scmBranch>gh-pages</scmBranch>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>

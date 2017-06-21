@@ -75,7 +75,8 @@ public class AccessoryController {
 		for (Characteristic characteristic: characteristics) {
 			characteristicFutures.add(characteristic.toJson(++interfaceId));
 		}
-		ListenableFuture<List<JsonObject>> successfulAsList = Futures.successfulAsList((ListenableFuture<? extends JsonObject>[]) characteristicFutures.toArray());
+		ListenableFuture<List<JsonObject>> successfulAsList =
+                Futures.successfulAsList(characteristicFutures.toArray(new ListenableFuture[characteristicFutures.size()]));
 		return Futures.transform(successfulAsList, new Function<List<JsonObject>, JsonObject>() {
 			@Override
 			public JsonObject apply(List<JsonObject> jsonObjects) {
