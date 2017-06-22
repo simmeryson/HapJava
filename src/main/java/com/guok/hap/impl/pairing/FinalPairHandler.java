@@ -1,28 +1,31 @@
 package com.guok.hap.impl.pairing;
 
-import java.nio.charset.StandardCharsets;
+import com.guok.hap.HomekitAuthInfo;
+import com.guok.hap.impl.advertiser.IAdvertiser;
+import com.guok.hap.impl.crypto.ChachaDecoder;
+import com.guok.hap.impl.crypto.ChachaEncoder;
+import com.guok.hap.impl.crypto.EdsaSigner;
+import com.guok.hap.impl.crypto.EdsaVerifier;
+import com.guok.hap.impl.http.HttpResponse;
+import com.guok.hap.impl.pairing.PairSetupRequest.Stage3Request;
+import com.guok.hap.impl.pairing.TypeLengthValueUtils.DecodeResult;
+import com.guok.hap.impl.pairing.TypeLengthValueUtils.Encoder;
 
 import org.bouncycastle.crypto.digests.SHA512Digest;
 import org.bouncycastle.crypto.generators.HKDFBytesGenerator;
 import org.bouncycastle.crypto.params.HKDFParameters;
 
-import com.guok.hap.HomekitAuthInfo;
-import com.guok.hap.impl.crypto.*;
-import com.guok.hap.impl.http.HttpResponse;
-import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
-import com.guok.hap.impl.pairing.PairSetupRequest.Stage3Request;
-import com.guok.hap.impl.pairing.TypeLengthValueUtils.DecodeResult;
-import com.guok.hap.impl.pairing.TypeLengthValueUtils.Encoder;
+import java.nio.charset.StandardCharsets;
 
 class FinalPairHandler {
 	
 	private final byte[] k;
 	private final HomekitAuthInfo authInfo;
-	private final JmdnsHomekitAdvertiser advertiser;
+	private final IAdvertiser advertiser;
 	
 	private byte[] hkdf_enc_key;
 	
-	public FinalPairHandler(byte[] k, HomekitAuthInfo authInfo, JmdnsHomekitAdvertiser advertiser) {
+	public FinalPairHandler(byte[] k, HomekitAuthInfo authInfo, IAdvertiser advertiser) {
 		this.k = k;
 		this.authInfo = authInfo;
 		this.advertiser = advertiser;

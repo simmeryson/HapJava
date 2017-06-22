@@ -1,20 +1,20 @@
 package com.guok.hap.impl.pairing;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 import com.guok.hap.HomekitAuthInfo;
+import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.http.HttpRequest;
 import com.guok.hap.impl.http.HttpResponse;
-import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
 import com.guok.hap.impl.pairing.TypeLengthValueUtils.DecodeResult;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class PairingUpdateController {
 
 	private final HomekitAuthInfo authInfo;
-	private final JmdnsHomekitAdvertiser advertiser;
+	private final IAdvertiser advertiser;
 	
-	public PairingUpdateController(HomekitAuthInfo authInfo, JmdnsHomekitAdvertiser advertiser) {
+	public PairingUpdateController(HomekitAuthInfo authInfo, IAdvertiser advertiser) {
 		this.authInfo = authInfo;
 		this.advertiser = advertiser;
 	}

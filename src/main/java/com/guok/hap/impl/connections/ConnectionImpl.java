@@ -3,12 +3,12 @@ package com.guok.hap.impl.connections;
 import com.guok.hap.HomekitAuthInfo;
 import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.HomekitRegistry;
+import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.crypto.ChachaDecoder;
 import com.guok.hap.impl.crypto.ChachaEncoder;
 import com.guok.hap.impl.http.HomekitClientConnection;
 import com.guok.hap.impl.http.HttpRequest;
 import com.guok.hap.impl.http.HttpResponse;
-import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
 import com.guok.hap.impl.pairing.UpgradeResponse;
 
 import org.bouncycastle.util.Pack;
@@ -38,7 +38,7 @@ class ConnectionImpl implements HomekitClientConnection {
 	
 	public ConnectionImpl(HomekitAuthInfo authInfo, HomekitRegistry registry, 
 			Consumer<HttpResponse> outOfBandMessageCallback, SubscriptionManager subscriptions,
-			JmdnsHomekitAdvertiser advertiser) {
+						  IAdvertiser advertiser) {
 		httpSession = new HttpSession(authInfo, registry, subscriptions, this, advertiser);
 		this.outOfBandMessageCallback = outOfBandMessageCallback;
 		this.subscriptions = subscriptions;

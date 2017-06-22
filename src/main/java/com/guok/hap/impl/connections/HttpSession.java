@@ -1,18 +1,12 @@
 package com.guok.hap.impl.connections;
 
-import java.io.IOException;
-import java.net.InetAddress;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.HomekitAuthInfo;
 import com.guok.hap.impl.HomekitRegistry;
+import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.http.HomekitClientConnection;
 import com.guok.hap.impl.http.HttpRequest;
 import com.guok.hap.impl.http.HttpResponse;
-import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
 import com.guok.hap.impl.json.AccessoryController;
 import com.guok.hap.impl.json.CharacteristicsController;
 import com.guok.hap.impl.pairing.PairVerificationManager;
@@ -20,6 +14,12 @@ import com.guok.hap.impl.pairing.PairingManager;
 import com.guok.hap.impl.pairing.PairingUpdateController;
 import com.guok.hap.impl.responses.InternalServerErrorResponse;
 import com.guok.hap.impl.responses.NotFoundResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.InetAddress;
 
 class HttpSession {
 	
@@ -32,12 +32,12 @@ class HttpSession {
 	private final HomekitRegistry registry;
 	private final SubscriptionManager subscriptions;
 	private final HomekitClientConnection connection;
-	private final JmdnsHomekitAdvertiser advertiser;
+	private final IAdvertiser advertiser;
 	
 	private final static Logger logger = LoggerFactory.getLogger(HttpSession.class);
 	
 	public HttpSession(HomekitAuthInfo authInfo, HomekitRegistry registry, SubscriptionManager subscriptions,
-			HomekitClientConnection connection, JmdnsHomekitAdvertiser advertiser) {
+			HomekitClientConnection connection, IAdvertiser advertiser) {
 		this.authInfo = authInfo;
 		this.registry = registry;
 		this.subscriptions = subscriptions;

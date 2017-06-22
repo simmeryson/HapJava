@@ -4,7 +4,7 @@ import com.google.common.util.concurrent.Futures;
 
 import com.guok.hap.impl.HomekitWebHandler;
 import com.guok.hap.impl.http.HomekitClientConnectionFactory;
-import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
+import com.guok.hap.impl.advertiser.JmdnsHomekitAdvertiser;
 
 import org.junit.Assert;
 import org.junit.Before;

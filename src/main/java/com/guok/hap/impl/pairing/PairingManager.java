@@ -1,15 +1,15 @@
 package com.guok.hap.impl.pairing;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.guok.hap.HomekitAuthInfo;
 import com.guok.hap.impl.HomekitRegistry;
+import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.http.HttpRequest;
 import com.guok.hap.impl.http.HttpResponse;
-import com.guok.hap.impl.jmdns.JmdnsHomekitAdvertiser;
 import com.guok.hap.impl.responses.NotFoundResponse;
 import com.guok.hap.impl.responses.UnauthorizedResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PairingManager {
 
@@ -17,11 +17,11 @@ public class PairingManager {
 	
 	private final HomekitAuthInfo authInfo;
 	private final HomekitRegistry registry;
-	private final JmdnsHomekitAdvertiser advertiser;
+	private final IAdvertiser advertiser;
 	
 	private SrpHandler srpHandler;
 	
-	public PairingManager(HomekitAuthInfo authInfo, HomekitRegistry registry, JmdnsHomekitAdvertiser advertiser) {
+	public PairingManager(HomekitAuthInfo authInfo, HomekitRegistry registry, IAdvertiser advertiser) {
 		this.authInfo = authInfo;
 		this.registry = registry;
 		this.advertiser = advertiser;
