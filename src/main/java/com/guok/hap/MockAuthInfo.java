@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class MockAuthInfo implements HomekitAuthInfo {
 
-    private static final String PIN = "031-45-154";
+    private static final String PIN = "031-45-153";
 
     private final String mac;
     private final BigInteger salt;
@@ -25,6 +25,7 @@ public class MockAuthInfo implements HomekitAuthInfo {
 
     public MockAuthInfo() throws InvalidAlgorithmParameterException {
         mac = HomekitServer.generateMac();
+//        mac ="2e:fa:1c:54:6c:a7";
         salt = HomekitServer.generateSalt();
         privateKey = HomekitServer.generateKey();
         System.out.println("Auth info is generated each time the sample application is started. Pairings are not persisted.");

@@ -22,14 +22,14 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  */
 public class MainTest {
 
-    private static final int PORT = 9126;
+    private static final int PORT = 9125;
     private static final String HOST = "192.168.3.56";
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         try {
             HomekitServer homekit = new HomekitServer(PORT);
-            HomekitRoot bridge = homekit.createBridge(new MockAuthInfo(), "Test Bridge", "TestBridge, Inc.", "G6", "111abe234");
+            HomekitRoot bridge = homekit.createBridge(new MockAuthInfo(), "Java bridge", "TestBridge, Inc.", "G6", "111abe234");
             bridge.addAccessory(new MockSwitch());
             bridge.start();
         } catch (Exception e) {

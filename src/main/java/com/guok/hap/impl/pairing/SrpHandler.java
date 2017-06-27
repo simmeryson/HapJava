@@ -1,20 +1,25 @@
 package com.guok.hap.impl.pairing;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.util.Arrays;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.guok.hap.impl.http.HttpResponse;
 import com.guok.hap.impl.pairing.HomekitSRP6ServerSession.State;
 import com.guok.hap.impl.pairing.PairSetupRequest.Stage2Request;
 import com.guok.hap.impl.pairing.TypeLengthValueUtils.Encoder;
 import com.guok.hap.impl.responses.ConflictResponse;
 import com.guok.hap.impl.responses.NotFoundResponse;
-import com.nimbusds.srp6.*;
+import com.nimbusds.srp6.SRP6CryptoParams;
+import com.nimbusds.srp6.SRP6VerifierGenerator;
+import com.nimbusds.srp6.XRoutineWithUserIdentity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.util.Arrays;
+
+/**
+ * Secure Remote Password (SRP)
+ */
 class SrpHandler {
 
 	//	Precomputed safe 3072 bit prime 'N'. Origin RFC 5054, appendix A.
