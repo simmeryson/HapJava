@@ -26,7 +26,10 @@ public enum AccessoryCategory {
     IP_CAMERA(17),
     VIDEO_DOOR_BELL(18),
     AIR_PURIFIER(19),
-    RESERVED(20);
+    AIR_HEATER(20),
+    AIR_CONDITIONER(21),
+    AIR_HUMIDIFIER(22),
+    AIR_DEHUMIDIFIER(23);
 
 
     private final static Map<Integer, AccessoryCategory> reverse;

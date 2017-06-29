@@ -27,7 +27,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
     private final Logger logger = LoggerFactory.getLogger(BaseCharacteristic.class);
 
     private final String type;
-    private final String format;
+    private final CharacteristicValueFormats format;
     private final boolean isWritable;
     private final boolean isReadable;
     private final boolean isEventable;
@@ -45,7 +45,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      * @param isReadable  indicates whether the value can be retrieved.
      * @param description a description of the characteristic to be passed to the consuming device.
      */
-    public BaseCharacteristic(String type, String format, boolean isWritable, boolean isReadable, String description) {
+    public BaseCharacteristic(String type, CharacteristicValueFormats format, boolean isWritable, boolean isReadable, String description) {
         if (type == null || format == null || description == null) {
             throw new NullPointerException();
         }
@@ -98,7 +98,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
                             .add("iid", instanceId)
                             .add("type", type)
                             .add("perms", perms.build())
-                            .add("format", format)
+                            .add("format", format.toString())
                             .add("events", false)
                             .add("bonjour", false)
                             .add("description", description);

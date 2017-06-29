@@ -22,7 +22,7 @@ public abstract class BooleanCharacteristic extends BaseCharacteristic<Boolean> 
 	 */
 	public BooleanCharacteristic(String UUID, boolean isWritable, boolean isReadable, String description) {
 		super(	UUID,
-				"bool",
+				CharacteristicValueFormats.bool,
 				isWritable,
 				isReadable,
 				description);

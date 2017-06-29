@@ -6,6 +6,9 @@ import com.guok.hap.impl.accessories.Bridge;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * The Bridge Accessory. The instanceID must be 1;
+ */
 public class HomekitBridge implements Bridge {
 
 	private final String label;

@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.ColorfulLightbulb;
+import com.guok.hap.characteristics.CharacteristicUnits;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.characteristics.FloatCharacteristic;
 
@@ -13,7 +14,7 @@ public class SaturationCharacteristic extends FloatCharacteristic implements Eve
 	
 	public SaturationCharacteristic(ColorfulLightbulb lightbulb) {
 		super("0000002F-0000-1000-8000-0026BB765291", true, true, "Adjust saturation of the light", 0,
-				100, 1, "%");
+				100, 1, CharacteristicUnits.percentage);
 		this.lightbulb = lightbulb;
 	}
 

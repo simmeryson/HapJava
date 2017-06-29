@@ -29,7 +29,7 @@ public class StaticStringCharacteristic extends BaseCharacteristic<String> {
 	 */
 	public StaticStringCharacteristic(String UUID, String description, String value) {
 		super(UUID,
-				"string",
+				CharacteristicValueFormats.STRING,
 				false,
 				true, 
 				description);

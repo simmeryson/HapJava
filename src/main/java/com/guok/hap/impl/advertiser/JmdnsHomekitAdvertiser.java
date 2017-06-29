@@ -1,7 +1,6 @@
 package com.guok.hap.impl.advertiser;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.guok.hap.AccessoryCategory;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -12,45 +11,15 @@ import java.util.Map;
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
-public class JmdnsHomekitAdvertiser implements IAdvertiser {
+public class JmdnsHomekitAdvertiser extends AbstractAdvertiser {
 
     private static final String SERVICE_TYPE = "_hap._tcp.local.";
 
     private final JmDNS jmdns;
-    private boolean discoverable = true;
-    private final static Logger logger = LoggerFactory.getLogger(JmdnsHomekitAdvertiser.class);
-    private boolean isAdvertising = false;
 
-    private String label;
-    private String mac;
-    private int port;
-    private int configurationIndex;
 
     public JmdnsHomekitAdvertiser(InetAddress localAddress) throws UnknownHostException, IOException {
         jmdns = JmDNS.create(localAddress);
-    }
-
-    public synchronized void advertise(String label, String mac, int port, int configurationIndex) {
-        if (isAdvertising) {
-            throw new IllegalStateException("Homekit IAdvertiser is already running");
-        }
-        this.label = label;
-        this.mac = mac;
-        this.port = port;
-        this.configurationIndex = configurationIndex;
-
-        logger.info("Advertising accessory " + label);
-
-        registerService();
-
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                logger.info("Stopping advertising in response to shutdown.");
-                jmdns.unregisterAllServices();
-            }
-        }));
-        isAdvertising = true;
     }
 
     public synchronized void stop() {
@@ -79,15 +48,14 @@ public class JmdnsHomekitAdvertiser implements IAdvertiser {
         }
     }
 
-    private void registerService() {
+     public void registerService() {
         Map<String, String> props = new HashMap<>();
         props.put("sf", discoverable ? "1" : "0");
         props.put("id", mac);
         props.put("md", label);
         props.put("c#", Integer.toString(configurationIndex));
         props.put("s#", "1");
-        props.put("ff", "0");
-        props.put("ci", "1");
+        props.put("ci", AccessoryCategory.BRIDGE.getCode()+"");
         logger.info("Registering " + SERVICE_TYPE + " " +
                 "on port: " + port +
                 " sf:" + props.get("sf") +
@@ -95,7 +63,6 @@ public class JmdnsHomekitAdvertiser implements IAdvertiser {
                 " md:" + props.get("md") +
                 " c#:" + props.get("c#") +
                 " s#:" + props.get("s#") +
-                " ff:" + props.get("ff") +
                 " ci:" + props.get("ci")
         );
         try {

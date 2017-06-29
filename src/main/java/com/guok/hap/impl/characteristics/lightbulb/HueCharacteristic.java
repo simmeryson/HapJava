@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.ColorfulLightbulb;
+import com.guok.hap.characteristics.CharacteristicUnits;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.characteristics.FloatCharacteristic;
 
@@ -12,7 +13,7 @@ public class HueCharacteristic extends FloatCharacteristic implements EventableC
 	private final ColorfulLightbulb lightbulb;
 	
 	public HueCharacteristic(ColorfulLightbulb lightbulb) {
-		super("00000013-0000-1000-8000-0026BB765291", true, true, "Adjust hue of the light", 0, 360, 1, "arcdegrees");
+		super("00000013-0000-1000-8000-0026BB765291", true, true, "Adjust hue of the light", 0, 360, 1, CharacteristicUnits.arcdegrees);
 		this.lightbulb = lightbulb;
 	}
 

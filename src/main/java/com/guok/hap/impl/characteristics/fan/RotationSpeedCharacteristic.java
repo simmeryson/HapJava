@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.Fan;
+import com.guok.hap.characteristics.CharacteristicUnits;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.characteristics.IntegerCharacteristic;
 
@@ -13,7 +14,7 @@ public class RotationSpeedCharacteristic extends IntegerCharacteristic implement
 	
 	public RotationSpeedCharacteristic(Fan fan) {
 		super("00000029-0000-1000-8000-0026BB765291", true, true, "Rotation speed", 0,
-				100, "%");
+				100, CharacteristicUnits.percentage);
 		this.fan = fan;
 	}
 

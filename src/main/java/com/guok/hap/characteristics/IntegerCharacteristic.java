@@ -17,7 +17,7 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
 
 	private final int minValue;
 	private final int maxValue;
-	private final String unit;
+	private final CharacteristicUnits unit;
 	
 	/**
 	 * Default constructor
@@ -32,8 +32,8 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
 	 * @param unit a description of the unit this characteristic supports.
 	 */
 	public IntegerCharacteristic(String UUID, boolean isWritable, boolean isReadable, String description,
-			int minValue, int maxValue, String unit) {
-		super(UUID, "int", isWritable, isReadable, description);
+			int minValue, int maxValue, CharacteristicUnits unit) {
+		super(UUID, CharacteristicValueFormats.INT, isWritable, isReadable, description);
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 		this.unit = unit;
@@ -51,7 +51,7 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
 						.add("minValue", minValue)
 						.add("maxValue", maxValue)
 						.add("minStep", 1)
-						.add("unit", unit);
+						.add("unit", unit.toString());
 			}
 		});
 	}

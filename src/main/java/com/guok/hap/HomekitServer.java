@@ -97,6 +97,9 @@ public class HomekitServer {
      * advantage over multiple standalone accessories of only requiring a single pairing from iOS
      * for the bridge.
      *
+     * <p>The Operation System with avahi-deamon server , like Ubuntu, Debian, could use this method to create bridge
+     *  accessory using default advertiser implement with JMDNS</p>
+     *
      * @param authInfo     authentication information for this accessory. These values should be
      *                     persisted and re-supplied on re-start of your application.
      * @param label        label for the bridge. This will show in iOS during pairing.
@@ -118,6 +121,23 @@ public class HomekitServer {
         return root;
     }
 
+    /**
+     * Creates a bridge accessory, capable of holding multiple child accessories. This has the
+     * advantage over multiple standalone accessories of only requiring a single pairing from iOS
+     * for the bridge.
+     * <p>you could use other Zeroconf implement to advertise the service, like Bonjour</p>
+     * @param authInfo          authentication information for this accessory. These values should be
+     *                          persisted and re-supplied on re-start of your application.
+     * @param label             label for the bridge. This will show in iOS during pairing.
+     * @param manufacturer      manufacturer of the bridge. This information is exposed to iOS for
+     *                          unknown purposes.
+     * @param model             model of the bridge. This is also exposed to iOS for unknown purposes.
+     * @param serialNumber      serial number of the bridge. Also exposed. Purposes also unknown.
+     * @param advertiser        Zeroconf implement.
+     * @return  the bridge, from which you can {@link HomekitRoot#addAccessory add accessories} and
+     * then {@link HomekitRoot#start start} handling requests.
+     * @throws IOException when advertiser cannot connect to the network
+     */
     public HomekitRoot createBridge(HomekitAuthInfo authInfo,
                                     String label,
                                     String manufacturer,

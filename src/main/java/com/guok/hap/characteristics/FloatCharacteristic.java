@@ -23,7 +23,7 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
     private final double minValue;
     private final double maxValue;
     private final double minStep;
-    private final String unit;
+    private final CharacteristicUnits unit;
 
     /**
      * Default constructor
@@ -41,8 +41,8 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
      * @param unit        a description of the unit this characteristic supports.
      */
     public FloatCharacteristic(String UUID, boolean isWritable, boolean isReadable, String description,
-                               double minValue, double maxValue, double minStep, String unit) {
-        super(UUID, "float", isWritable, isReadable, description);
+                               double minValue, double maxValue, double minStep, CharacteristicUnits unit) {
+        super(UUID, CharacteristicValueFormats.FLOAT, isWritable, isReadable, description);
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.minStep = minStep;
@@ -61,7 +61,7 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
                         .add("minValue", minValue)
                         .add("maxValue", maxValue)
                         .add("minStep", minStep)
-                        .add("unit", unit);
+                        .add("unit", unit.toString());
             }
         });
     }
