@@ -14,6 +14,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ *	Notification
+ */
 public class SubscriptionManager {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(SubscriptionManager.class);
@@ -21,16 +24,13 @@ public class SubscriptionManager {
 	private final ConcurrentMap<EventableCharacteristic, Set<HomekitClientConnection>> subscriptions = new ConcurrentHashMap<>();
 	private final ConcurrentMap<HomekitClientConnection, Set<EventableCharacteristic>> reverse = new ConcurrentHashMap<>();
 
-	public synchronized void addSubscription(final int aid, final int iid, final EventableCharacteristic characteristic, HomekitClientConnection connection) {
+	public void addSubscription(final int aid, final int iid, final EventableCharacteristic characteristic, HomekitClientConnection connection) {
 		synchronized(this) {
 			if (!subscriptions.containsKey(characteristic)) {
 				subscriptions.putIfAbsent(characteristic, this.<HomekitClientConnection>newSet());
 			}
 			subscriptions.get(characteristic).add(connection);
 			if (subscriptions.get(characteristic).size() == 1) {
-//				characteristic.subscribe(() -> {
-//					publish(aid, iid, characteristic);
-//				});
 				characteristic.subscribe(new HomekitCharacteristicChangeCallback() {
 					@Override
 					public void changed() {

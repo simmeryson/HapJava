@@ -7,7 +7,7 @@ import com.guok.hap.accessories.Fan;
 import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.ExceptionalConsumer;
 import com.guok.hap.impl.Supplier;
-import com.guok.hap.impl.characteristics.common.PowerStateCharacteristic;
+import com.guok.hap.impl.characteristics.common.OnCharacteristic;
 import com.guok.hap.impl.characteristics.fan.RotationDirectionCharacteristic;
 import com.guok.hap.impl.characteristics.fan.RotationSpeedCharacteristic;
 
@@ -19,7 +19,7 @@ public class FanService extends AbstractServiceImpl {
 
 	public FanService(final Fan fan, String serviceName) {
 		super("00000040-0000-1000-8000-0026BB765291", fan, serviceName);
-		addCharacteristic(new PowerStateCharacteristic(
+		addCharacteristic(new OnCharacteristic(
 				new Supplier<ListenableFuture<Boolean>>() {
 					@Override
 					public ListenableFuture<Boolean> get() {

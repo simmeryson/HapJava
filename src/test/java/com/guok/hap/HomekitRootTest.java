@@ -3,8 +3,8 @@ package com.guok.hap;
 import com.google.common.util.concurrent.Futures;
 
 import com.guok.hap.impl.HomekitWebHandler;
+import com.guok.hap.impl.advertiser.AbstractAdvertiser;
 import com.guok.hap.impl.http.HomekitClientConnectionFactory;
-import com.guok.hap.impl.advertiser.JmdnsHomekitAdvertiser;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,7 +22,7 @@ public class HomekitRootTest {
     private HomekitAccessory accessory;
     private HomekitRoot root;
     private HomekitWebHandler webHandler;
-    private JmdnsHomekitAdvertiser advertiser;
+    private AbstractAdvertiser advertiser;
     private HomekitAuthInfo authInfo;
 
     private final static int PORT = 12345;
@@ -34,7 +34,7 @@ public class HomekitRootTest {
         when(accessory.getId()).thenReturn(2);
         webHandler = mock(HomekitWebHandler.class);
         when(webHandler.start(any(HomekitClientConnectionFactory.class))).thenReturn(Futures.immediateFuture(PORT));
-        advertiser = mock(JmdnsHomekitAdvertiser.class);
+        advertiser = mock(AbstractAdvertiser.class);
         authInfo = mock(HomekitAuthInfo.class);
         root = new HomekitRoot(LABEL, webHandler, authInfo, advertiser);
     }

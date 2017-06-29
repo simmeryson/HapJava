@@ -31,13 +31,13 @@ public class PairingUpdateController {
             byte[] username = d.getBytes(MessageType.IDENTIFIER);
             byte[] ltpk = d.getBytes(MessageType.PUBLIC_KEY);
             if (username == null || username.length == 0 || ltpk == null || ltpk.length == 0) {
-                return TypeLengthValueUtils.createErrorResponse("IDENTIFIER is null!", (short) 2, TLVError.AUTHENTICATION);
+                return TypeLengthValueUtils.createTLVErrorResponse("IDENTIFIER is null!", (short) 2, TLVError.AUTHENTICATION);
             }
             authInfo.createUser(new String(username, StandardCharsets.UTF_8), ltpk);
         } else if (method == 4) { //Remove pairing
             byte[] username = d.getBytes(MessageType.IDENTIFIER);
             if (username == null || username.length == 0) {
-                return TypeLengthValueUtils.createErrorResponse("IDENTIFIER is null!", (short) 2, TLVError.AUTHENTICATION);
+                return TypeLengthValueUtils.createTLVErrorResponse("IDENTIFIER is null!", (short) 2, TLVError.AUTHENTICATION);
             } else {
                 authInfo.removeUser(new String(username, StandardCharsets.UTF_8));
                 if (!authInfo.hasUser()) {

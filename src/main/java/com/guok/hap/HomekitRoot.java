@@ -36,7 +36,7 @@ public class HomekitRoot {
     private final String label;
     private final HomekitRegistry registry;
     private final SubscriptionManager subscriptions = new SubscriptionManager();
-    private boolean started = false;
+    private volatile boolean started = false;
     private int configurationIndex = 1;
 
     HomekitRoot(String label,

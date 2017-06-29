@@ -7,7 +7,7 @@ import com.guok.hap.accessories.Switch;
 import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.ExceptionalConsumer;
 import com.guok.hap.impl.Supplier;
-import com.guok.hap.impl.characteristics.common.PowerStateCharacteristic;
+import com.guok.hap.impl.characteristics.common.OnCharacteristic;
 
 public class SwitchService extends AbstractServiceImpl {
 
@@ -17,7 +17,7 @@ public class SwitchService extends AbstractServiceImpl {
 
 	public SwitchService(final Switch switchAccessory, String serviceName) {
 		super("00000049-0000-1000-8000-0026BB765291", switchAccessory, serviceName);
-		addCharacteristic(new PowerStateCharacteristic(
+		addCharacteristic(new OnCharacteristic(
 				new Supplier<ListenableFuture<Boolean>>() {
 					@Override
 					public ListenableFuture<Boolean> get() {

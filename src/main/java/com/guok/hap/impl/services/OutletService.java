@@ -7,7 +7,7 @@ import com.guok.hap.accessories.Outlet;
 import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.ExceptionalConsumer;
 import com.guok.hap.impl.Supplier;
-import com.guok.hap.impl.characteristics.common.PowerStateCharacteristic;
+import com.guok.hap.impl.characteristics.common.OnCharacteristic;
 import com.guok.hap.impl.characteristics.outlet.OutletInUseCharacteristic;
 
 public class OutletService extends AbstractServiceImpl {
@@ -18,7 +18,7 @@ public class OutletService extends AbstractServiceImpl {
 
 	public OutletService(final Outlet outlet, String serviceName) {
 		super("00000047-0000-1000-8000-0026BB765291", outlet, serviceName);
-		addCharacteristic(new PowerStateCharacteristic(
+		addCharacteristic(new OnCharacteristic(
 				new Supplier<ListenableFuture<Boolean>>() {
 					@Override
 					public ListenableFuture<Boolean> get() {

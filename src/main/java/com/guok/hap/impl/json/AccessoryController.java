@@ -31,6 +31,11 @@ public class AccessoryController {
 		this.registry = registry;
 	}
 
+	/**
+	 *	response of controller's request with method "/accessories"
+	 * @return json of accessories and their services, characteristics
+	 * @throws Exception
+	 */
 	public HttpResponse listing() throws Exception {
 		JsonArrayBuilder accessories = Json.createArrayBuilder();
 		
@@ -42,7 +47,7 @@ public class AccessoryController {
 				serviceFutures.add(toJson(service, iid));
 				iid += service.getCharacteristics().size() + 1;
 			}
-			accessoryServiceFutures.put(accessory.getId(), serviceFutures);
+			accessoryServiceFutures.put(accessory.getId(), serviceFutures);//turn this accessory's services and characteristics to json
 		}
 		
 		Map<Integer, JsonArrayBuilder> serviceArrayBuilders = new HashMap<>();
@@ -59,21 +64,22 @@ public class AccessoryController {
 		}
 						
 		try(ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			JsonObject jsonObject = Json.createObjectBuilder().add("accessories", accessories).build();
 			Json.createWriter(baos).write(
-				Json.createObjectBuilder().add("accessories", accessories).build()
+					jsonObject
 			);
 			return new HapJsonResponse(baos.toByteArray());
 		}
 	}
 	
-	private ListenableFuture<JsonObject> toJson(Service service, int interfaceId) throws Exception {
+	private ListenableFuture<JsonObject> toJson(Service service, int instanceID) throws Exception {
 		final JsonObjectBuilder builder = Json.createObjectBuilder()
-			.add("iid", ++interfaceId)
+			.add("iid", ++instanceID)
 			.add("type", service.getType());
 		List<Characteristic> characteristics = service.getCharacteristics();
 		Collection<ListenableFuture<JsonObject>> characteristicFutures = new ArrayList<>(characteristics.size());
 		for (Characteristic characteristic: characteristics) {
-			characteristicFutures.add(characteristic.toJson(++interfaceId));
+			characteristicFutures.add(characteristic.toJson(++instanceID));
 		}
 		ListenableFuture<List<JsonObject>> successfulAsList =
                 Futures.successfulAsList(characteristicFutures.toArray(new ListenableFuture[characteristicFutures.size()]));

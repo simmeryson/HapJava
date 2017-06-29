@@ -7,14 +7,23 @@ import com.guok.hap.impl.connections.SubscriptionManager;
 import com.guok.hap.impl.http.HomekitClientConnection;
 import com.guok.hap.impl.http.HttpRequest;
 import com.guok.hap.impl.http.HttpResponse;
+import com.guok.hap.impl.responses.HapStatusCodes;
 import com.guok.hap.impl.responses.NotFoundResponse;
+import com.guok.hap.impl.responses.UnprocessableResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.json.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
 public class CharacteristicsController {
 	
@@ -72,15 +81,23 @@ public class CharacteristicsController {
 				int aid = jsonCharacteristic.getInt("aid");
 				int iid = jsonCharacteristic.getInt("iid");
 				Characteristic characteristic = registry.getCharacteristics(aid).get(iid);
-				
+
+				if (characteristic == null) {
+					return new UnprocessableResponse(HapStatusCodes.INVALID_VALUE);
+				}
+
 				if (jsonCharacteristic.containsKey("value")) {
 					characteristic.setValue(jsonCharacteristic.get("value"));
 				}
-				if (jsonCharacteristic.containsKey("ev") && characteristic instanceof EventableCharacteristic) {
-					if (jsonCharacteristic.getBoolean("ev")) {
-						subscriptions.addSubscription(aid, iid, (EventableCharacteristic) characteristic, connection);
-					} else {
-						subscriptions.removeSubscription((EventableCharacteristic) characteristic, connection);
+				if (jsonCharacteristic.containsKey("ev")) {
+					if (characteristic instanceof EventableCharacteristic){
+						if (jsonCharacteristic.getBoolean("ev")) {
+							subscriptions.addSubscription(aid, iid, (EventableCharacteristic) characteristic, connection);
+						} else {
+							subscriptions.removeSubscription((EventableCharacteristic) characteristic, connection);
+						}
+					}else {
+						return new UnprocessableResponse(HapStatusCodes.NOTIFICATION_UNSUPPORT);
 					}
 				}
 			}

@@ -9,7 +9,7 @@ import com.guok.hap.accessories.Lightbulb;
 import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.ExceptionalConsumer;
 import com.guok.hap.impl.Supplier;
-import com.guok.hap.impl.characteristics.common.PowerStateCharacteristic;
+import com.guok.hap.impl.characteristics.common.OnCharacteristic;
 import com.guok.hap.impl.characteristics.lightbulb.BrightnessCharacteristic;
 import com.guok.hap.impl.characteristics.lightbulb.HueCharacteristic;
 import com.guok.hap.impl.characteristics.lightbulb.SaturationCharacteristic;
@@ -22,7 +22,7 @@ public class LightbulbService extends AbstractServiceImpl {
 
 	public LightbulbService(final Lightbulb lightbulb, String serviceName) {
 		super("00000043-0000-1000-8000-0026BB765291", lightbulb, serviceName);
-		addCharacteristic(new PowerStateCharacteristic(
+		addCharacteristic(new OnCharacteristic(
 				new Supplier<ListenableFuture<Boolean>>() {
 					@Override
 					public ListenableFuture<Boolean> get() {

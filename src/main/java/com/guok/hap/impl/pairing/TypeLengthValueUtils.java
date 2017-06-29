@@ -41,7 +41,7 @@ public class TypeLengthValueUtils {
         return new Encoder();
     }
 
-    public static HttpResponse createErrorResponse(String msg, short state, TLVError error) {
+    public static HttpResponse createTLVErrorResponse(String msg, short state, TLVError error) {
         Encoder encoder = getEncoder();
         encoder.add(MessageType.ERROR, error.getKey());
         encoder.add(MessageType.STATE, state);

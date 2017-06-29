@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Hold lists of accessories, and accessories's services and characteristics.
+ */
 public class HomekitRegistry {
 	
 	private final static Logger logger = LoggerFactory.getLogger(HomekitRegistry.class);
@@ -25,7 +28,10 @@ public class HomekitRegistry {
 		this.accessories = new ConcurrentHashMap<>();
 		reset();
 	}
-	
+
+	/**
+	 * add services and characteristics from accessories
+	 */
 	public synchronized void reset() {
 		characteristics.clear();
 		services.clear();		

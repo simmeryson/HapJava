@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  *
  * Created by guokai
  */
-abstract class AbstractAdvertiser implements IAdvertiser {
+public abstract class AbstractAdvertiser implements IAdvertiser {
     protected static String SERVICE_TYPE = "_hap._tcp";
 
     protected boolean discoverable = true;
