@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.guok</groupId>
-    <artifactId>Hap-Java</artifactId>
-    <description>Homekit Accessory Protocol for Java/Android</description>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.guok.hapjava</groupId>
+    <artifactId>hap-java</artifactId>
+    <description>HomeKit Accessory Protocol for Java/Android</description>
+    <version>1.0.1</version>
 
     <licenses>
         <license>
@@ -214,4 +214,16 @@
         </pluginManagement>
 
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray</id>
+            <url>https://api.bintray.com/maven/guok/maven/hap-java/;publish=1</url>
+        </repository>
+        <site>
+            <id>github</id>
+            <url>https://github.com/simmeryson/HapJava</url>
+        </site>
+    </distributionManagement>
+
 </project>
