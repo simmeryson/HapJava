@@ -27,7 +27,7 @@ abstract class AbstractServiceImpl implements Service {
 	 * this constructor will need to manually configure {@link Name} characteristic
 	 * and {@link BatteryLevelCharacteristic} if needed.
 	 *
-	 * @param type unique UUID of the service. This information can be obtained from HomeKit Accessory Simulator.
+	 * @param type unique type of the service. This information can be obtained from HomeKit Accessory Simulator.
 	 */
 	@Deprecated
 	public AbstractServiceImpl(String type) {
@@ -35,20 +35,21 @@ abstract class AbstractServiceImpl implements Service {
 	}
 
 	/**
-	 * <p>Creates a new instance of this class with the specified UUID and {@link HomekitAccessory}.
-	 * Download and install <i>HomeKit Accessory Simulator</i> to discover the corresponding UUID for
+	 * <p>Creates a new instance of this class with the specified type and {@link HomekitAccessory}.
+	 * Download and install <i>HomeKit Accessory Simulator</i> to discover the corresponding type for
 	 * the specific service.</p>
 	 *
 	 * <p>The new service will automatically add {@link Name} characteristic. If the accessory
 	 * is battery operated then it must implement {@link BatteryAccessory} and {@link BatteryLevelCharacteristic}
 	 * will be added too.</p>
 	 *
-	 * @param type unique UUID of the service. This information can be obtained from HomeKit Accessory Simulator.
+	 * @param type unique type of the service. This information can be obtained from HomeKit Accessory Simulator.
 	 * @param accessory HomeKit accessory exposed as a service.
 	 * @param serviceName name of the service. This information is usually the name of the accessory.
      */
 	public AbstractServiceImpl(String type, HomekitAccessory accessory, String serviceName) {
-		this.type = type;
+		String s = Integer.toHexString(Integer.parseInt(type.split("-")[0], 16));
+		this.type = s.toUpperCase();
 
 		if (accessory != null) {
 			// Add name characteristic

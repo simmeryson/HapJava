@@ -12,8 +12,8 @@ import java.util.concurrent.CompletableFuture;
 
 abstract class AbstractHeatingCoolingModeCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
-	public AbstractHeatingCoolingModeCharacteristic(String type, boolean isWritable, String description) {
-		super(type, isWritable, true, description, 3);
+	public AbstractHeatingCoolingModeCharacteristic(String UUID, boolean isWritable, String description) {
+		super(UUID, isWritable, true, description, 3);
 	}
 
 	@Override

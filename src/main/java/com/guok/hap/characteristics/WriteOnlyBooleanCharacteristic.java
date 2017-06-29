@@ -15,12 +15,12 @@ public abstract class WriteOnlyBooleanCharacteristic extends BooleanCharacterist
 	/**
 	 * Default constructor
 	 * 
-	 * @param type a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
+	 * @param UUID a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
 	 *  however implementors can create their own as well.
 	 * @param description a description of the characteristic to be passed to the consuming device.
 	 */
-	public WriteOnlyBooleanCharacteristic(String type, String description) {
-		super(	type,
+	public WriteOnlyBooleanCharacteristic(String UUID, String description) {
+		super(	UUID,
 				true,
 				false,
 				description

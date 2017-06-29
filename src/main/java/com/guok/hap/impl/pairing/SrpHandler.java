@@ -18,7 +18,11 @@ import java.security.MessageDigest;
 import java.util.Arrays;
 
 /**
- * Secure Remote Password (SRP)
+ * Handle M1 and M3 of Pair Setup.
+ * <p>Secure Remote Password (SRP) RFC5054.
+ * SRP C API defined by http://srp.stanford.edu/
+ * SHA-512 is used as the hash function, replacing SHA-1.
+ * Modulus N and Generator G are specified by th 3072-bit group of RFC5054
  */
 class SrpHandler {
 
@@ -55,7 +59,15 @@ class SrpHandler {
 			return new NotFoundResponse();
 		}
 	}
-	
+
+	/**
+	 * Response of M1 with kTLVType_State, kTLVType_PublicKey, kTLVType_Salt.
+	 * kTLVType_State is M2. kTLVType_PublicKey is Accessory's SPR public key.
+	 * verify process does not implement.
+	 *
+	 * @return response of M1
+	 * @throws Exception
+	 */
 	private HttpResponse step1() throws Exception {
 		if (session.getState() != State.INIT) {
 			logger.error("Session is not in state INIT when receiving step1");
@@ -72,19 +84,31 @@ class SrpHandler {
 		encoder.add(MessageType.PUBLIC_KEY, session.step1(IDENTIFIER, salt, verifier));
 		return new PairingResponse(encoder.toByteArray());
 	}
-	
+
+	/**
+	 * Response of M3 with kTLVType_State, kTLVType_Proof.
+	 * kTLVType_State is M4. kTLVType_Proof is accessory's SRP proof
+	 * verify process does not implement.
+	 * @param request response of M3
+	 * @return
+	 * @throws Exception
+	 */
 	private HttpResponse step2(Stage2Request request) throws Exception {
 		if (session.getState() != State.STEP_1) {
 			logger.error("Session is not in state Stage 1 when receiving step2");
 			return new ConflictResponse();
 		}
-		BigInteger m2 = session.step2(request.getA(), request.getM1());
+		BigInteger m2 = session.step2(request.getPublicKey(), request.getProof());
 		Encoder encoder = TypeLengthValueUtils.getEncoder();
 		encoder.add(MessageType.STATE, (short) 0x04);
 		encoder.add(MessageType.PROOF, m2);
 		return new PairingResponse(encoder.toByteArray());
 	}
 
+	/**
+	 * compute SRP shared secret key
+	 * @return
+	 */
 	public byte[] getK() {
 		MessageDigest digest = session.getCryptoParams().getMessageDigestInstance();
 		BigInteger S = session.getSessionKey(false);

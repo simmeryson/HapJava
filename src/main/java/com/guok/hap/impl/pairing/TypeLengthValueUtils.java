@@ -1,5 +1,11 @@
 package com.guok.hap.impl.pairing;
 
+import com.guok.hap.impl.http.HttpResponse;
+import com.guok.hap.impl.responses.OkResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,9 +16,14 @@ import java.util.Map;
 
 public class TypeLengthValueUtils {
 
+    private final static Logger logger = LoggerFactory.getLogger(TypeLengthValueUtils.class);
+
     private TypeLengthValueUtils() {
     }
 
+    /**
+     * decode request body. get request type and content
+     */
     public static DecodeResult decode(byte[] content) throws IOException {
         DecodeResult ret = new DecodeResult();
         ByteArrayInputStream bais = new ByteArrayInputStream(content);
@@ -28,6 +39,14 @@ public class TypeLengthValueUtils {
 
     public static Encoder getEncoder() {
         return new Encoder();
+    }
+
+    public static HttpResponse createErrorResponse(String msg, short state, TLVError error) {
+        Encoder encoder = getEncoder();
+        encoder.add(MessageType.ERROR, error.getKey());
+        encoder.add(MessageType.STATE, state);
+        logger.warn(msg);
+        return new OkResponse(encoder.toByteArray());
     }
 
     public static final class Encoder {

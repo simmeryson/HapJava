@@ -23,15 +23,15 @@ public abstract class EnumCharacteristic extends BaseCharacteristic<Integer> {
 	/**
 	 * Default constructor
 	 * 
-	 * @param type a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
+	 * @param UUID a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
 	 *  however implementors can create their own as well.
 	 * @param isWritable indicates whether the value can be changed.
 	 * @param isReadable indicates whether the value can be retrieved.
 	 * @param description a description of the characteristic to be passed to the consuming device.
 	 * @param maxValue the number of enum items.
 	 */
-	public EnumCharacteristic(String type, boolean isWritable, boolean isReadable, String description, int maxValue) {
-		super(type, "int", isWritable, isReadable, description);
+	public EnumCharacteristic(String UUID, boolean isWritable, boolean isReadable, String description, int maxValue) {
+		super(UUID, "int", isWritable, isReadable, description);
 		this.maxValue = maxValue;
 	}
 	

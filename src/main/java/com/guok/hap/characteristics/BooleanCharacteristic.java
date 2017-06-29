@@ -14,14 +14,14 @@ public abstract class BooleanCharacteristic extends BaseCharacteristic<Boolean> 
 	/**
 	 * Default constructor
 	 * 
-	 * @param type a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
+	 * @param UUID a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
 	 *  however implementors can create their own as well.
 	 * @param isWritable indicates whether the value can be changed.
 	 * @param isReadable indicates whether the value can be retrieved.
 	 * @param description a description of the characteristic to be passed to the consuming device.
 	 */
-	public BooleanCharacteristic(String type, boolean isWritable, boolean isReadable, String description) {
-		super(	type,
+	public BooleanCharacteristic(String UUID, boolean isWritable, boolean isReadable, String description) {
+		super(	UUID,
 				"bool",
 				isWritable,
 				isReadable,

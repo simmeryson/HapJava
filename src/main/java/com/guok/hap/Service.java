@@ -1,8 +1,8 @@
 package com.guok.hap;
 
-import java.util.List;
-
 import com.guok.hap.characteristics.Characteristic;
+
+import java.util.List;
 
 /**
  * Interface for a Service offered by an accessory.

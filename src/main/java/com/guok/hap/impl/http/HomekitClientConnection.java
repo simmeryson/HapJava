@@ -12,6 +12,10 @@ public interface HomekitClientConnection {
 	
 	void close();
 
+	/**
+	 * output/Notification
+	 * @param message
+	 */
 	void outOfBand(HttpResponse message);
 	
 }

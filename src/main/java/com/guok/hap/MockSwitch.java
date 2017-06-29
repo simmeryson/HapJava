@@ -7,23 +7,36 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.accessories.Lightbulb;
 
 
-
 /**
- * Created by guokai on 15/06/2017.
+ * Created by guokai.
  */
 public class MockSwitch extends Lightbulb {
 
     private boolean powerState = false;
     private HomekitCharacteristicChangeCallback subscribeCallback = null;
 
+    final int id;
+    final String label;
+    final String serialNumber;
+    final String manufacturer;
+    final String model;
+
+    public MockSwitch(int id, String label, String serialNumber, String manufacturer, String model) {
+        this.id = id;
+        this.label = label;
+        this.serialNumber = serialNumber;
+        this.manufacturer = manufacturer;
+        this.model = model;
+    }
+
     @Override
     public int getId() {
-        return 2;
+        return this.id;
     }
 
     @Override
     public String getLabel() {
-        return "海尔播放器";
+        return this.label;
     }
 
     @Override
@@ -33,17 +46,17 @@ public class MockSwitch extends Lightbulb {
 
     @Override
     public String getSerialNumber() {
-        return "none";
+        return this.serialNumber;
     }
 
     @Override
     public String getModel() {
-        return "none";
+        return this.model;
     }
 
     @Override
     public String getManufacturer() {
-        return "none";
+        return this.manufacturer;
     }
 
     @Override

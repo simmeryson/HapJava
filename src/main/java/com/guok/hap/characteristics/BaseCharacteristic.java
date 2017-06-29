@@ -36,7 +36,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
     /**
      * Default constructor
      *
-     * @param type        a string containing a UUID that indicates the type of characteristic.
+     * @param type        a string containing a type that indicates the type of characteristic.
      *                    Apple defines a set of these, however implementors can create their own as
      *                    well.
      * @param format      a string indicating the value type, which must be a recognized type by the
@@ -49,8 +49,8 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
         if (type == null || format == null || description == null) {
             throw new NullPointerException();
         }
-
-        this.type = type;
+        String s = Integer.toHexString(Integer.parseInt(type.split("-")[0], 16));
+        this.type = s.toUpperCase();
         this.format = format;
         this.isWritable = isWritable;
         this.isReadable = isReadable;

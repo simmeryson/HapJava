@@ -28,7 +28,7 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
     /**
      * Default constructor
      *
-     * @param type        a string containing a UUID that indicates the type of characteristic.
+     * @param UUID        a string containing a UUID that indicates the type of characteristic.
      *                    Apple defines a set of these, however implementors can create their own as
      *                    well.
      * @param isWritable  indicates whether the value can be changed.
@@ -40,9 +40,9 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
      *                    this.
      * @param unit        a description of the unit this characteristic supports.
      */
-    public FloatCharacteristic(String type, boolean isWritable, boolean isReadable, String description,
+    public FloatCharacteristic(String UUID, boolean isWritable, boolean isReadable, String description,
                                double minValue, double maxValue, double minStep, String unit) {
-        super(type, "float", isWritable, isReadable, description);
+        super(UUID, "float", isWritable, isReadable, description);
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.minStep = minStep;

@@ -22,13 +22,13 @@ public class StaticStringCharacteristic extends BaseCharacteristic<String> {
 	/**
 	 * Default constructor
 	 * 
-	 * @param type a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
+	 * @param UUID a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
 	 *  however implementors can create their own as well.
 	 * @param description a description of the characteristic to be passed to the consuming device.
 	 * @param value the value of the static string.
 	 */
-	public StaticStringCharacteristic(String type, String description, String value) {
-		super(type, 
+	public StaticStringCharacteristic(String UUID, String description, String value) {
+		super(UUID,
 				"string",
 				false,
 				true, 

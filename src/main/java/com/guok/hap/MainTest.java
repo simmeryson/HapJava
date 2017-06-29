@@ -30,7 +30,8 @@ public class MainTest {
         try {
             HomekitServer homekit = new HomekitServer(PORT);
             HomekitRoot bridge = homekit.createBridge(new MockAuthInfo(), "Java bridge", "TestBridge, Inc.", "G6", "111abe234");
-            bridge.addAccessory(new MockSwitch());
+            bridge.addAccessory(new MockSwitch(2, "海尔播放器","123", "", ""));
+            bridge.addAccessory(new MockSwitch(4,"空调","321", "", ""));
             bridge.start();
         } catch (Exception e) {
             e.printStackTrace();

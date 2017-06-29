@@ -4,7 +4,9 @@ import com.guok.hap.impl.pairing.TypeLengthValueUtils.DecodeResult;
 
 
 abstract class PairVerificationRequest {
-	
+	/**
+	 * Pair Verify steps index. Accessory need to handle M1,M3.
+	 */
 	private final static short VALUE_STAGE_1 = 1;
 	private final static short VALUE_STAGE_2 = 3;
 
@@ -24,7 +26,15 @@ abstract class PairVerificationRequest {
 	}
 	
 	abstract Stage getStage();
-	
+
+	/**
+	 * iOS device Pair Verify M1 request. with following TLV items
+	 *
+	 * <ul>
+	 * <li> kTLVType_State          (M1)
+	 * <li> kTLVType_PublicKey      (iOS device's Curve25519 public key)
+	 * </ul>
+	 */
 	static class Stage1Request extends PairVerificationRequest {
 
 		private final byte[] clientPublicKey;

@@ -16,11 +16,14 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class MockAuthInfo implements HomekitAuthInfo {
 
+    /**
+     * must generate Setup Codes from a cryptographically secure random number generator
+     */
     private static final String PIN = "031-45-153";
 
     private final String mac;
     private final BigInteger salt;
-    private final byte[] privateKey;
+    private final byte[] privateKey;//AccessoryLTSK. for generate AccessoryLTPK
     private final ConcurrentMap<String, byte[]> userKeyMap = new ConcurrentHashMap<>();
 
     public MockAuthInfo() throws InvalidAlgorithmParameterException {
@@ -71,7 +74,7 @@ public class MockAuthInfo implements HomekitAuthInfo {
 
     @Override
     public boolean hasUser() {
-        return false;
+        return userKeyMap.size() > 0;
     }
 
 }

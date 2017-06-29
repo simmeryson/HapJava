@@ -22,7 +22,7 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
 	/**
 	 * Default constructor
 	 * 
-	 * @param type a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
+	 * @param UUID a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
 	 *  however implementors can create their own as well.
 	 * @param isWritable indicates whether the value can be changed.
 	 * @param isReadable indicates whether the value can be retrieved.
@@ -31,9 +31,9 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
 	 * @param maxValue the maximum supported value
 	 * @param unit a description of the unit this characteristic supports.
 	 */
-	public IntegerCharacteristic(String type, boolean isWritable, boolean isReadable, String description,
+	public IntegerCharacteristic(String UUID, boolean isWritable, boolean isReadable, String description,
 			int minValue, int maxValue, String unit) {
-		super(type, "int", isWritable, isReadable, description);
+		super(UUID, "int", isWritable, isReadable, description);
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 		this.unit = unit;

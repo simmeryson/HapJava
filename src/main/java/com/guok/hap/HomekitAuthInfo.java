@@ -3,6 +3,7 @@ package com.guok.hap;
 import java.math.BigInteger;
 
 /**
+ * refer the concatenate of AccessoryX, AccessoryPairingID, AccessoryLTPK.
  * Authentication info that must be provided when constructing a new {@link HomekitServer}. You will need to implement
  * this interface yourself to provide the necessary callbacks to a persistent storage mechanism. All values provided
  * must be constant across invocations or the accessories will require re-pairing within iOS.
@@ -14,7 +15,8 @@ public interface HomekitAuthInfo {
 	/**
 	 * A pin code used for pairing the device. This pin will be required within iOS in order to complete pairing. The numbers
 	 * cannot be sequential and should not have a repeating pattern.
-	 * 
+	 * must generate Setup Codes from a cryptographically secure random number generator
+	 *
 	 * @return the pin code, in the form ###-##-###
 	 */
 	String getPin();
@@ -22,6 +24,7 @@ public interface HomekitAuthInfo {
 	/**
 	 * A unique MAC address to be advertised with the Homekit information. This does not have to be the MAC address of the 
 	 * network interface. You can generate this using {@link HomekitServer#generateMac()}.
+	 * Bonjour TXT record "id", Devices ID must persist across reboots. Also use as AccessoryPairingID in Pairing Setup step 3.
 	 * 
 	 * @return the unique MAC address.
 	 */
@@ -38,6 +41,7 @@ public interface HomekitAuthInfo {
 	/**
 	 * The private key used by the server during pairing and message encryption. You should generate this using
 	 * {@link HomekitServer#generateKey()}
+	 * AccessoryLTSK. for generate AccessoryLTPK in Pair Setup.
 	 * 
 	 * @return the private key.
 	 */
