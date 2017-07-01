@@ -7,6 +7,7 @@ import com.guok.hap.accessories.WindowCovering;
 import com.guok.hap.characteristics.CharacteristicUnits;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.characteristics.IntegerCharacteristic;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CurrentPositionCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
 
@@ -18,8 +19,9 @@ public class CurrentPositionCharacteristic extends IntegerCharacteristic impleme
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
+	protected int setValue(Integer value) throws Exception {
 		//Read Only
+		return HapStatusCodes.READ_OLNY;
 	}
 
 	@Override

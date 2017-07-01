@@ -53,15 +53,15 @@ public abstract class WindowCovering implements HomekitAccessory {
 	 * @return a future that completes when the change is made
 	 * @throws Exception when the change cannot be made
 	 */
-	public abstract ListenableFuture<Void> setTargetPosition(int position) throws Exception;
+	public abstract ListenableFuture<Integer> setTargetPosition(int position) throws Exception;
 	
 	/**
 	 * Sets the hold position state
 	 * @param hold whether or not to hold the current position state
-	 * @return a future that completes when the change is made
+	 * @return a future that completes when the change is made. Integer object means setting result
 	 * @throws Exception when the change cannot be made
 	 */
-	public abstract ListenableFuture<Void> setHoldPosition(boolean hold) throws Exception;
+	public abstract ListenableFuture<Integer> setHoldPosition(boolean hold) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the current position.

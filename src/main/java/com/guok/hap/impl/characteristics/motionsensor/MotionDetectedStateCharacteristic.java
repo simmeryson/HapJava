@@ -6,6 +6,7 @@ import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.MotionSensor;
 import com.guok.hap.characteristics.BooleanCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class MotionDetectedStateCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
@@ -22,8 +23,9 @@ public class MotionDetectedStateCharacteristic extends BooleanCharacteristic imp
     }
 
     @Override
-    protected void setValue(Boolean value) throws Exception {
+    protected int setValue(Boolean value) throws Exception {
         //Read Only
+        return HapStatusCodes.READ_OLNY;
     }
 
     @Override

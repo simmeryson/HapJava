@@ -24,10 +24,10 @@ public abstract class ColorfulLightbulb extends Lightbulb {
 	/**
 	 * Sets the current hue of the light
 	 * @param value the hue to set, expressed in arc degrees from 0 to 360.
-	 * @return a future that completes when the hue is changed
+	 * @return a future that completes when the hue is changed. Integer object means result;
 	 * @throws Exception when the hue cannot be changed.
 	 */
-	public abstract ListenableFuture<Void> setHue(Double value) throws Exception;
+	public abstract ListenableFuture<Integer> setHue(Double value) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the hue of the light.
@@ -50,10 +50,10 @@ public abstract class ColorfulLightbulb extends Lightbulb {
 	/**
 	 * Sets the saturation of the light.
 	 * @param value the saturation to set, expressed as a value between 0 and 100.
-	 * @return a future that completes when the saturation is changed.
+	 * @return a future that completes when the saturation is changed.Integer object means setting result.
 	 * @throws Exception when the saturation cannot be set.
 	 */
-	public abstract ListenableFuture<Void> setSaturation(Double value) throws Exception;
+	public abstract ListenableFuture<Integer> setSaturation(Double value) throws Exception;
 
 	/**
 	 * Subscribes to changes in the saturation of the light.

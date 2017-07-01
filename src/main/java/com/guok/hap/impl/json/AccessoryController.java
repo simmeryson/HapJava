@@ -76,7 +76,7 @@ public class AccessoryController {
 		final JsonObjectBuilder builder = Json.createObjectBuilder()
 			.add("iid", ++instanceID)
 			.add("type", service.getType());
-		List<Characteristic> characteristics = service.getCharacteristics();
+		Collection<Characteristic> characteristics = service.getCharacteristics();
 		Collection<ListenableFuture<JsonObject>> characteristicFutures = new ArrayList<>(characteristics.size());
 		for (Characteristic characteristic: characteristics) {
 			characteristicFutures.add(characteristic.toJson(++instanceID));

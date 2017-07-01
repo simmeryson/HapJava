@@ -20,8 +20,8 @@ public class TargetLockMechanismStateCharacteristic extends EnumCharacteristic i
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
-		lock.setTargetMechanismState(LockMechanismState.fromCode(value));
+	protected int setValue(Integer value) throws Exception {
+		return lock.setTargetMechanismState(LockMechanismState.fromCode(value));
 	}
 
 	@Override

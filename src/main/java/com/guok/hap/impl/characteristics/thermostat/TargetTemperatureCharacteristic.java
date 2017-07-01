@@ -31,8 +31,8 @@ public class TargetTemperatureCharacteristic extends
 	}
 
 	@Override
-	protected void setValue(Double value) throws Exception {
-		thermostat.setTargetTemperature(value);
+	protected int setValue(Double value) throws Exception {
+		return thermostat.setTargetTemperature(value);
 	}
 
 }

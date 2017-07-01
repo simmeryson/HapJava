@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.properties.ThermostatMode;
 import com.guok.hap.accessories.thermostat.BasicThermostat;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CurrentHeatingCoolingModeCharacteristic extends
 		AbstractHeatingCoolingModeCharacteristic {
@@ -17,8 +18,9 @@ public class CurrentHeatingCoolingModeCharacteristic extends
 	}
 
 	@Override
-	protected void setModeValue(ThermostatMode mode) throws Exception {
+	protected int setModeValue(ThermostatMode mode) throws Exception {
 		//Not writable
+		return HapStatusCodes.READ_OLNY;
 	}
 
 	@Override

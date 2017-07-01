@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * Created by guokai on 17/06/2017.
+ * Created by guokai.
  */
 public abstract class AbstractHttpResponse implements HttpResponse {
 

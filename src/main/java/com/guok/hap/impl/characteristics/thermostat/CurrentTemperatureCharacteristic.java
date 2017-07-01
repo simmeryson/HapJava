@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.TemperatureSensor;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CurrentTemperatureCharacteristic extends
 		AbstractTemperatureCharacteristic {
@@ -31,8 +32,9 @@ public class CurrentTemperatureCharacteristic extends
 	}
 
 	@Override
-	protected void setValue(Double value) throws Exception {
+	protected int setValue(Double value) throws Exception {
 		//Not writable
+		return HapStatusCodes.READ_OLNY;
 	}
 
 }

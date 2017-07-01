@@ -17,8 +17,8 @@ abstract class AbstractHeatingCoolingModeCharacteristic extends EnumCharacterist
 	}
 
 	@Override
-	protected final void setValue(Integer value) throws Exception {
-		setModeValue(ThermostatMode.fromCode(value));
+	protected final int setValue(Integer value) throws Exception {
+		return setModeValue(ThermostatMode.fromCode(value));
 	}
 
 	@Override
@@ -31,7 +31,7 @@ abstract class AbstractHeatingCoolingModeCharacteristic extends EnumCharacterist
 		});
 	}
 
-	protected abstract void setModeValue(ThermostatMode mode) throws Exception;
+	protected abstract int setModeValue(ThermostatMode mode) throws Exception;
 	
 	protected abstract ListenableFuture<ThermostatMode> getModeValue();
 	

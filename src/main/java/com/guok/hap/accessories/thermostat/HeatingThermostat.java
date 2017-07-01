@@ -17,7 +17,7 @@ public abstract class HeatingThermostat extends BasicThermostat {
 	 * @param value the threshold temperature, in celsius degrees.
 	 * @throws Exception when the threshold temperature cannot be changed.
 	 */
-	public abstract void setHeatingThresholdTemperature(Double value) throws Exception;
+	public abstract int setHeatingThresholdTemperature(Double value) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the heating threshold.

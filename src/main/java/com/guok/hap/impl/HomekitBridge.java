@@ -43,7 +43,12 @@ public class HomekitBridge implements Bridge {
 	public String getManufacturer() {
 		return manufacturer;
 	}
-	
+
+	@Override
+	public String getFirmwareRevision() {
+		return "1.0.0";
+	}
+
 	@Override
 	public Collection<Service> getServices() {
 		return Collections.emptyList();

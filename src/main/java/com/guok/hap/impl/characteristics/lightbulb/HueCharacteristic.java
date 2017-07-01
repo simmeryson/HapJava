@@ -18,8 +18,8 @@ public class HueCharacteristic extends FloatCharacteristic implements EventableC
 	}
 
 	@Override
-	protected void setValue(Double value) throws Exception {
-		lightbulb.setHue(value);
+	protected int setValue(Double value) throws Exception {
+		return lightbulb.setHue(value).get();
 	}
 
 	@Override

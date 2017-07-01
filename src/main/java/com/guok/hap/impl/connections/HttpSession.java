@@ -12,8 +12,9 @@ import com.guok.hap.impl.json.CharacteristicsController;
 import com.guok.hap.impl.pairing.PairVerificationManager;
 import com.guok.hap.impl.pairing.PairingManager;
 import com.guok.hap.impl.pairing.PairingUpdateController;
+import com.guok.hap.impl.responses.GeneralErrorResponse;
+import com.guok.hap.impl.responses.HttpStatusCodes;
 import com.guok.hap.impl.responses.InternalServerErrorResponse;
-import com.guok.hap.impl.responses.NotFoundResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,7 @@ class HttpSession {
 				return handleAuthenticatedRequest(request);
 			} else {
 				logger.info("Unrecognized request for "+request.getUri());
-				return new NotFoundResponse();
+				return new GeneralErrorResponse(HttpStatusCodes.NOT_FOUND);
 			}
 		}
 	}
@@ -76,7 +77,7 @@ class HttpSession {
 					
 				default:
 					logger.info("Unrecognized method for "+request.getUri());
-					return new NotFoundResponse();
+					return new GeneralErrorResponse(HttpStatusCodes.NOT_FOUND);
 				}
 				
 			case "/pairings":
@@ -87,7 +88,7 @@ class HttpSession {
 					return getCharacteristicsController().get(request);
 				}
 				logger.info("Unrecognized request for "+request.getUri());
-				return new NotFoundResponse();
+				return new GeneralErrorResponse(HttpStatusCodes.NOT_FOUND);
 			}
 		} catch (Exception e) {
 			logger.error("Could not handle request", e);

@@ -26,10 +26,10 @@ public abstract class HorizontalTiltingWindowCovering extends WindowCovering {
 	/**
 	 * Sets the target position
 	 * @param angle the target angle to set, as a value between -90 and 90
-	 * @return a future that completes when the change is made
+	 * @return a future that completes when the change is made. Integer object means set result;
 	 * @throws Exception when the change cannot be made
 	 */
-	public abstract ListenableFuture<Void> setTargetHorizontalTiltAngle(int angle) throws Exception;
+	public abstract ListenableFuture<Integer> setTargetHorizontalTiltAngle(int angle) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the current horizontal tilt angle.

@@ -18,8 +18,8 @@ public class HoldPositionCharacteristic extends BooleanCharacteristic {
 	}
 
 	@Override
-	protected void setValue(Boolean value) throws Exception {
-		this.windowCovering.setHoldPosition(value);
+	protected int setValue(Boolean value) throws Exception {
+		return this.windowCovering.setHoldPosition(value).get();
 	}
 
 	@Override

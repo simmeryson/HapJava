@@ -8,6 +8,7 @@ import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.characteristics.IntegerCharacteristic;
 import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.Supplier;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 
 public class BatteryLevelCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
@@ -31,8 +32,9 @@ public class BatteryLevelCharacteristic extends IntegerCharacteristic implements
     }
 
     @Override
-    protected void setValue(Integer value) throws Exception {
+    protected int setValue(Integer value) throws Exception {
         //Read Only
+        return HapStatusCodes.READ_OLNY;
     }
 
     @Override

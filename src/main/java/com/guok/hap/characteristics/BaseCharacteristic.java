@@ -4,6 +4,8 @@ import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import com.guok.hap.impl.responses.HapStatusCodes;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,11 +118,13 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      * {@inheritDoc}
      */
     @Override
-    public final void setValue(JsonValue jsonValue) {
+    public final int setValue(JsonValue jsonValue) {
+
         try {
-            this.setValue(convert(jsonValue));
+            return this.setValue(convert(jsonValue));
         } catch (Exception e) {
             logger.error("Error while setting JSON value", e);
+            return -1;
         }
     }
 
@@ -128,12 +132,12 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      * {@inheritDoc}
      */
     @Override
-    public void supplyValue(JsonObjectBuilder builder) {
+    public int supplyValue(JsonObjectBuilder builder) {
         try {
-            setJsonValue(builder, getValue().get());
+            return setJsonValue(builder, getValue().get());
         } catch (InterruptedException | ExecutionException e) {
             logger.error("Error retrieving value", e);
-            setJsonValue(builder, getDefault());
+            return setJsonValue(builder, getDefault());
         }
     }
 
@@ -148,10 +152,11 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
     /**
      * Update the characteristic value using a new value supplied by the connected client.
      *
+     * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
      * @param value the new value to set.
      * @throws Exception if the value cannot be set.
      */
-    protected abstract void setValue(T value) throws Exception;
+    protected abstract int setValue(T value) throws Exception;
 
     /**
      * Retrieves the current value of the characteristic.
@@ -174,7 +179,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      * @param builder The JSON builder to add the value to
      * @param value   The value to add
      */
-    protected void setJsonValue(JsonObjectBuilder builder, T value) {
+    protected int setJsonValue(JsonObjectBuilder builder, T value) {
         //I don't like this - there should really be a way to construct a disconnected JSONValue...
         if (value instanceof Boolean) {
             builder.add("value", (Boolean) value);
@@ -193,6 +198,12 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
         } else {
             builder.add("value", value.toString());
         }
+        return HapStatusCodes.SUCCESS;
+    }
+
+    @Override
+    public String getType() {
+        return type;
     }
 
     private static final class FutureException extends Exception {

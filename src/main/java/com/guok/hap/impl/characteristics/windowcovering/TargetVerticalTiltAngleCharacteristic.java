@@ -18,8 +18,8 @@ public class TargetVerticalTiltAngleCharacteristic extends IntegerCharacteristic
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
-		windowCovering.setTargetVerticalTiltAngle(value);
+	protected int setValue(Integer value) throws Exception {
+		return windowCovering.setTargetVerticalTiltAngle(value).get();
 	}
 
 	@Override

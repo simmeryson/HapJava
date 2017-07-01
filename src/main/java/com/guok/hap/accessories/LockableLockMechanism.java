@@ -14,11 +14,12 @@ public abstract class LockableLockMechanism extends LockMechanism {
 
 	/**
 	 * Sets the binary state of the lock mechanism.
-	 * 
+	 *
+	 * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
 	 * @param state true for a locked mechanism, false for unlocked.
 	 * @throws Exception when the change cannot be made.
 	 */
-	public abstract void setTargetMechanismState(LockMechanismState state) throws Exception;
+	public abstract int setTargetMechanismState(LockMechanismState state) throws Exception;
 
 	/**
 	 * Retrieves the pending, but not yet completed, state of the lock mechanism.

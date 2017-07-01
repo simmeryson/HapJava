@@ -4,8 +4,8 @@ import com.guok.hap.impl.http.HttpResponse;
 import com.guok.hap.impl.pairing.HomekitSRP6ServerSession.State;
 import com.guok.hap.impl.pairing.PairSetupRequest.Stage2Request;
 import com.guok.hap.impl.pairing.TypeLengthValueUtils.Encoder;
-import com.guok.hap.impl.responses.ConflictResponse;
-import com.guok.hap.impl.responses.NotFoundResponse;
+import com.guok.hap.impl.responses.GeneralErrorResponse;
+import com.guok.hap.impl.responses.HttpStatusCodes;
 import com.nimbusds.srp6.SRP6CryptoParams;
 import com.nimbusds.srp6.SRP6VerifierGenerator;
 import com.nimbusds.srp6.XRoutineWithUserIdentity;
@@ -56,7 +56,7 @@ class SrpHandler {
 			return step2((Stage2Request) request);
 			
 		default:
-			return new NotFoundResponse();
+			return new GeneralErrorResponse(HttpStatusCodes.NOT_FOUND);
 		}
 	}
 
@@ -71,7 +71,7 @@ class SrpHandler {
 	private HttpResponse step1() throws Exception {
 		if (session.getState() != State.INIT) {
 			logger.error("Session is not in state INIT when receiving step1");
-			return new ConflictResponse();
+			return new GeneralErrorResponse(HttpStatusCodes.CONFLICT);
 		}
 				
 		SRP6VerifierGenerator verifierGenerator = new SRP6VerifierGenerator(config);
@@ -96,7 +96,7 @@ class SrpHandler {
 	private HttpResponse step2(Stage2Request request) throws Exception {
 		if (session.getState() != State.STEP_1) {
 			logger.error("Session is not in state Stage 1 when receiving step2");
-			return new ConflictResponse();
+			return new GeneralErrorResponse(HttpStatusCodes.CONFLICT);
 		}
 		BigInteger m2 = session.step2(request.getPublicKey(), request.getProof());
 		Encoder encoder = TypeLengthValueUtils.getEncoder();

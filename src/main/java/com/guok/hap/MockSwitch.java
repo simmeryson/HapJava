@@ -60,6 +60,11 @@ public class MockSwitch extends Lightbulb {
     }
 
     @Override
+    public String getFirmwareRevision() {
+        return "1.0.0";
+    }
+
+    @Override
     public ListenableFuture<Boolean> getLightbulbPowerState() {
         return Futures.immediateFuture(powerState);
     }

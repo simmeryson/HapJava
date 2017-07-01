@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.accessories.thermostat.BasicThermostat;
 import com.guok.hap.characteristics.EnumCharacteristic;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,8 +19,9 @@ public class TemperatureUnitsCharacteristic extends EnumCharacteristic {
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
+	protected int setValue(Integer value) throws Exception {
 		//Not writable
+		return HapStatusCodes.READ_OLNY;
 	}
 
 	@Override

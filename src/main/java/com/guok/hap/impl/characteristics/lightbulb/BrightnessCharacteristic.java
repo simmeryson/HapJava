@@ -29,8 +29,8 @@ public class BrightnessCharacteristic extends IntegerCharacteristic implements E
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
-		lightbulb.setBrightness(value);
+	protected int setValue(Integer value) throws Exception {
+		return lightbulb.setBrightness(value).get();
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.guok.hap.accessories.LockMechanism;
 import com.guok.hap.accessories.properties.LockMechanismState;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CurrentLockMechanismStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
@@ -20,8 +21,9 @@ public class CurrentLockMechanismStateCharacteristic extends EnumCharacteristic 
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
+	protected int setValue(Integer value) throws Exception {
 		//Not writable
+		return HapStatusCodes.READ_OLNY;
 	}
 
 	@Override

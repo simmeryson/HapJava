@@ -34,9 +34,11 @@ public abstract class BasicThermostat extends TemperatureSensor implements Homek
 	/**
 	 * Sets the {@link ThermostatMode} of the thermostat.
 	 * @param mode The {@link ThermostatMode} to set.
+	 *
+	 * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
 	 * @throws Exception when the change cannot be made.
 	 */
-	public abstract void setTargetMode(ThermostatMode mode) throws Exception;
+	public abstract int setTargetMode(ThermostatMode mode) throws Exception;
 
 	/**
 	 * Retrieves the pending, but not yet complete, {@link ThermostatMode} of the thermostat.
@@ -62,11 +64,13 @@ public abstract class BasicThermostat extends TemperatureSensor implements Homek
 	public abstract ListenableFuture<Double> getTargetTemperature();
 
 	/**
+	 * 	/**
 	 * Sets the target temperature.
 	 * @param value the target temperature, in celsius degrees.
+	 * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
 	 * @throws Exception when the temperature cannot be changed.
 	 */
-	public abstract void setTargetTemperature(Double value) throws Exception;
+	public abstract int setTargetTemperature(Double value) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the target temperature.

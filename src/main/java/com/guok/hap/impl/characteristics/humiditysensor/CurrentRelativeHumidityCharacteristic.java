@@ -7,6 +7,7 @@ import com.guok.hap.accessories.HumiditySensor;
 import com.guok.hap.characteristics.CharacteristicUnits;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.characteristics.FloatCharacteristic;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CurrentRelativeHumidityCharacteristic extends FloatCharacteristic implements EventableCharacteristic {
 
@@ -29,8 +30,9 @@ public class CurrentRelativeHumidityCharacteristic extends FloatCharacteristic i
 	}
 
 	@Override
-	protected void setValue(Double value) throws Exception {
+	protected int setValue(Double value) throws Exception {
 		//Read Only
+		return HapStatusCodes.READ_OLNY;
 	}
 
 	@Override

@@ -47,10 +47,11 @@ public abstract class SecuritySystem implements HomekitAccessory {
      * Sets the state of the security system. The security system could be armed in any
      * of its variations or disarmed.
      *
+     * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
      * @param state target state of the security system.
      * @throws Exception when the change cannot be made.
      */
-    public abstract void setTargetSecuritySystemState(TargetSecuritySystemState state) throws Exception;
+    public abstract int setTargetSecuritySystemState(TargetSecuritySystemState state) throws Exception;
 
     /**
      * Retrieves the pending, but not yet completed, state of the security system.

@@ -9,6 +9,7 @@ import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.ExceptionalConsumer;
 import com.guok.hap.impl.Supplier;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 
 public class OnCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
@@ -31,8 +32,9 @@ public class OnCharacteristic extends BooleanCharacteristic implements Eventable
 	}
 
 	@Override
-	public void setValue(Boolean value) throws Exception {
+	public int setValue(Boolean value) throws Exception {
 		setter.accept(value);
+		return HapStatusCodes.SUCCESS;
 	}
 
 	@Override

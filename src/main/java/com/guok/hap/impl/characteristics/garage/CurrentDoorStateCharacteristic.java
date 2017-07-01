@@ -20,8 +20,8 @@ public class CurrentDoorStateCharacteristic extends EnumCharacteristic implement
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
-		door.setTargetDoorState(DoorState.fromCode(value));
+	protected int setValue(Integer value) throws Exception {
+		return door.setTargetDoorState(DoorState.fromCode(value)).get();
 	}
 
 	@Override

@@ -22,10 +22,10 @@ public abstract class DimmableLightbulb extends Lightbulb {
 	/**
 	 * Sets the current brightness of the light
 	 * @param value the brightness, on a scale of 0 to 100, to set
-	 * @return a future that completes when the brightness is changed
+	 * @return a future that completes when the brightness is changed. Integer object means set result;
 	 * @throws Exception when the brightness cannot be set
 	 */
-	public abstract ListenableFuture<Void> setBrightness(Integer value) throws Exception;
+	public abstract ListenableFuture<Integer> setBrightness(Integer value) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the brightness of the light.

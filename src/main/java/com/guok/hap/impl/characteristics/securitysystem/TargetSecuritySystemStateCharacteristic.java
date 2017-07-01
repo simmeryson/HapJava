@@ -30,8 +30,8 @@ public class TargetSecuritySystemStateCharacteristic extends EnumCharacteristic 
     }
 
     @Override
-    protected void setValue(Integer value) throws Exception {
-        securitySystem.setTargetSecuritySystemState(TargetSecuritySystemState.fromCode(value));
+    protected int setValue(Integer value) throws Exception {
+        return securitySystem.setTargetSecuritySystemState(TargetSecuritySystemState.fromCode(value));
     }
 
     @Override

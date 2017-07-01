@@ -4,6 +4,8 @@ import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import com.guok.hap.impl.responses.HapStatusCodes;
+
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
 import javax.json.JsonValue;
@@ -61,8 +63,8 @@ public class StaticStringCharacteristic extends BaseCharacteristic<String> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setValue(String value) throws Exception {
-		throw new Exception("Cannot modify static strings");
+	public int setValue(String value) throws Exception {
+		return HapStatusCodes.READ_OLNY;
 	}
 
 	/**

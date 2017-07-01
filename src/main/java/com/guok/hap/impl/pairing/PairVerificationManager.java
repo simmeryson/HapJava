@@ -12,7 +12,8 @@ import com.guok.hap.impl.pairing.PairVerificationRequest.Stage1Request;
 import com.guok.hap.impl.pairing.PairVerificationRequest.Stage2Request;
 import com.guok.hap.impl.pairing.TypeLengthValueUtils.DecodeResult;
 import com.guok.hap.impl.pairing.TypeLengthValueUtils.Encoder;
-import com.guok.hap.impl.responses.NotFoundResponse;
+import com.guok.hap.impl.responses.GeneralErrorResponse;
+import com.guok.hap.impl.responses.HttpStatusCodes;
 import com.guok.hap.impl.responses.OkResponse;
 
 import org.bouncycastle.crypto.digests.SHA512Digest;
@@ -58,7 +59,7 @@ public class PairVerificationManager {
 			return stage2((Stage2Request) request);
 			
 		default:
-			return new NotFoundResponse();
+			return new GeneralErrorResponse(HttpStatusCodes.NOT_FOUND);
 		}
 	}
 

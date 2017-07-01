@@ -29,8 +29,8 @@ public class RotationSpeedCharacteristic extends IntegerCharacteristic implement
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
-		fan.setRotationSpeed(value);
+	protected int setValue(Integer value) throws Exception {
+		return fan.setRotationSpeed(value).get();
 	}
 
 	@Override

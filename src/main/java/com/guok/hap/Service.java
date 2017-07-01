@@ -2,7 +2,7 @@ package com.guok.hap;
 
 import com.guok.hap.characteristics.Characteristic;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Interface for a Service offered by an accessory.
@@ -17,9 +17,9 @@ public interface Service {
 	 * It is important to maintain the order of this list and not change its contents between invocations, or a pairing error
 	 * will result.
 	 * 
-	 * @return the list of Characteristics.
+	 * @return the Collection of Characteristics.
 	 */
-	List<Characteristic> getCharacteristics();
+	Collection<Characteristic> getCharacteristics();
 
 	/**
 	 * The type is a UUID that uniquely identifies the type of Service offered. Apple defines several types for standard 

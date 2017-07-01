@@ -48,19 +48,19 @@ public abstract class Fan implements HomekitAccessory {
 	/**
 	 * Sets the rotation direction of the fan
 	 * @param direction the direction to set
-	 * @return a future that completes when the change is made
+	 * @return a future that completes when the change is made. Integer object means setting result.
 	 * @throws Exception when the change cannot be made
 	 */
-	public abstract ListenableFuture<Void> setRotationDirection(RotationDirection direction) throws Exception;
+	public abstract ListenableFuture<Integer> setRotationDirection(RotationDirection direction) throws Exception;
 	
 	
 	/**
 	 * Sets the speed of the fan's rotation
 	 * @param speed the speed to set, expressed as an integer between 0 and 100.
-	 * @return a future that completes when the change is made
+	 * @return a future that completes when the change is made. Integer object means setting result.
 	 * @throws Exception when the change cannot be made
 	 */
-	public abstract ListenableFuture<Void> setRotationSpeed(Integer speed) throws Exception;
+	public abstract ListenableFuture<Integer> setRotationSpeed(Integer speed) throws Exception;
 	
 	@Override
 	public Collection<Service> getServices() {

@@ -18,8 +18,8 @@ public class TargetPositionCharacteristic extends IntegerCharacteristic implemen
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
-		windowCovering.setTargetPosition(value);
+	protected int setValue(Integer value) throws Exception {
+		return windowCovering.setTargetPosition(value).get();
 	}
 
 	@Override

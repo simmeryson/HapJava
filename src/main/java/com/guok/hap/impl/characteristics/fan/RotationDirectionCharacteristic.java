@@ -20,8 +20,8 @@ public class RotationDirectionCharacteristic extends EnumCharacteristic implemen
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
-		fan.setRotationDirection(RotationDirection.fromCode(value));
+	protected int setValue(Integer value) throws Exception {
+		return fan.setRotationDirection(RotationDirection.fromCode(value)).get();
 	}
 
 	@Override

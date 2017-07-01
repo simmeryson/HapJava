@@ -9,6 +9,7 @@ import com.guok.hap.accessories.SecuritySystem;
 import com.guok.hap.accessories.properties.CurrentSecuritySystemState;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CurrentSecuritySystemStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
@@ -30,8 +31,9 @@ public class CurrentSecuritySystemStateCharacteristic extends EnumCharacteristic
     }
 
     @Override
-    protected void setValue(Integer value) throws Exception {
+    protected int setValue(Integer value) throws Exception {
         //Not writable
+        return HapStatusCodes.READ_OLNY;
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.guok.hap.accessories.SmokeSensor;
 import com.guok.hap.accessories.properties.SmokeDetectedState;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class SmokeDetectedCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
@@ -30,8 +31,9 @@ public class SmokeDetectedCharacteristic extends EnumCharacteristic implements E
     }
 
     @Override
-    protected void setValue(Integer value) throws Exception {
+    protected int setValue(Integer value) throws Exception {
         //Read Only
+        return HapStatusCodes.READ_OLNY;
     }
 
     @Override

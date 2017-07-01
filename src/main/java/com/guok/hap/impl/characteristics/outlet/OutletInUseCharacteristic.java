@@ -6,6 +6,7 @@ import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.Outlet;
 import com.guok.hap.characteristics.BooleanCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class OutletInUseCharacteristic  extends BooleanCharacteristic implements EventableCharacteristic {
 
@@ -17,8 +18,8 @@ public class OutletInUseCharacteristic  extends BooleanCharacteristic implements
 	}
 
 	@Override
-	protected void setValue(Boolean value) throws Exception {
-		//Read Only
+	protected int setValue(Boolean value) throws Exception {
+		return HapStatusCodes.READ_OLNY;
 	}
 
 	@Override

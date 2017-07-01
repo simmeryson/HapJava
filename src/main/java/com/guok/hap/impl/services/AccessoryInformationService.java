@@ -1,6 +1,7 @@
 package com.guok.hap.impl.services;
 
 import com.guok.hap.HomekitAccessory;
+import com.guok.hap.impl.characteristics.information.FirmwareRevision;
 import com.guok.hap.impl.characteristics.information.Identify;
 import com.guok.hap.impl.characteristics.information.Manufacturer;
 import com.guok.hap.impl.characteristics.information.Model;
@@ -18,6 +19,7 @@ public class AccessoryInformationService extends AbstractServiceImpl {
 		addCharacteristic(new Model(accessory));
 		addCharacteristic(new SerialNumber(accessory));
 		addCharacteristic(new Identify(accessory));
+		addCharacteristic(new FirmwareRevision(accessory));
 	}
 
 }

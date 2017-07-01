@@ -17,8 +17,8 @@ public class TargetHeatingCoolingModeCharacteristic extends
 	}
 
 	@Override
-	protected void setModeValue(ThermostatMode mode) throws Exception {
-		thermostat.setTargetMode(mode);
+	protected int setModeValue(ThermostatMode mode) throws Exception {
+		return thermostat.setTargetMode(mode);
 	}
 
 	@Override

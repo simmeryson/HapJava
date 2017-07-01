@@ -9,6 +9,7 @@ import com.guok.hap.accessories.WindowCovering;
 import com.guok.hap.accessories.properties.WindowCoveringPositionState;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
+import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class PositionStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
@@ -20,8 +21,9 @@ public class PositionStateCharacteristic extends EnumCharacteristic implements E
 	}
 
 	@Override
-	protected void setValue(Integer value) throws Exception {
+	protected int setValue(Integer value) throws Exception {
 		//Read only
+		return HapStatusCodes.READ_OLNY;
 	}
 
 	@Override

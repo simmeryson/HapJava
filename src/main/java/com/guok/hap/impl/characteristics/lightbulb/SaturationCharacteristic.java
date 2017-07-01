@@ -29,8 +29,8 @@ public class SaturationCharacteristic extends FloatCharacteristic implements Eve
 	}
 
 	@Override
-	protected void setValue(Double value) throws Exception {
-		lightbulb.setSaturation(value);
+	protected int setValue(Double value) throws Exception {
+		return lightbulb.setSaturation(value).get();
 	}
 
 	@Override

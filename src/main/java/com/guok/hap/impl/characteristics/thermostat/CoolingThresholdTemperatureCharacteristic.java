@@ -31,8 +31,8 @@ public class CoolingThresholdTemperatureCharacteristic extends
 	}
 
 	@Override
-	protected void setValue(Double value) throws Exception {
-		thermostat.setCoolingThresholdTemperature(value);
+	protected int setValue(Double value) throws Exception {
+		return thermostat.setCoolingThresholdTemperature(value);
 	}
 
 }

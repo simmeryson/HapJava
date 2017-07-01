@@ -3,6 +3,8 @@ package com.guok.hap.characteristics;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import com.guok.hap.impl.responses.HapStatusCodes;
+
 import javax.json.JsonObjectBuilder;
 
 /**
@@ -31,7 +33,8 @@ public abstract class WriteOnlyBooleanCharacteristic extends BooleanCharacterist
 	protected final ListenableFuture<Boolean> getValue() { return Futures.immediateFuture(false); }
 
 	@Override
-	protected final void setJsonValue(JsonObjectBuilder builder, Boolean value) {
+	protected final int setJsonValue(JsonObjectBuilder builder, Boolean value) {
 		//Do nothing - non-readable characteristics cannot have a value key set
+		return HapStatusCodes.WRITE_ONLY;
 	}
 }

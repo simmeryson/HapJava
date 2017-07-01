@@ -15,9 +15,10 @@ public abstract class CoolingThermostat extends BasicThermostat {
 	/**
 	 * Sets the temperature above which the thermostat should begin cooling. 
 	 * @param value the threshold temperature, in celsius degrees.
+	 * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
 	 * @throws Exception when the threshold temperature cannot be changed.
 	 */
-	public abstract void setCoolingThresholdTemperature(Double value) throws Exception;
+	public abstract int setCoolingThresholdTemperature(Double value) throws Exception;
 	
 	/**
 	 * Subscribes to changes in the cooling threshold.
