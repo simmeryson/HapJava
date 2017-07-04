@@ -1,6 +1,6 @@
 package com.guok.hap.impl.pairing;
 
-import com.guok.hap.HomekitAuthInfo;
+import com.guok.hap.BridgeAuthInfo;
 import com.guok.hap.impl.HomekitRegistry;
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.http.HttpRequest;
@@ -21,13 +21,13 @@ public class PairingManager {
 
     private final static Logger logger = LoggerFactory.getLogger(PairingManager.class);
 
-    private final HomekitAuthInfo authInfo;
+    private final BridgeAuthInfo authInfo;
     private final HomekitRegistry registry;
     private final IAdvertiser advertiser;
 
     private SrpHandler srpHandler;
 
-    public PairingManager(HomekitAuthInfo authInfo, HomekitRegistry registry, IAdvertiser advertiser) {
+    public PairingManager(BridgeAuthInfo authInfo, HomekitRegistry registry, IAdvertiser advertiser) {
         this.authInfo = authInfo;
         this.registry = registry;
         this.advertiser = advertiser;

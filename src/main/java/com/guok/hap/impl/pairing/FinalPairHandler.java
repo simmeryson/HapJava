@@ -1,6 +1,6 @@
 package com.guok.hap.impl.pairing;
 
-import com.guok.hap.HomekitAuthInfo;
+import com.guok.hap.BridgeAuthInfo;
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.crypto.ChachaDecoder;
 import com.guok.hap.impl.crypto.ChachaEncoder;
@@ -23,12 +23,12 @@ import java.nio.charset.StandardCharsets;
 class FinalPairHandler {
 
 	private final byte[] inputKey;//SRP shared secret key
-	private final HomekitAuthInfo authInfo;
+	private final BridgeAuthInfo authInfo;
 	private final IAdvertiser advertiser;
 
 	private byte[] hkdf_enc_key;
 
-	public FinalPairHandler(byte[] inputKey, HomekitAuthInfo authInfo, IAdvertiser advertiser) {
+	public FinalPairHandler(byte[] inputKey, BridgeAuthInfo authInfo, IAdvertiser advertiser) {
 		this.inputKey = inputKey;
 		this.authInfo = authInfo;
 		this.advertiser = advertiser;

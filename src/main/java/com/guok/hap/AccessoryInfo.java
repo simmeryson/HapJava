@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by guokai on 26/06/2017.
+ * Created by guokai.
  */
 public class AccessoryInfo {
     private String userName;

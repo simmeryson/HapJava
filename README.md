@@ -22,3 +22,4 @@ Include HapJava in Maven pom.xml
 5. AccessoryHandler.connection maybe exist issue concurrently.
 6. **Characteristics permission exits big problem.**
 7. `/identify` request does not implement Page 88. 
+8. `/paring` request with method LIST_PAIRINGS need to implement.

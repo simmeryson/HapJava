@@ -48,14 +48,14 @@ public class JmdnsHomekitAdvertiser extends AbstractAdvertiser {
         }
     }
 
-     public void registerService() {
+    public void registerService() {
         Map<String, String> props = new HashMap<>();
         props.put("sf", discoverable ? "1" : "0");
         props.put("id", mac);
         props.put("md", label);
         props.put("c#", Integer.toString(configurationIndex));
         props.put("s#", "1");
-        props.put("ci", AccessoryCategory.BRIDGE.getCode()+"");
+        props.put("ci", AccessoryCategory.BRIDGE.getCode() + "");
         logger.info("Registering " + SERVICE_TYPE + " " +
                 "on port: " + port +
                 " sf:" + props.get("sf") +
@@ -70,6 +70,7 @@ public class JmdnsHomekitAdvertiser extends AbstractAdvertiser {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        isAdvertising = true;
     }
 
 }

@@ -4,8 +4,8 @@ package com.guok.hap; /**
 
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * This is a simple implementation that should never be used in actual production. The mac, salt, and privateKey
@@ -14,22 +14,15 @@ import java.util.concurrent.ConcurrentMap;
  *
  * @author Andy Lintner
  */
-public class MockAuthInfo implements HomekitAuthInfo {
+public class MockAuthInfo extends AbstractBridge {
 
-    /**
-     * must generate Setup Codes from a cryptographically secure random number generator
-     */
-    private static final String PIN = "031-45-153";
-
-    private final String mac;
-    private final BigInteger salt;
-    private final byte[] privateKey;//AccessoryLTSK. for generate AccessoryLTPK
-    private final ConcurrentMap<String, byte[]> userKeyMap = new ConcurrentHashMap<>();
 
     public MockAuthInfo() throws InvalidAlgorithmParameterException {
-        mac = HomekitServer.generateMac();
+        PIN = "031-45-153";
+        mac = initMac();
         salt = HomekitServer.generateSalt();
-        privateKey = HomekitServer.generateKey();
+        privateKey = initPrivateKey();
+        userKeyMap.putAll(initUsernamePublicKey());
         System.out.println("Auth info is generated each time the sample application is started. Pairings are not persisted.");
         System.out.println("The PIN for pairing is "+PIN);
     }
@@ -74,6 +67,21 @@ public class MockAuthInfo implements HomekitAuthInfo {
     @Override
     public boolean hasUser() {
         return userKeyMap.size() > 0;
+    }
+
+    @Override
+    public String initMac() {
+        return HomekitServer.generateMac();
+    }
+
+    @Override
+    public byte[] initPrivateKey() throws InvalidAlgorithmParameterException {
+        return HomekitServer.generateKey();
+    }
+
+    @Override
+    public Map initUsernamePublicKey() {
+        return Collections.emptyMap();
     }
 
 }

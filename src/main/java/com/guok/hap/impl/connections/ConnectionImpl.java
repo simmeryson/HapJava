@@ -1,6 +1,6 @@
 package com.guok.hap.impl.connections;
 
-import com.guok.hap.HomekitAuthInfo;
+import com.guok.hap.BridgeAuthInfo;
 import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.HomekitRegistry;
 import com.guok.hap.impl.advertiser.IAdvertiser;
@@ -36,8 +36,8 @@ class ConnectionImpl implements HomekitClientConnection {
 	
 	private final static Logger LOGGER = LoggerFactory.getLogger(HomekitClientConnection.class);
 	
-	public ConnectionImpl(HomekitAuthInfo authInfo, HomekitRegistry registry, 
-			Consumer<HttpResponse> outOfBandMessageCallback, SubscriptionManager subscriptions,
+	public ConnectionImpl(BridgeAuthInfo authInfo, HomekitRegistry registry,
+						  Consumer<HttpResponse> outOfBandMessageCallback, SubscriptionManager subscriptions,
 						  IAdvertiser advertiser) {
 		httpSession = new HttpSession(authInfo, registry, subscriptions, this, advertiser);
 		this.outOfBandMessageCallback = outOfBandMessageCallback;

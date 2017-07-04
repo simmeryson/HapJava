@@ -23,7 +23,7 @@ public class HomekitRootTest {
     private HomekitRoot root;
     private HomekitWebHandler webHandler;
     private AbstractAdvertiser advertiser;
-    private HomekitAuthInfo authInfo;
+    private BridgeAuthInfo authInfo;
 
     private final static int PORT = 12345;
     private final static String LABEL = "Test Label";
@@ -35,7 +35,7 @@ public class HomekitRootTest {
         webHandler = mock(HomekitWebHandler.class);
         when(webHandler.start(any(HomekitClientConnectionFactory.class))).thenReturn(Futures.immediateFuture(PORT));
         advertiser = mock(AbstractAdvertiser.class);
-        authInfo = mock(HomekitAuthInfo.class);
+        authInfo = mock(BridgeAuthInfo.class);
         root = new HomekitRoot(LABEL, webHandler, authInfo, advertiser);
     }
 

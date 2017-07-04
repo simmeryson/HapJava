@@ -13,10 +13,10 @@ import java.security.InvalidAlgorithmParameterException;
 /**
  * The main entry point for hap-java. Creating an instance of this class will listen for Homekit
  * connections on the supplied port. Only a single root accessory can be added for each unique
- * instance and port, however, that accessory may be a {@link #createBridge(HomekitAuthInfo, String,
+ * instance and port, however, that accessory may be a {@link #createBridge(BridgeAuthInfo, String,
  * String, String, String) bridge accessory} containing child accessories.
  *
- * The {@link HomekitAuthInfo HomekitAuthInfo} argument when creating accessories should be an
+ * The {@link BridgeAuthInfo AndroidBridge} argument when creating accessories should be an
  * implementation supplied by your application. Several of the values needed for your implementation
  * are provided by this class, specifically {@link #generateKey() generateKey}, {@link
  * #generateMac() generateMac}, and {@link #generateSalt()}. It is important that you provide these
@@ -86,7 +86,7 @@ public class HomekitServer {
      * on this to begin.
      * @throws IOException when mDNS cannot connect to the network
      */
-    public HomekitStandaloneAccessoryServer createStandaloneAccessory(HomekitAuthInfo authInfo,
+    public HomekitStandaloneAccessoryServer createStandaloneAccessory(BridgeAuthInfo authInfo,
                                                                       HomekitAccessory accessory) throws IOException {
         return new HomekitStandaloneAccessoryServer(accessory, http,
                 localAddress, authInfo);
@@ -111,7 +111,7 @@ public class HomekitServer {
      * then {@link HomekitRoot#start start} handling requests.
      * @throws IOException when mDNS cannot connect to the network
      */
-    public HomekitRoot createBridge(HomekitAuthInfo authInfo,
+    public HomekitRoot createBridge(BridgeAuthInfo authInfo,
                                     String label,
                                     String manufacturer,
                                     String model,
@@ -138,7 +138,7 @@ public class HomekitServer {
      * then {@link HomekitRoot#start start} handling requests.
      * @throws IOException when advertiser cannot connect to the network
      */
-    public HomekitRoot createBridge(HomekitAuthInfo authInfo,
+    public HomekitRoot createBridge(BridgeAuthInfo authInfo,
                                     String label,
                                     String manufacturer,
                                     String model,
@@ -150,7 +150,7 @@ public class HomekitServer {
     }
 
     /**
-     * Generates a value to supply in {@link HomekitAuthInfo#getSalt() HomekitAuthInfo.getSalt()}.
+     * Generates a value to supply in {@link BridgeAuthInfo#getSalt() AndroidBridge.getSalt()}.
      * This is used to salt the pin-code. You don't need to worry about that though - the salting is
      * done on the plaintext pin. (Yes, plaintext passwords are bad. Please don't secure your
      * nuclear storage facility with this implementation)
@@ -162,8 +162,8 @@ public class HomekitServer {
     }
 
     /**
-     * Generates a value to supply in {@link HomekitAuthInfo#getPrivateKey()
-     * HomekitAuthInfo.getPrivKey()}. This is used as the private key during pairing and connection
+     * Generates a value to supply in {@link BridgeAuthInfo#getPrivateKey()
+     * AndroidBridge.getPrivKey()}. This is used as the private key during pairing and connection
      * setup.
      *
      * @return the generated key
@@ -175,7 +175,7 @@ public class HomekitServer {
     }
 
     /**
-     * Generates a value to supply in {@link HomekitAuthInfo#getMac() HomekitAuthInfo.getMac()}.
+     * Generates a value to supply in {@link BridgeAuthInfo#getMac() AndroidBridge.getMac()}.
      * This is used as the unique identifier of the accessory during mDNS advertising. It is a valid
      * MAC address generated in the locally administered range so as not to conflict with any
      * commercial devices.

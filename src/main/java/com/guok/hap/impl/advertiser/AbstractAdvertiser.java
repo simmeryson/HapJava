@@ -63,7 +63,6 @@ public abstract class AbstractAdvertiser implements IAdvertiser {
                 stop();
             }
         }));
-        isAdvertising = true;
     }
 
     public abstract void registerService();

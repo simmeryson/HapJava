@@ -1,6 +1,6 @@
 package com.guok.hap.impl.pairing;
 
-import com.guok.hap.HomekitAuthInfo;
+import com.guok.hap.BridgeAuthInfo;
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.http.HttpRequest;
 import com.guok.hap.impl.http.HttpResponse;
@@ -15,10 +15,10 @@ import java.nio.charset.StandardCharsets;
  */
 public class PairingUpdateController {
 
-    private final HomekitAuthInfo authInfo;
+    private final BridgeAuthInfo authInfo;
     private final IAdvertiser advertiser;
 
-    public PairingUpdateController(HomekitAuthInfo authInfo, IAdvertiser advertiser) {
+    public PairingUpdateController(BridgeAuthInfo authInfo, IAdvertiser advertiser) {
         this.authInfo = authInfo;
         this.advertiser = advertiser;
     }
@@ -27,14 +27,14 @@ public class PairingUpdateController {
         DecodeResult d = TypeLengthValueUtils.decode(request.getBody());
 
         int method = d.getByte(MessageType.METHOD);
-        if (method == 3) { //Add pairing
+        if (method == PairMethods.ADD_PAIRING.getKey()) { //Add pairing
             byte[] username = d.getBytes(MessageType.IDENTIFIER);
             byte[] ltpk = d.getBytes(MessageType.PUBLIC_KEY);
             if (username == null || username.length == 0 || ltpk == null || ltpk.length == 0) {
                 return TypeLengthValueUtils.createTLVErrorResponse("IDENTIFIER is null!", (short) 2, TLVError.AUTHENTICATION);
             }
             authInfo.createUser(new String(username, StandardCharsets.UTF_8), ltpk);
-        } else if (method == 4) { //Remove pairing
+        } else if (method == PairMethods.REMOVE_PAIRING.getKey()) { //Remove pairing
             byte[] username = d.getBytes(MessageType.IDENTIFIER);
             if (username == null || username.length == 0) {
                 return TypeLengthValueUtils.createTLVErrorResponse("IDENTIFIER is null!", (short) 2, TLVError.AUTHENTICATION);
@@ -44,7 +44,7 @@ public class PairingUpdateController {
                     advertiser.setDiscoverable(true);
                 }
             }
-        } else if (method == 5) { //Listing pairing
+        } else if (method == PairMethods.LIST_PAIRINGS.getKey()) { //Listing pairing
 
         } else {
             throw new RuntimeException("Unrecognized method: " + method);

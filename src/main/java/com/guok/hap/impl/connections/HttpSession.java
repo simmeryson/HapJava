@@ -1,7 +1,7 @@
 package com.guok.hap.impl.connections;
 
+import com.guok.hap.BridgeAuthInfo;
 import com.guok.hap.HomekitAccessory;
-import com.guok.hap.HomekitAuthInfo;
 import com.guok.hap.impl.HomekitRegistry;
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.http.HomekitClientConnection;
@@ -29,7 +29,7 @@ class HttpSession {
 	private volatile AccessoryController accessoryController;
 	private volatile CharacteristicsController characteristicsController;
 
-	private final HomekitAuthInfo authInfo;
+	private final BridgeAuthInfo authInfo;
 	private final HomekitRegistry registry;
 	private final SubscriptionManager subscriptions;
 	private final HomekitClientConnection connection;
@@ -37,8 +37,8 @@ class HttpSession {
 	
 	private final static Logger logger = LoggerFactory.getLogger(HttpSession.class);
 	
-	public HttpSession(HomekitAuthInfo authInfo, HomekitRegistry registry, SubscriptionManager subscriptions,
-			HomekitClientConnection connection, IAdvertiser advertiser) {
+	public HttpSession(BridgeAuthInfo authInfo, HomekitRegistry registry, SubscriptionManager subscriptions,
+					   HomekitClientConnection connection, IAdvertiser advertiser) {
 		this.authInfo = authInfo;
 		this.registry = registry;
 		this.subscriptions = subscriptions;

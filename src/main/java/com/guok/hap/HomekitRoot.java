@@ -21,7 +21,7 @@ import java.net.InetAddress;
  * Provides advertising and handling for Homekit accessories. This class handles the advertising of
  * Homekit accessories and contains one or more accessories. When implementing a bridge accessory,
  * you will interact with this class directly. Instantiate it via {@link
- * HomekitServer#createBridge(HomekitAuthInfo, String, String, String, String)}. For single
+ * HomekitServer#createBridge(BridgeAuthInfo, String, String, String, String)}. For single
  * accessories, this is composed by {@link HomekitStandaloneAccessoryServer}.
  *
  * @author Andy Lintner
@@ -32,7 +32,7 @@ public class HomekitRoot {
 
     private final IAdvertiser advertiser;
     private final HomekitWebHandler webHandler;
-    private final HomekitAuthInfo authInfo;
+    private final BridgeAuthInfo authInfo;
     private final String label;
     private final HomekitRegistry registry;
     private final SubscriptionManager subscriptions = new SubscriptionManager();
@@ -41,14 +41,14 @@ public class HomekitRoot {
 
     HomekitRoot(String label,
                 HomekitWebHandler webHandler,
-                HomekitAuthInfo authInfo,
+                BridgeAuthInfo authInfo,
                 InetAddress localhost) throws IOException {
         this(label, webHandler, authInfo, new JmdnsHomekitAdvertiser(localhost));
     }
 
     HomekitRoot(String label,
                 HomekitWebHandler webHandler,
-                HomekitAuthInfo authInfo,
+                BridgeAuthInfo authInfo,
                 IAdvertiser advertiser) throws IOException {
         this.advertiser = advertiser;
         this.webHandler = webHandler;

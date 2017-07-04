@@ -1,7 +1,6 @@
 package com.guok.hap.impl.pairing;
 
 import com.guok.hap.impl.http.HttpResponse;
-import com.guok.hap.impl.responses.OkResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +44,8 @@ public class TypeLengthValueUtils {
         Encoder encoder = getEncoder();
         encoder.add(MessageType.ERROR, error.getKey());
         encoder.add(MessageType.STATE, state);
-        logger.warn(msg);
-        return new OkResponse(encoder.toByteArray());
+        logger.error(msg);
+        return new PairingResponse(encoder.toByteArray());
     }
 
     public static final class Encoder {
