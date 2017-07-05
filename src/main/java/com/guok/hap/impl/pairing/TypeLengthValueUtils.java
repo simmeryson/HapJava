@@ -40,6 +40,13 @@ public class TypeLengthValueUtils {
         return new Encoder();
     }
 
+    /**
+     * create a response for PairSetup and PairVerify with kTLVType_Error.
+     * @param msg message to print
+     * @param state which step in PairSetup and PairVerify
+     * @param error kTLVType_Error defined in {@link TLVError}
+     * @return
+     */
     public static HttpResponse createTLVErrorResponse(String msg, short state, TLVError error) {
         Encoder encoder = getEncoder();
         encoder.add(MessageType.ERROR, error.getKey());

@@ -4,8 +4,9 @@ package com.guok.hap; /**
 
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
-import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * This is a simple implementation that should never be used in actual production. The mac, salt, and privateKey
@@ -14,15 +15,22 @@ import java.util.Map;
  *
  * @author Andy Lintner
  */
-public class MockAuthInfo extends AbstractBridge {
+public class MockAuthInfo implements BridgeAuthInfo {
 
+    /**
+     * must generate Setup Codes from a cryptographically secure random number generator
+     */
+    private static final String PIN = "031-45-153";
+
+    private final String mac;
+    private final BigInteger salt;
+    private final byte[] privateKey;//AccessoryLTSK. for generate AccessoryLTPK
+    private final ConcurrentMap<String, byte[]> userKeyMap = new ConcurrentHashMap<>();
 
     public MockAuthInfo() throws InvalidAlgorithmParameterException {
-        PIN = "031-45-153";
-        mac = initMac();
+        mac = HomekitServer.generateMac();
         salt = HomekitServer.generateSalt();
-        privateKey = initPrivateKey();
-        userKeyMap.putAll(initUsernamePublicKey());
+        privateKey = HomekitServer.generateKey();
         System.out.println("Auth info is generated each time the sample application is started. Pairings are not persisted.");
         System.out.println("The PIN for pairing is "+PIN);
     }
@@ -71,17 +79,17 @@ public class MockAuthInfo extends AbstractBridge {
 
     @Override
     public String initMac() {
-        return HomekitServer.generateMac();
+        return null;
     }
 
     @Override
     public byte[] initPrivateKey() throws InvalidAlgorithmParameterException {
-        return HomekitServer.generateKey();
+        return new byte[0];
     }
 
     @Override
     public Map initUsernamePublicKey() {
-        return Collections.emptyMap();
+        return null;
     }
 
 }

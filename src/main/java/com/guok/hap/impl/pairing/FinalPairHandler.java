@@ -4,8 +4,8 @@ import com.guok.hap.BridgeAuthInfo;
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.crypto.ChachaDecoder;
 import com.guok.hap.impl.crypto.ChachaEncoder;
-import com.guok.hap.impl.crypto.EdsaSigner;
-import com.guok.hap.impl.crypto.EdsaVerifier;
+import com.guok.hap.impl.crypto.EdDSASigner;
+import com.guok.hap.impl.crypto.EdDSAVerifier;
 import com.guok.hap.impl.http.HttpResponse;
 import com.guok.hap.impl.pairing.PairSetupRequest.Stage3Request;
 import com.guok.hap.impl.pairing.TypeLengthValueUtils.DecodeResult;
@@ -64,7 +64,7 @@ class FinalPairHandler {
 
 		byte[] completeData = ByteUtils.joinBytes(iOSDeviceX, iOSDevicePairingID, ltpk);
 
-		if (!new EdsaVerifier(ltpk).verify(completeData, proof)) {
+		if (!new EdDSAVerifier(ltpk).verify(completeData, proof)) {
 			throw new Exception("Invalid signature");
 		}
 		authInfo.createUser(new String(iOSDevicePairingID, StandardCharsets.UTF_8), ltpk);
@@ -79,7 +79,7 @@ class FinalPairHandler {
 		byte[] accessoryX = new byte[32];
 		hkdf.generateBytes(accessoryX, 0, 32);
 
-		EdsaSigner signer = new EdsaSigner(authInfo.getPrivateKey());
+		EdDSASigner signer = new EdDSASigner(authInfo.getPrivateKey());
 
 		byte[] material = ByteUtils.joinBytes(accessoryX, authInfo.getMac().getBytes(StandardCharsets.UTF_8), signer.getPublicKey());
 

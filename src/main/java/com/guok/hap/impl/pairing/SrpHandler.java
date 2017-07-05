@@ -33,16 +33,16 @@ class SrpHandler {
 	
 	private final static Logger logger = LoggerFactory.getLogger(SrpHandler.class);
 	
-	private final BigInteger salt;
-	private final HomekitSRP6ServerSession session;
+	private final BigInteger salt;//General 16 byte of random salt
+	private final HomekitSRP6ServerSession SrpSession;
 	private final SRP6CryptoParams config;
 	private final String pin;
 	
 	public SrpHandler(String pin, BigInteger salt) {
 		config = new SRP6CryptoParams(N_3072, G, "SHA-512");
-		session = new HomekitSRP6ServerSession(config);
-		session.setClientEvidenceRoutine(new ClientEvidenceRoutineImpl());
-		session.setServerEvidenceRoutine(new ServerEvidenceRoutineImpl());
+		SrpSession = new HomekitSRP6ServerSession(config);
+		SrpSession.setClientEvidenceRoutine(new ClientEvidenceRoutineImpl());
+		SrpSession.setServerEvidenceRoutine(new ServerEvidenceRoutineImpl());
 		this.pin = pin;
 		this.salt = salt;
 	}
@@ -69,7 +69,7 @@ class SrpHandler {
 	 * @throws Exception
 	 */
 	private HttpResponse step1() throws Exception {
-		if (session.getState() != State.INIT) {
+		if (SrpSession.getState() != State.INIT) {
 			logger.error("Session is not in state INIT when receiving step1");
 			return new GeneralErrorResponse(HttpStatusCodes.CONFLICT);
 		}
@@ -81,7 +81,7 @@ class SrpHandler {
 		Encoder encoder = TypeLengthValueUtils.getEncoder();
 		encoder.add(MessageType.STATE, (short) 0x02);
 		encoder.add(MessageType.SALT, salt);
-		encoder.add(MessageType.PUBLIC_KEY, session.step1(IDENTIFIER, salt, verifier));
+		encoder.add(MessageType.PUBLIC_KEY, SrpSession.step1(IDENTIFIER, salt, verifier));
 		return new PairingResponse(encoder.toByteArray());
 	}
 
@@ -94,11 +94,11 @@ class SrpHandler {
 	 * @throws Exception
 	 */
 	private HttpResponse step2(Stage2Request request) throws Exception {
-		if (session.getState() != State.STEP_1) {
+		if (SrpSession.getState() != State.STEP_1) {
 			logger.error("Session is not in state Stage 1 when receiving step2");
 			return new GeneralErrorResponse(HttpStatusCodes.CONFLICT);
 		}
-		BigInteger m2 = session.step2(request.getPublicKey(), request.getProof());
+		BigInteger m2 = SrpSession.step2(request.getPublicKey(), request.getProof());
 		Encoder encoder = TypeLengthValueUtils.getEncoder();
 		encoder.add(MessageType.STATE, (short) 0x04);
 		encoder.add(MessageType.PROOF, m2);
@@ -110,8 +110,8 @@ class SrpHandler {
 	 * @return
 	 */
 	public byte[] getK() {
-		MessageDigest digest = session.getCryptoParams().getMessageDigestInstance();
-		BigInteger S = session.getSessionKey(false);
+		MessageDigest digest = SrpSession.getCryptoParams().getMessageDigestInstance();
+		BigInteger S = SrpSession.getSessionKey(false);
 		byte[] sBytes = bigIntegerToUnsignedByteArray(S);
 		return digest.digest(sBytes);
 	}

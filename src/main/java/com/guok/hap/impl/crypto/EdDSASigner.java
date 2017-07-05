@@ -1,11 +1,5 @@
 package com.guok.hap.impl.crypto;
 
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Signature;
-import java.security.SignatureException;
-
 import net.i2p.crypto.eddsa.EdDSAEngine;
 import net.i2p.crypto.eddsa.EdDSAPrivateKey;
 import net.i2p.crypto.eddsa.EdDSAPublicKey;
@@ -14,12 +8,21 @@ import net.i2p.crypto.eddsa.spec.EdDSAParameterSpec;
 import net.i2p.crypto.eddsa.spec.EdDSAPrivateKeySpec;
 import net.i2p.crypto.eddsa.spec.EdDSAPublicKeySpec;
 
-public class EdsaSigner {
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
+import java.security.SignatureException;
+
+/**
+ * EdDSA implementation using ED25519, for Asymmetric Digital Signature.
+ */
+public class EdDSASigner {
 	
 	private final EdDSAPublicKey publicKey;
 	private final EdDSAPrivateKey privateKey;
 
-	public EdsaSigner(byte[] privateKeyBytes) {
+	public EdDSASigner(byte[] privateKeyBytes) {
 		EdDSAParameterSpec spec = EdDSANamedCurveTable.getByName("ed25519-sha-512");
 		EdDSAPrivateKeySpec privateKeySpec = new EdDSAPrivateKeySpec(privateKeyBytes, spec);
 		EdDSAPublicKeySpec pubKeySpec = new EdDSAPublicKeySpec(privateKeySpec.getA(), spec);

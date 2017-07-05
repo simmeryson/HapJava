@@ -55,7 +55,7 @@ public interface BridgeAuthInfo {
      * need to be reset if the information is lost.
      *
      * @param username  the iOS device's username. The value will not be meaningful to anything but iOS.
-     * @param publicKey the iOS device's public key.
+     * @param publicKey the iOS device's public key. iOSDeviceLTPK.
      */
     void createUser(String username, byte[] publicKey);
 
@@ -72,7 +72,7 @@ public interface BridgeAuthInfo {
      * with the signature of the pair verification request to validate the device.
      *
      * @param username the username of the iOS device to retrieve the public key for.
-     * @return the previously stored public key for this user.
+     * @return the previously stored public key for this user. iOSDeviceLTPK.
      */
     byte[] getUserPublicKey(String username);
 
