@@ -6,7 +6,6 @@ import net.i2p.crypto.eddsa.spec.EdDSANamedCurveTable;
 import net.i2p.crypto.eddsa.spec.EdDSAParameterSpec;
 
 import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.SecureRandom;
 
 public class HomekitUtils {
@@ -17,7 +16,7 @@ public class HomekitUtils {
         return new BigInteger(SRP6Routines.generateRandomSalt(16));
     }
 
-    public static byte[] generateKey() throws InvalidAlgorithmParameterException {
+    public static byte[] generateKey(){
         EdDSAParameterSpec spec = EdDSANamedCurveTable.getByName("ed25519-sha-512");
         byte[] seed = new byte[spec.getCurve().getField().getb() / 8];
         getSecureRandom().nextBytes(seed);

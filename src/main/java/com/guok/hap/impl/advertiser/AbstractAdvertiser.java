@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Interface of Zeroconf standard. Implement with Avahi or Bonjour.
- *
+ * <p>
  * <p>Bonjour Service needs TXT record, and TXT record as defined below </p>
  * <ul>
- *     <li>"c#"
+ * <li>"c#"
  * Current configuration number. Required.</li>
  * <li>"ff"         Feature flags, Required if
  * non-zero.</li>
@@ -25,24 +25,26 @@ import org.slf4j.LoggerFactory;
  * must have range of 1-65535.This must take value defined in {@link
  * com.guok.hap.AccessoryCategory}</li>
  * </ul>
- *
+ * <p>
  * Created by guokai
  */
 public abstract class AbstractAdvertiser implements IAdvertiser {
     protected static String SERVICE_TYPE = "_hap._tcp";
 
-    protected boolean discoverable = true;
+    protected volatile boolean discoverable = true;
     protected boolean isAdvertising = false;
     protected String label;
     protected String mac;
     protected int port;
     protected int configurationIndex;
+    protected volatile boolean isReStart = false;
 
     protected final static Logger logger = LoggerFactory.getLogger(AbstractAdvertiser.class);
 
     public synchronized void advertise(String label, String mac, int port, int configurationIndex) {
-        if (isAdvertising) {
-            throw new IllegalStateException("Homekit IAdvertiser is already running");
+        if (isAdvertising && !isReStart) {
+            logger.error("Homekit IAdvertiser is already running!");
+            return;
         }
 
         verifyServiceName(label);
@@ -67,15 +69,18 @@ public abstract class AbstractAdvertiser implements IAdvertiser {
 
     public abstract void registerService();
 
-    public abstract void stop();
-
-    public abstract void setDiscoverable(boolean discoverable);
-
-    public abstract void setConfigurationIndex(int revision);
-
     public void verifyServiceName(String name) {
         if (name.length() > 63) {
             throw new IllegalArgumentException("the maximum length of service name is 63!");
         }
+    }
+
+    public boolean getDiscoverable() {
+        return discoverable;
+    }
+
+    @Override
+    public void setReStart(boolean reStart) {
+        this.isReStart = reStart;
     }
 }

@@ -1,6 +1,5 @@
 package com.guok.hap.impl.pairing;
 
-
 import com.guok.hap.BridgeAuthInfo;
 import com.guok.hap.impl.HomekitRegistry;
 import com.guok.hap.impl.crypto.ChachaDecoder;
@@ -79,6 +78,7 @@ public class PairVerificationManager {
                 authInfo.getMac().getBytes(StandardCharsets.UTF_8),
                 iOSCurve25519PublicKey);
 
+        logger.error("accessoryID: " + authInfo.getMac());
         byte[] accessorySignature = new EdDSASigner(authInfo.getPrivateKey()).sign(accessoryInfo);
         Encoder encoder = TypeLengthValueUtils.getEncoder();
         encoder.add(MessageType.IDENTIFIER, authInfo.getMac().getBytes(StandardCharsets.UTF_8));
@@ -95,7 +95,7 @@ public class PairVerificationManager {
         byte[] authTag = chacha.encodeCiphertext(plaintext);
 
         encoder = TypeLengthValueUtils.getEncoder();
-        encoder.add(MessageType.STATE, (short) 2);
+        encoder.add(MessageType.STATE, TLVState.M2.getKey());
         encoder.add(MessageType.ENCRYPTED_DATA, authTag);
         encoder.add(MessageType.PUBLIC_KEY, AccessoryCurve25519PublicKey);
 
@@ -105,7 +105,7 @@ public class PairVerificationManager {
     private HttpResponse stage2(Stage2Request request) throws Exception {
         if (request.getAuthTagData().length == 0 || request.getMessageData().length == 0) {
             String error = "no EncryptedData in pair verify request!";
-            return TypeLengthValueUtils.createTLVErrorResponse(error, (short) 0x04, TLVError.AUTHENTICATION);
+            return TypeLengthValueUtils.createTLVErrorResponse(error, TLVState.M4.getKey(), TLVError.AUTHENTICATION);
         }
         ChachaDecoder chacha = new ChachaDecoder(sessionKey, "PV-Msg03".getBytes(StandardCharsets.UTF_8));
         byte[] plaintext = chacha.decodeCiphertext(request.getAuthTagData(), request.getMessageData());
@@ -114,23 +114,24 @@ public class PairVerificationManager {
         byte[] iOSPairingID = d.getBytes(MessageType.IDENTIFIER);
         byte[] iOSDeviceSignature = d.getBytes(MessageType.SIGNATURE);
 
+        logger.error("iOSPairingID: " + new String(iOSPairingID, StandardCharsets.UTF_8));
         byte[] iOSDeviceInfo = ByteUtils.joinBytes(iOSCurve25519PublicKey, iOSPairingID, AccessoryCurve25519PublicKey);
 
         byte[] iOSDeviceLtpk = authInfo.getUserPublicKey(new String(iOSPairingID, StandardCharsets.UTF_8));
         if (iOSDeviceLtpk == null) {
             String error = "Unknown user: " + new String(iOSPairingID, StandardCharsets.UTF_8);
-            return TypeLengthValueUtils.createTLVErrorResponse(error, (short) 0x04, TLVError.AUTHENTICATION);
+            return TypeLengthValueUtils.createTLVErrorResponse(error, TLVState.M4.getKey(), TLVError.AUTHENTICATION);
         }
 
         Encoder encoder = TypeLengthValueUtils.getEncoder();
         if (new EdDSAVerifier(iOSDeviceLtpk).verify(iOSDeviceInfo, iOSDeviceSignature)) {
-            encoder.add(MessageType.STATE, (short) 4);
+            encoder.add(MessageType.STATE, TLVState.M4.getKey());
             logger.info("Completed pair verification for " + registry.getLabel());
             return new UpgradeResponse(encoder.toByteArray(), createKey("Control-Write-Encryption-Key"),
                     createKey("Control-Read-Encryption-Key"));
         } else {
             String error = "Invalid signature. Could not pair " + registry.getLabel();
-            return TypeLengthValueUtils.createTLVErrorResponse(error, (short) 0x04, TLVError.AUTHENTICATION);
+            return TypeLengthValueUtils.createTLVErrorResponse(error, TLVState.M4.getKey(), TLVError.AUTHENTICATION);
         }
     }
 

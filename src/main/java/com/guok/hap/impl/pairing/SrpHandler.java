@@ -7,6 +7,8 @@ import com.guok.hap.impl.pairing.TypeLengthValueUtils.Encoder;
 import com.guok.hap.impl.responses.GeneralErrorResponse;
 import com.guok.hap.impl.responses.HttpStatusCodes;
 import com.nimbusds.srp6.SRP6CryptoParams;
+import com.nimbusds.srp6.SRP6Exception;
+import com.nimbusds.srp6.SRP6Routines;
 import com.nimbusds.srp6.SRP6VerifierGenerator;
 import com.nimbusds.srp6.XRoutineWithUserIdentity;
 
@@ -33,18 +35,18 @@ class SrpHandler {
 	
 	private final static Logger logger = LoggerFactory.getLogger(SrpHandler.class);
 	
-	private final BigInteger salt;//General 16 byte of random salt
+	private final BigInteger salt ;//General 16 byte of random salt
 	private final HomekitSRP6ServerSession SrpSession;
 	private final SRP6CryptoParams config;
 	private final String pin;
 	
-	public SrpHandler(String pin, BigInteger salt) {
+	public SrpHandler(String pin) {
 		config = new SRP6CryptoParams(N_3072, G, "SHA-512");
 		SrpSession = new HomekitSRP6ServerSession(config);
 		SrpSession.setClientEvidenceRoutine(new ClientEvidenceRoutineImpl());
 		SrpSession.setServerEvidenceRoutine(new ServerEvidenceRoutineImpl());
 		this.pin = pin;
-		this.salt = salt;
+		this.salt = new BigInteger(SRP6Routines.generateRandomSalt(16));
 	}
 	
 	public HttpResponse handle(PairSetupRequest request) throws Exception {
@@ -70,18 +72,19 @@ class SrpHandler {
 	 */
 	private HttpResponse step1() throws Exception {
 		if (SrpSession.getState() != State.INIT) {
-			logger.error("Session is not in state INIT when receiving step1");
-			return new GeneralErrorResponse(HttpStatusCodes.CONFLICT);
+			String err = "Session is not in state INIT when receiving step1";
+			return TypeLengthValueUtils.createTLVErrorResponse(err, TLVState.M2.getKey(), TLVError.BUSY);
 		}
 				
 		SRP6VerifierGenerator verifierGenerator = new SRP6VerifierGenerator(config);
 		verifierGenerator.setXRoutine(new XRoutineWithUserIdentity());
 		BigInteger verifier = verifierGenerator.generateVerifier(salt, IDENTIFIER, pin);
-		
+		BigInteger SrpPublicKey = SrpSession.step1(IDENTIFIER, salt, verifier);
+
 		Encoder encoder = TypeLengthValueUtils.getEncoder();
-		encoder.add(MessageType.STATE, (short) 0x02);
+		encoder.add(MessageType.STATE, TLVState.M2.getKey());
 		encoder.add(MessageType.SALT, salt);
-		encoder.add(MessageType.PUBLIC_KEY, SrpSession.step1(IDENTIFIER, salt, verifier));
+		encoder.add(MessageType.PUBLIC_KEY, SrpPublicKey);
 		return new PairingResponse(encoder.toByteArray());
 	}
 
@@ -95,13 +98,18 @@ class SrpHandler {
 	 */
 	private HttpResponse step2(Stage2Request request) throws Exception {
 		if (SrpSession.getState() != State.STEP_1) {
-			logger.error("Session is not in state Stage 1 when receiving step2");
-			return new GeneralErrorResponse(HttpStatusCodes.CONFLICT);
+			String err = "Session is not in state Stage 1 when receiving step2";
+			return TypeLengthValueUtils.createTLVErrorResponse(err, TLVState.M4.getKey(), TLVError.BUSY);
 		}
-		BigInteger m2 = SrpSession.step2(request.getPublicKey(), request.getProof());
+		BigInteger accessorySrpProof = null;
+		try {
+			accessorySrpProof = SrpSession.step2(request.getPublicKey(), request.getProof());
+		} catch (SRP6Exception e) {
+			return TypeLengthValueUtils.createTLVErrorResponse(e.getMessage(), TLVState.M4.getKey(), TLVError.AUTHENTICATION);
+		}
 		Encoder encoder = TypeLengthValueUtils.getEncoder();
-		encoder.add(MessageType.STATE, (short) 0x04);
-		encoder.add(MessageType.PROOF, m2);
+		encoder.add(MessageType.STATE, TLVState.M4.getKey());
+		encoder.add(MessageType.PROOF, accessorySrpProof);
 		return new PairingResponse(encoder.toByteArray());
 	}
 
@@ -109,14 +117,14 @@ class SrpHandler {
 	 * compute SRP shared secret key
 	 * @return
 	 */
-	public byte[] getK() {
+	byte[] getK() {
 		MessageDigest digest = SrpSession.getCryptoParams().getMessageDigestInstance();
 		BigInteger S = SrpSession.getSessionKey(false);
 		byte[] sBytes = bigIntegerToUnsignedByteArray(S);
 		return digest.digest(sBytes);
 	}
 
-	public static byte[] bigIntegerToUnsignedByteArray(BigInteger i) {
+	static byte[] bigIntegerToUnsignedByteArray(BigInteger i) {
 		byte[] array = i.toByteArray();
 		if (array[0] == 0) {
 			array = Arrays.copyOfRange(array, 1, array.length);

@@ -46,7 +46,7 @@ class NettyHomekitHttpService {
         this.nThreads = nThreads;
     }
 
-    public ListenableFuture<Integer> create(HomekitClientConnectionFactory connectionFactory) {
+    public ListenableFuture<Integer> start(HomekitClientConnectionFactory connectionFactory) {
         final SettableFuture<Integer> portFuture = SettableFuture.create();
         ServerBootstrap b = new ServerBootstrap();
         b.group(bossGroup, workerGroup)

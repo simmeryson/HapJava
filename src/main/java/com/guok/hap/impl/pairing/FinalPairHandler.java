@@ -22,80 +22,81 @@ import java.nio.charset.StandardCharsets;
  */
 class FinalPairHandler {
 
-	private final byte[] inputKey;//SRP shared secret key
+	private final byte[] SrpSharedSecret;//SRP shared secret key
 	private final BridgeAuthInfo authInfo;
 	private final IAdvertiser advertiser;
 
-	private byte[] hkdf_enc_key;
+	private byte[] hkdf_session_key;
 
-	public FinalPairHandler(byte[] inputKey, BridgeAuthInfo authInfo, IAdvertiser advertiser) {
-		this.inputKey = inputKey;
+	public FinalPairHandler(byte[] SrpSharedSecret, BridgeAuthInfo authInfo, IAdvertiser advertiser) {
+		this.SrpSharedSecret = SrpSharedSecret;
 		this.authInfo = authInfo;
 		this.advertiser = advertiser;
 	}
 
 	public HttpResponse handle(PairSetupRequest req) throws Exception {
 		HKDFBytesGenerator hkdf = new HKDFBytesGenerator(new SHA512Digest());
-		hkdf.init(new HKDFParameters(inputKey, "Pair-Setup-Encrypt-Salt".getBytes(StandardCharsets.UTF_8),
+		hkdf.init(new HKDFParameters(SrpSharedSecret, "Pair-Setup-Encrypt-Salt".getBytes(StandardCharsets.UTF_8),
 				"Pair-Setup-Encrypt-Info".getBytes(StandardCharsets.UTF_8)));
-		byte[] okm = hkdf_enc_key = new byte[32];
-		hkdf.generateBytes(okm, 0, 32);
+		byte[] sessionKey = hkdf_session_key = new byte[32];
+		hkdf.generateBytes(sessionKey, 0, 32);
 
-		return decrypt((Stage3Request) req, okm);
+		return decrypt((Stage3Request) req, sessionKey);
 	}
 
-	private HttpResponse decrypt(Stage3Request req, byte[] key) throws Exception {
-		ChachaDecoder chacha = new ChachaDecoder(key, "PS-Msg05".getBytes(StandardCharsets.UTF_8));
-		byte[] plaintext = chacha.decodeCiphertext(req.getAuthTagData(), req.getMessageData());
+	private HttpResponse decrypt(Stage3Request req, byte[] sessionKey) throws Exception {
+		ChachaDecoder chacha = new ChachaDecoder(sessionKey, "PS-Msg05".getBytes(StandardCharsets.UTF_8));
+		byte[] authTag = chacha.decodeCiphertext(req.getAuthTagData(), req.getMessageData());
 
-		DecodeResult d = TypeLengthValueUtils.decode(plaintext);
+		DecodeResult d = TypeLengthValueUtils.decode(authTag);
 		byte[] iOSDevicePairingID = d.getBytes(MessageType.IDENTIFIER);
-		byte[] ltpk = d.getBytes(MessageType.PUBLIC_KEY);
+		byte[] iOSCurveLTPK = d.getBytes(MessageType.PUBLIC_KEY);
 		byte[] proof = d.getBytes(MessageType.SIGNATURE);
-		return verifyM5(iOSDevicePairingID, ltpk, proof);
+		return verifyM5(iOSDevicePairingID, iOSCurveLTPK, proof);
 	}
 
-	private HttpResponse verifyM5(byte[] iOSDevicePairingID, byte[] ltpk, byte[] proof) throws Exception {
+	private HttpResponse verifyM5(byte[] iOSDevicePairingID, byte[] iOSCurveLTPK, byte[] proof) throws Exception {
 		HKDFBytesGenerator hkdf = new HKDFBytesGenerator(new SHA512Digest());
-		hkdf.init(new HKDFParameters(inputKey, "Pair-Setup-Controller-Sign-Salt".getBytes(StandardCharsets.UTF_8),
+		hkdf.init(new HKDFParameters(SrpSharedSecret, "Pair-Setup-Controller-Sign-Salt".getBytes(StandardCharsets.UTF_8),
 				"Pair-Setup-Controller-Sign-Info".getBytes(StandardCharsets.UTF_8)));
 		byte[] iOSDeviceX = new byte[32];
 		hkdf.generateBytes(iOSDeviceX, 0, 32);
 
-		byte[] completeData = ByteUtils.joinBytes(iOSDeviceX, iOSDevicePairingID, ltpk);
+		byte[] iOSDeviceInfo = ByteUtils.joinBytes(iOSDeviceX, iOSDevicePairingID, iOSCurveLTPK);
 
-		if (!new EdDSAVerifier(ltpk).verify(completeData, proof)) {
-			throw new Exception("Invalid signature");
+		if (!new EdDSAVerifier(iOSCurveLTPK).verify(iOSDeviceInfo, proof)) {
+			String err = "Final pair setup verify fail in M5 from iOS";
+			return TypeLengthValueUtils.createTLVErrorResponse(err, TLVState.M6.getKey(), TLVError.AUTHENTICATION);
 		}
-		authInfo.createUser(new String(iOSDevicePairingID, StandardCharsets.UTF_8), ltpk);
+		authInfo.createUser(new String(iOSDevicePairingID, StandardCharsets.UTF_8), iOSCurveLTPK);
 		advertiser.setDiscoverable(false);
 		return createM6Response();
 	}
 
 	private HttpResponse createM6Response() throws Exception {
 		HKDFBytesGenerator hkdf = new HKDFBytesGenerator(new SHA512Digest());
-		hkdf.init(new HKDFParameters(inputKey, "Pair-Setup-Accessory-Sign-Salt".getBytes(StandardCharsets.UTF_8),
+		hkdf.init(new HKDFParameters(SrpSharedSecret, "Pair-Setup-Accessory-Sign-Salt".getBytes(StandardCharsets.UTF_8),
 				"Pair-Setup-Accessory-Sign-Info".getBytes(StandardCharsets.UTF_8)));
 		byte[] accessoryX = new byte[32];
 		hkdf.generateBytes(accessoryX, 0, 32);
 
 		EdDSASigner signer = new EdDSASigner(authInfo.getPrivateKey());
 
-		byte[] material = ByteUtils.joinBytes(accessoryX, authInfo.getMac().getBytes(StandardCharsets.UTF_8), signer.getPublicKey());
+		byte[] accessoryInfo = ByteUtils.joinBytes(accessoryX, authInfo.getMac().getBytes(StandardCharsets.UTF_8), signer.getPublicKey());
 
-		byte[] signature = signer.sign(material);
+		byte[] signature = signer.sign(accessoryInfo);
 
 		Encoder encoder = TypeLengthValueUtils.getEncoder();
 		encoder.add(MessageType.IDENTIFIER, authInfo.getMac().getBytes(StandardCharsets.UTF_8));
 		encoder.add(MessageType.PUBLIC_KEY, signer.getPublicKey());
 		encoder.add(MessageType.SIGNATURE, signature);
-		byte[] plaintext = encoder.toByteArray();
+		byte[] authTag = encoder.toByteArray();
 
-		ChachaEncoder chacha = new ChachaEncoder(hkdf_enc_key, "PS-Msg06".getBytes(StandardCharsets.UTF_8));
-		byte[] ciphertext = chacha.encodeCiphertext(plaintext);
+		ChachaEncoder chacha = new ChachaEncoder(hkdf_session_key, "PS-Msg06".getBytes(StandardCharsets.UTF_8));
+		byte[] ciphertext = chacha.encodeCiphertext(authTag);
 
 		encoder = TypeLengthValueUtils.getEncoder();
-		encoder.add(MessageType.STATE, (short) 6);
+		encoder.add(MessageType.STATE, TLVState.M6.getKey());
 		encoder.add(MessageType.ENCRYPTED_DATA, ciphertext);
 
 		return new PairingResponse(encoder.toByteArray());

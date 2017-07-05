@@ -71,6 +71,7 @@ public class JmdnsHomekitAdvertiser extends AbstractAdvertiser {
             e.printStackTrace();
         }
         isAdvertising = true;
+        isReStart = false;
     }
 
 }

@@ -39,7 +39,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      * Default constructor
      *
      * @param type        a string containing a type that indicates the type of characteristic.
-     *                    Apple defines a set of these, however implementors can create their own as
+     *                    Apple defines a set of these, however implementors can creat their own as
      *                    well.
      * @param format      a string indicating the value type, which must be a recognized type by the
      *                    consuming device.

@@ -110,22 +110,25 @@ public class HomekitRoot {
      * Homekit clients to reconnect.
      */
     public void start() {
-        started = true;
-        registry.reset();
+        if (!started) {
+            started = true;
+            registry.reset();
 
-        Futures.transform(webHandler.start(new HomekitClientConnectionFactoryImpl(authInfo, registry, subscriptions, advertiser))
-                , new Function<Integer, Object>() {
-                    @Override
-                    public Object apply(Integer port) {
-                        try {
-                            refreshAuthInfo();
-                            advertiser.advertise(label, authInfo.getMac(), port, configurationIndex);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
+            Futures.transform(webHandler.start(new HomekitClientConnectionFactoryImpl(authInfo, registry, subscriptions, advertiser))
+                    , new Function<Integer, Object>() {
+                        @Override
+                        public Object apply(Integer port) {
+                            try {
+                                refreshAuthInfo();
+                                advertiser.advertise(label, authInfo.getMac(), port, configurationIndex);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+                            return null;
                         }
-                        return null;
-                    }
-                });
+                    });
+        }else
+            logger.error("Bridge accessory already running!");
     }
 
     /**
@@ -135,6 +138,16 @@ public class HomekitRoot {
         advertiser.stop();
         webHandler.stop();
         started = false;
+    }
+
+    /**
+     * restart all service
+     */
+    public void reStart() {
+        stop();
+        advertiser.setReStart(true);
+        authInfo.initPairParams();
+        start();
     }
 
     /**

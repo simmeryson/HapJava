@@ -6,7 +6,6 @@ import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.http.impl.HomekitHttpServer;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.InetAddress;
 import java.security.InvalidAlgorithmParameterException;
 
@@ -19,8 +18,8 @@ import java.security.InvalidAlgorithmParameterException;
  * The {@link BridgeAuthInfo AndroidBridge} argument when creating accessories should be an
  * implementation supplied by your application. Several of the values needed for your implementation
  * are provided by this class, specifically {@link #generateKey() generateKey}, {@link
- * #generateMac() generateMac}, and {@link #generateSalt()}. It is important that you provide these
- * same values on each start of your application or Homekit will fail to recognize your device as
+ * #generateMac() generateMac}. It is important that you provide these
+ * same values on each creat of your application or Homekit will fail to recognize your device as
  * being the same.
  *
  * @author Andy Lintner
@@ -79,10 +78,10 @@ public class HomekitServer {
      * Creates a single (non-bridge) accessory
      *
      * @param authInfo  authentication information for this accessory. These values should be
-     *                  persisted and re-supplied on re-start of your application.
+     *                  persisted and re-supplied on re-creat of your application.
      * @param accessory accessory implementation. This will usually be an implementation of an
      *                  interface in {#link com.guok.hap.accessories com.guok.hap.accessories}.
-     * @return the newly created server. Call {@link HomekitStandaloneAccessoryServer#start start}
+     * @return the newly created server. Call {@link HomekitStandaloneAccessoryServer#start creat}
      * on this to begin.
      * @throws IOException when mDNS cannot connect to the network
      */
@@ -97,18 +96,18 @@ public class HomekitServer {
      * advantage over multiple standalone accessories of only requiring a single pairing from iOS
      * for the bridge.
      *
-     * <p>The Operation System with avahi-deamon server , like Ubuntu, Debian, could use this method to create bridge
+     * <p>The Operation System with avahi-deamon server , like Ubuntu, Debian, could use this method to creat bridge
      *  accessory using default advertiser implement with JMDNS</p>
      *
      * @param authInfo     authentication information for this accessory. These values should be
-     *                     persisted and re-supplied on re-start of your application.
+     *                     persisted and re-supplied on re-creat of your application.
      * @param label        label for the bridge. This will show in iOS during pairing.
      * @param manufacturer manufacturer of the bridge. This information is exposed to iOS for
      *                     unknown purposes.
      * @param model        model of the bridge. This is also exposed to iOS for unknown purposes.
      * @param serialNumber serial number of the bridge. Also exposed. Purposes also unknown.
      * @return the bridge, from which you can {@link HomekitRoot#addAccessory add accessories} and
-     * then {@link HomekitRoot#start start} handling requests.
+     * then {@link HomekitRoot#start creat} handling requests.
      * @throws IOException when mDNS cannot connect to the network
      */
     public HomekitRoot createBridge(BridgeAuthInfo authInfo,
@@ -127,7 +126,7 @@ public class HomekitServer {
      * for the bridge.
      * <p>you could use other Zeroconf implement to advertise the service, like Bonjour</p>
      * @param authInfo          authentication information for this accessory. These values should be
-     *                          persisted and re-supplied on re-start of your application.
+     *                          persisted and re-supplied on re-creat of your application.
      * @param label             label for the bridge. This will show in iOS during pairing.
      * @param manufacturer      manufacturer of the bridge. This information is exposed to iOS for
      *                          unknown purposes.
@@ -135,7 +134,7 @@ public class HomekitServer {
      * @param serialNumber      serial number of the bridge. Also exposed. Purposes also unknown.
      * @param advertiser        Zeroconf implement.
      * @return  the bridge, from which you can {@link HomekitRoot#addAccessory add accessories} and
-     * then {@link HomekitRoot#start start} handling requests.
+     * then {@link HomekitRoot#start creat} handling requests.
      * @throws IOException when advertiser cannot connect to the network
      */
     public HomekitRoot createBridge(BridgeAuthInfo authInfo,
@@ -150,18 +149,6 @@ public class HomekitServer {
     }
 
     /**
-     * Generates a value to supply in {@link BridgeAuthInfo#getSalt() AndroidBridge.getSalt()}.
-     * This is used to salt the pin-code. You don't need to worry about that though - the salting is
-     * done on the plaintext pin. (Yes, plaintext passwords are bad. Please don't secure your
-     * nuclear storage facility with this implementation)
-     *
-     * @return the generated salt
-     */
-    static public BigInteger generateSalt() {
-        return HomekitUtils.generateSalt();
-    }
-
-    /**
      * Generates a value to supply in {@link BridgeAuthInfo#getPrivateKey()
      * AndroidBridge.getPrivKey()}. This is used as the private key during pairing and connection
      * setup.
@@ -170,7 +157,7 @@ public class HomekitServer {
      * @throws InvalidAlgorithmParameterException if the JVM does not contain the necessary
      *                                            encryption algorithms.
      */
-    static public byte[] generateKey() throws InvalidAlgorithmParameterException {
+    static public byte[] generateKey(){
         return HomekitUtils.generateKey();
     }
 

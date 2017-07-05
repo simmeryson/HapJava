@@ -12,10 +12,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * To establish a relationship between an iOS device and a HomeKit accessory, keys are
+ * exchanged using Secure Remote Password (3072-bit) protocol, utilizing an eight-digit
+ * code provided by the accessory’s manufacturer and entered on the iOS device by the
+ * user  and then encrypted using ChaCha20-Poly1305 AEAD with HKDF-SHA-512 derived
+ * keys. The accessory’s MFi certification is also verified during setup.
+ * <p>
  * Pair Setup process follows the Secure Remote Password protocol.
  * This process assumes that the accessory is unpaired.
  * <p>Pair Setup is made of 6 steps, M1 to M6. Accessory needs to handle M1,M3,M5.
- *  {@link SrpHandler} handle M1, M2. {@link FinalPairHandler} handle M5.
+ * {@link SrpHandler} handle M1, M2. {@link FinalPairHandler} handle M5.
  */
 public class PairingManager {
 
@@ -37,35 +43,39 @@ public class PairingManager {
         PairSetupRequest req = PairSetupRequest.of(httpRequest.getBody());
 
         if (req.getStage() == Stage.ONE) {
+            if (!advertiser.getDiscoverable()){
+                String err = "bridge is already paired!";
+                return TypeLengthValueUtils.createTLVErrorResponse(err, TLVState.M2.getKey(), TLVError.UNAVAILABLE);
+            }
             logger.info("Starting pair for " + registry.getLabel());
-            srpHandler = new SrpHandler(authInfo.getPin(), authInfo.getSalt());
+            srpHandler = new SrpHandler(authInfo.getPin());
             return srpHandler.handle(req);
         } else if (req.getStage() == Stage.TWO) {
-            logger.debug("Entering second stage of pair for " + registry.getLabel());
+            logger.info("Entering second stage of pair for " + registry.getLabel());
             if (srpHandler == null) {
-                logger.warn("Received unexpected stage 2 request for " + registry.getLabel());
-                return new GeneralErrorResponse(HttpStatusCodes.UNAUTHORIZED);
+                String err = "Received unexpected stage 2 request for " + registry.getLabel();
+                return TypeLengthValueUtils.createTLVErrorResponse(err, TLVState.M4.getKey(), TLVError.AUTHENTICATION);
             } else {
                 try {
                     return srpHandler.handle(req);
                 } catch (Exception e) {
                     srpHandler = null; //You don't get to try again - need a new key
                     logger.error("Exception encountered while processing pairing request", e);
-                    return new GeneralErrorResponse(HttpStatusCodes.UNAUTHORIZED);
+                    return TypeLengthValueUtils.createTLVErrorResponse(TLVState.M4.getKey(), TLVError.AUTHENTICATION);
                 }
             }
         } else if (req.getStage() == Stage.THREE) {
-            logger.debug("Entering third stage of pair for " + registry.getLabel());
+            logger.info("Entering third stage of pair for " + registry.getLabel());
             if (srpHandler == null) {
-                logger.warn("Received unexpected stage 3 request for " + registry.getLabel());
-                return new GeneralErrorResponse(HttpStatusCodes.UNAUTHORIZED);
+                logger.error("Received unexpected stage 3 request for " + registry.getLabel());
+                return TypeLengthValueUtils.createTLVErrorResponse(TLVState.M6.getKey(), TLVError.AUTHENTICATION);
             } else {
                 FinalPairHandler handler = new FinalPairHandler(srpHandler.getK(), authInfo, advertiser);
                 try {
                     return handler.handle(req);
                 } catch (Exception e) {
                     logger.error("Exception while finalizing pairing", e);
-                    return new GeneralErrorResponse(HttpStatusCodes.UNAUTHORIZED);
+                    return TypeLengthValueUtils.createTLVErrorResponse(TLVState.M6.getKey(), TLVError.AUTHENTICATION);
                 }
             }
         }

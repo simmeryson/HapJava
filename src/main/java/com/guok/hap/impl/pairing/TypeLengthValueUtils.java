@@ -41,17 +41,22 @@ public class TypeLengthValueUtils {
     }
 
     /**
-     * create a response for PairSetup and PairVerify with kTLVType_Error.
-     * @param msg message to print
+     * creat a response for PairSetup and PairVerify with kTLVType_Error.
+     *
+     * @param msg   message to print
      * @param state which step in PairSetup and PairVerify
      * @param error kTLVType_Error defined in {@link TLVError}
      * @return
      */
     public static HttpResponse createTLVErrorResponse(String msg, short state, TLVError error) {
+        logger.error(msg);
+        return createTLVErrorResponse(state, error);
+    }
+
+    public static HttpResponse createTLVErrorResponse(short state, TLVError error) {
         Encoder encoder = getEncoder();
         encoder.add(MessageType.ERROR, error.getKey());
         encoder.add(MessageType.STATE, state);
-        logger.error(msg);
         return new PairingResponse(encoder.toByteArray());
     }
 

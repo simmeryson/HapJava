@@ -7,7 +7,7 @@ import com.guok.hap.impl.http.HomekitClientConnectionFactory;
 
 public class HomekitHttpServer implements HomekitWebHandler {
 
-	private NettyHomekitHttpService service = null;
+	private volatile NettyHomekitHttpService service = null;
 	private final int port;
 	private final int nThreads;
 
@@ -15,6 +15,7 @@ public class HomekitHttpServer implements HomekitWebHandler {
 	public void stop() {
 		if (this.service != null) {
 			this.service.shutdown();
+			this.service = null;
 		}
 	}
 	
@@ -27,7 +28,7 @@ public class HomekitHttpServer implements HomekitWebHandler {
 	public ListenableFuture<Integer> start(HomekitClientConnectionFactory clientConnectionFactory) {
 		if (service == null) {
 			this.service = NettyHomekitHttpService.create(port, nThreads);
-			return this.service.create(clientConnectionFactory);
+			return this.service.start(clientConnectionFactory);
 		} else {
 			throw new RuntimeException("HomekitHttpServer can only be started once");
 		}

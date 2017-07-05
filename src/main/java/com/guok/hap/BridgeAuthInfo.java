@@ -1,7 +1,5 @@
 package com.guok.hap;
 
-import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
 import java.util.Map;
 
 /**
@@ -32,13 +30,6 @@ public interface BridgeAuthInfo {
      */
     String getMac();
 
-    /**
-     * The Salt that will be used when hashing the pin code to send to the client. You should generate this using
-     * {@link HomekitServer#generateSalt()}.
-     *
-     * @return the Salt.
-     */
-    BigInteger getSalt();
 
     /**
      * The private key used by the server during pairing and message encryption. You should generate this using
@@ -54,27 +45,27 @@ public interface BridgeAuthInfo {
      * be retrieved using {@link #getUserPublicKey(String)}. This must be stored in a persistent store as pairing will
      * need to be reset if the information is lost.
      *
-     * @param username  the iOS device's username. The value will not be meaningful to anything but iOS.
-     * @param publicKey the iOS device's public key. iOSDeviceLTPK.
+     * @param iOSDevicePairingID the iOS device's username. The value will not be meaningful to anything but iOS. iOSDevicePairingID
+     * @param publicKey          the iOS device's public key. iOSDeviceLTPK.
      */
-    void createUser(String username, byte[] publicKey);
+    void createUser(String iOSDevicePairingID, byte[] publicKey);
 
     /**
      * Called when an iOS device needs to remove an existing pairing. Subsequent calls to {@link #getUserPublicKey(String)} for this
      * username return null.
      *
-     * @param username the username to delete from the persistent store.
+     * @param iOSDevicePairingID the username to delete from the persistent store.
      */
-    void removeUser(String username);
+    void removeUser(String iOSDevicePairingID);
 
     /**
      * Called when an already paired iOS device is re-connecting. The public key returned by this method will be compared
      * with the signature of the pair verification request to validate the device.
      *
-     * @param username the username of the iOS device to retrieve the public key for.
+     * @param iOSDevicePairingID the username of the iOS device to retrieve the public key for.
      * @return the previously stored public key for this user. iOSDeviceLTPK.
      */
-    byte[] getUserPublicKey(String username);
+    byte[] getUserPublicKey(String iOSDevicePairingID);
 
     /**
      * Called to check if a user has been created. The homekit accessory advertises whether the accessory has already been paired.
@@ -94,10 +85,12 @@ public interface BridgeAuthInfo {
     /**
      * PrivateKey must be initially set by default. This should persist.
      */
-    byte[] initPrivateKey() throws InvalidAlgorithmParameterException;
+    byte[] initPrivateKey();
 
     /**
      * Paired PublicKey and pairingID must be initially set by default. This should persist as pairs after pairSetup done.
      */
     Map initUsernamePublicKey();
+
+    void initPairParams();
 }

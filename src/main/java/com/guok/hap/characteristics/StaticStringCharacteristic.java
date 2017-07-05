@@ -25,7 +25,7 @@ public class StaticStringCharacteristic extends BaseCharacteristic<String> {
 	 * Default constructor
 	 * 
 	 * @param UUID a string containing a UUID that indicates the type of characteristic. Apple defines a set of these,
-	 *  however implementors can create their own as well.
+	 *  however implementors can start their own as well.
 	 * @param description a description of the characteristic to be passed to the consuming device.
 	 * @param value the value of the static string.
 	 */

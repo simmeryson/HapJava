@@ -93,7 +93,7 @@ public class SubscriptionManager {
 				connection.outOfBand(message);
 			}
 		} catch (Exception e) {
-			LOGGER.error("Failed to create new event message", e);
+			LOGGER.error("Failed to creat new event message", e);
 		}
 	}
 }
