@@ -19,8 +19,8 @@ public abstract class BaseService implements Service{
 
     private final static Logger logger = LoggerFactory.getLogger(BaseService.class);
 
-    private final String type;
-    private final Map<String, Characteristic> characteristics = new ConcurrentHashMap<>();
+    protected final String type;
+    protected final Map<String, Characteristic> characteristics = new ConcurrentHashMap<>();
 
     public BaseService(String type) {
         String s = Integer.toHexString(Integer.parseInt(type.split("-")[0], 16));
@@ -49,5 +49,13 @@ public abstract class BaseService implements Service{
         }
 
         this.characteristics.put(characteristic.getType(), characteristic);
+    }
+
+    public <T extends Characteristic> T getSpecificCharact(Class<T> t) {
+        for (Characteristic characteristic : characteristics.values()) {
+            if (t.isInstance(characteristic))
+                return (T) characteristic;
+        }
+        return null;
     }
 }

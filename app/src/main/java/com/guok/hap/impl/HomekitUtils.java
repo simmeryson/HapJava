@@ -47,4 +47,19 @@ public class HomekitUtils {
         }
         return secureRandom;
     }
+
+    public static <T> boolean isIntanceOf(Object obj, T t) {
+        boolean result;
+        if (obj == null) {
+            result = false;
+        } else {
+            try {
+                T temp = (T) obj; // checkcast
+                result = true;
+            } catch (ClassCastException e) {
+                result = false;
+            }
+        }
+        return result;
+    }
 }

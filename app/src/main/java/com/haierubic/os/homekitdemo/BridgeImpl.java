@@ -5,6 +5,7 @@ import android.content.Context;
 import com.guok.hap.HomekitRoot;
 import com.guok.hap.HomekitServer;
 import com.guok.hap.impl.advertiser.IAdvertiser;
+import com.haierubic.os.homekitdemo.hapmaters.MediaPlayer;
 
 /**
  * @author guok
@@ -19,7 +20,8 @@ public class BridgeImpl {
             IAdvertiser mAdvertiser = new AndroidAdvtiser(context);
             HomekitServer homekit = new HomekitServer(PORT);
             bridge = homekit.createBridge(new AndroidBridge(context), "Android Bridge3", "Haier, Inc.", "G6", "111abe234", mAdvertiser);
-            bridge.addAccessory(new MockSwitch(context));
+            bridge.addAccessory(new MockSwitch());
+//            bridge.addAccessory(new MediaPlayer());
             bridge.start();
         } catch (Exception e) {
             e.printStackTrace();

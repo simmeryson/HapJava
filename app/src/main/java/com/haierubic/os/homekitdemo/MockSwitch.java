@@ -1,8 +1,6 @@
 package com.haierubic.os.homekitdemo;
 
 
-import android.content.Context;
-
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
@@ -20,8 +18,8 @@ public class MockSwitch extends Lightbulb {
 
     CharacteristicCallBack<Boolean> mCallBack;
 
-    public MockSwitch(Context context) {
-        mCallBack = new BroadcastCharactCallback<>(context);
+    public MockSwitch() {
+        mCallBack = new BroadcastCharactCallback<>("player", "power");
     }
 
     @Override
@@ -72,7 +70,7 @@ public class MockSwitch extends Lightbulb {
         if (subscribeCallback != null) {
             subscribeCallback.changed();
         }
-        System.out.println("The lightbulb is now "+(powerState ? "on" : "off"));
+        System.out.println("The lightbulb is now " + (powerState ? "on" : "off"));
         return Futures.immediateFuture(null);
     }
 

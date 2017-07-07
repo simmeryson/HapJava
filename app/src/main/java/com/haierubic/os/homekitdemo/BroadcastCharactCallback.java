@@ -19,18 +19,26 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
     public static final String ACTION = "com.guok.BroadcastCharactCallback.player";
     public static String URI_FORMAT = "homekit://com.guok/homekit?target=%s&object=%s&value=%s";
     public static Escaper queryEscapers = UrlEscapers.urlFormParameterEscaper();
-    private Context mContext;
+    private static Context mContext;
 
-    public BroadcastCharactCallback(Context context) {
-        mContext = context.getApplicationContext();
+    private final String target;
+    private final String object;
+
+    public BroadcastCharactCallback(String target, String object) {
+        this.target = target;
+        this.object = object;
+    }
+
+    public static void setContext(Context mContext) {
+        BroadcastCharactCallback.mContext = mContext.getApplicationContext();
     }
 
     @Override
     public int setValueCallback(T value) {
         Log.i("GK", "setValueCallback sendBroadcast!" + value);
         String s = String.format(URI_FORMAT,
-                queryEscapers.escape("player"),
-                queryEscapers.escape("power"),
+                queryEscapers.escape(this.target),
+                queryEscapers.escape(this.object),
                 queryEscapers.escape(value.toString()));
         Intent intent = new Intent(ACTION, Uri.parse(s));
         mContext.sendBroadcast(intent);

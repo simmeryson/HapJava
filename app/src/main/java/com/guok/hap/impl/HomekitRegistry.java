@@ -39,7 +39,7 @@ public class HomekitRegistry {
 			int iid = 0;
 			List<Service> newServices;
 			try {
-				newServices = new ArrayList<>(2);
+				newServices = new ArrayList<>();
 				newServices.add(new AccessoryInformationService(accessory));
 				newServices.addAll(accessory.getServices());
 			} catch (Exception e) {
@@ -47,8 +47,9 @@ public class HomekitRegistry {
 				services.put(accessory, Collections.<Service>emptyList());
 				continue;
 			}
-			Map<Integer, Characteristic> newCharacteristics = new HashMap<>();
 			services.put(accessory, newServices);
+
+			Map<Integer, Characteristic> newCharacteristics = new HashMap<>();
 			for (Service service: newServices) {
 				iid++;
 				for (Characteristic characteristic: service.getCharacteristics()) {

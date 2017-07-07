@@ -25,10 +25,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BroadcastCharactCallback.setContext(this);
+
         mReceiver = new HomekitReceiver();
         IntentFilter filter = new IntentFilter(BroadcastCharactCallback.ACTION);
         filter.addDataScheme("homekit");
         registerReceiver(mReceiver, filter);
+
         try {
             startService(new Intent(this, HapMainService.class));
         } catch (Exception ignored) {

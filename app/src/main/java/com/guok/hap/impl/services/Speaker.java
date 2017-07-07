@@ -22,5 +22,4 @@ public class Speaker extends BaseService {
         addCharacteristic(new MuteCharacteristic());
         addCharacteristic(new VolumeCharacteristic());
     }
-
 }
