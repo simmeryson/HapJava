@@ -25,7 +25,7 @@ public class TargetLockMechanismStateCharacteristic extends EnumCharacteristic i
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return Futures.transform(lock.getTargetMechanismState(), new Function<LockMechanismState, Integer>() {
 			@Override
 			public Integer apply(LockMechanismState lockMechanismState) {

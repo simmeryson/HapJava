@@ -33,6 +33,7 @@ public abstract class EnumCharacteristic extends BaseCharacteristic<Integer> {
 	public EnumCharacteristic(String UUID, boolean isWritable, boolean isReadable, String description, int maxValue) {
 		super(UUID, CharacteristicValueFormats.INT, isWritable, isReadable, description);
 		this.maxValue = maxValue;
+		this.value = 0;
 	}
 	
 	/**

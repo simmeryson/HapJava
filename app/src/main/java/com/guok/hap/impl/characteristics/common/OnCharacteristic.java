@@ -38,7 +38,7 @@ public class OnCharacteristic extends BooleanCharacteristic implements Eventable
 	}
 
 	@Override
-	protected ListenableFuture<Boolean> getValue() {
+	public ListenableFuture<Boolean> getValue() {
 		return getter.get();
 	}
 

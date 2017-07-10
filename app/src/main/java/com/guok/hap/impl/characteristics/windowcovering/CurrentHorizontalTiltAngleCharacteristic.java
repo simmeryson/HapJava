@@ -25,7 +25,7 @@ public class CurrentHorizontalTiltAngleCharacteristic extends IntegerCharacteris
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return windowCovering.getCurrentHorizontalTiltAngle();
 	}
 

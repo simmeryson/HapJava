@@ -20,8 +20,8 @@ public class BridgeImpl {
             IAdvertiser mAdvertiser = new AndroidAdvtiser(context);
             HomekitServer homekit = new HomekitServer(PORT);
             bridge = homekit.createBridge(new AndroidBridge(context), "Android Bridge3", "Haier, Inc.", "G6", "111abe234", mAdvertiser);
-            bridge.addAccessory(new MockSwitch());
-//            bridge.addAccessory(new MediaPlayer());
+//            bridge.addAccessory(new MockSwitch());
+            bridge.addAccessory(new MediaPlayer());
             bridge.start();
         } catch (Exception e) {
             e.printStackTrace();

@@ -21,7 +21,7 @@ public class ContactSensorStateCharacteristic extends EnumCharacteristic impleme
     }
 
     @Override
-    protected ListenableFuture<Integer> getValue() {
+    public ListenableFuture<Integer> getValue() {
         return Futures.transform(contactSensor.getCurrentState(), new Function<ContactState, Integer>() {
             @Override
             public Integer apply(ContactState contactState) {

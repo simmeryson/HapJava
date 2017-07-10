@@ -35,7 +35,7 @@ public class ActiveCharacteristic extends EnumCharacteristic implements Eventabl
     }
 
     @Override
-    protected ListenableFuture<Integer> getValue() {
+    public ListenableFuture<Integer> getValue() {
         return Futures.immediateFuture(value);
     }
 }

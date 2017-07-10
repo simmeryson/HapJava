@@ -27,7 +27,7 @@ public class PositionStateCharacteristic extends EnumCharacteristic implements E
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return Futures.transform(windowCovering.getPositionState(), new Function<WindowCoveringPositionState, Integer>() {
 			@Override
 			public Integer apply(WindowCoveringPositionState windowCoveringPositionState) {

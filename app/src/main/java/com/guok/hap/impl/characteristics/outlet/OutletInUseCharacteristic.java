@@ -23,7 +23,7 @@ public class OutletInUseCharacteristic  extends BooleanCharacteristic implements
 	}
 
 	@Override
-	protected ListenableFuture<Boolean> getValue() {
+	public ListenableFuture<Boolean> getValue() {
 		return outlet.getOutletInUse();
 	}
 

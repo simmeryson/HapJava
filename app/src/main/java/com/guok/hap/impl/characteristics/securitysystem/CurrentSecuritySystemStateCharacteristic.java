@@ -21,7 +21,7 @@ public class CurrentSecuritySystemStateCharacteristic extends EnumCharacteristic
     }
 
     @Override
-    protected ListenableFuture<Integer> getValue() {
+    public ListenableFuture<Integer> getValue() {
         return Futures.transform(securitySystem.getCurrentSecuritySystemState(), new Function<CurrentSecuritySystemState, Integer>() {
             @Override
             public Integer apply(CurrentSecuritySystemState currentSecuritySystemState) {

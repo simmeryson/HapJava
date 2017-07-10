@@ -3,7 +3,8 @@ package com.guok.hap.characteristics;
 import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-
+import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.responses.HapStatusCodes;
 
 import org.slf4j.Logger;
@@ -37,6 +38,8 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
 
     protected T value;
     protected CharacteristicCallBack<T> mCallBack;
+    protected Consumer<HomekitCharacteristicChangeCallback> subscriber;
+    protected Runnable unsubscriber;
 
     /**
      * Default constructor
@@ -166,7 +169,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      *
      * @return a future that will complete with the current value.
      */
-    protected abstract ListenableFuture<T> getValue();
+    public abstract ListenableFuture<T> getValue();
 
     /**
      * Supplies a default value for the characteristic to send to connected clients when the real
@@ -215,5 +218,17 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
 
     public void setCallBack(CharacteristicCallBack<T> callBack) {
         this.mCallBack = callBack;
+    }
+
+    public void setSubscriber(Consumer<HomekitCharacteristicChangeCallback> subscriber) {
+        this.subscriber = subscriber;
+    }
+
+    public void setUnsubscriber(Runnable unsubscriber){
+        this.unsubscriber = unsubscriber;
+    }
+
+    public ListenableFuture<T> getValueImmediately(){
+        return Futures.immediateFuture(value);
     }
 }

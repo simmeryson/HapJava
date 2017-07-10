@@ -25,7 +25,7 @@ public class CurrentDoorStateCharacteristic extends EnumCharacteristic implement
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return Futures.transform(door.getTargetDoorState(), new Function<DoorState, Integer>() {
 			@Override
 			public Integer apply(DoorState doorState) {

@@ -23,7 +23,7 @@ public class TargetVerticalTiltAngleCharacteristic extends IntegerCharacteristic
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return windowCovering.getTargetVerticalTiltAngle();
 	}
 

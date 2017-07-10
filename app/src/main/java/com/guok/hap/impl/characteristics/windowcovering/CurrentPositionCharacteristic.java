@@ -25,7 +25,7 @@ public class CurrentPositionCharacteristic extends IntegerCharacteristic impleme
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return windowCovering.getCurrentPosition();
 	}
 

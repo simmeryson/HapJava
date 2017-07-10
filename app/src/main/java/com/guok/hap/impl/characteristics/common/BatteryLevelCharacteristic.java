@@ -27,7 +27,7 @@ public class BatteryLevelCharacteristic extends IntegerCharacteristic implements
     }
 
     @Override
-    protected ListenableFuture<Integer> getValue() {
+    public ListenableFuture<Integer> getValue() {
         return getter.get();
     }
 

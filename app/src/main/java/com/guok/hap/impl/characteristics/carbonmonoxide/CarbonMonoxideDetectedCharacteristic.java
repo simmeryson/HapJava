@@ -21,7 +21,7 @@ public class CarbonMonoxideDetectedCharacteristic extends EnumCharacteristic imp
     }
 
     @Override
-    protected ListenableFuture<Integer> getValue() {
+    public ListenableFuture<Integer> getValue() {
         return Futures.transform(carbonMonoxideSensor.getCarbonMonoxideDetectedState(), new Function<CarbonMonoxideDetectedState, Integer>() {
             @Override
             public Integer apply(CarbonMonoxideDetectedState carbonMonoxideDetectedState) {

@@ -27,7 +27,7 @@ public class CurrentLockMechanismStateCharacteristic extends EnumCharacteristic 
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return Futures.transform(lock.getCurrentMechanismState(), new Function<LockMechanismState, Integer>() {
 			@Override
 			public Integer apply(LockMechanismState lockMechanismState) {

@@ -47,6 +47,7 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
         this.maxValue = maxValue;
         this.minStep = minStep;
         this.unit = unit;
+        this.value = minValue;
     }
 
     /**
@@ -79,7 +80,7 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
      * in the constructor.
      */
     @Override
-    protected final ListenableFuture<Double> getValue() {
+    public final ListenableFuture<Double> getValue() {
         final double rounder = 1 / this.minStep;
         ListenableFuture<Double> future = Futures.transform(getDoubleValue(), new Function<Double, Double>() {
             @Override

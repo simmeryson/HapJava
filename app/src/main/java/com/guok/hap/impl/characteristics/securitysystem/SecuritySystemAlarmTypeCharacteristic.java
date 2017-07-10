@@ -21,7 +21,7 @@ public class SecuritySystemAlarmTypeCharacteristic extends EnumCharacteristic im
     }
 
     @Override
-    protected ListenableFuture<Integer> getValue() {
+    public ListenableFuture<Integer> getValue() {
         return Futures.transform(securitySystem.getAlarmTypeState(), new Function<SecuritySystemAlarmType, Integer>() {
             @Override
             public Integer apply(SecuritySystemAlarmType securitySystemAlarmType) {

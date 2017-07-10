@@ -21,7 +21,7 @@ public class SmokeDetectedCharacteristic extends EnumCharacteristic implements E
     }
 
     @Override
-    protected ListenableFuture<Integer> getValue() {
+    public ListenableFuture<Integer> getValue() {
         return Futures.transform(smokeSensor.getSmokeDetectedState(), new Function<SmokeDetectedState, Integer>() {
             @Override
             public Integer apply(SmokeDetectedState smokeDetectedState) {

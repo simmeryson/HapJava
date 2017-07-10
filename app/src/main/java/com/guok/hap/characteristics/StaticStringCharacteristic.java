@@ -71,7 +71,7 @@ public class StaticStringCharacteristic extends BaseCharacteristic<String> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected ListenableFuture<String> getValue() {
+	public ListenableFuture<String> getValue() {
 		ListenableFuture<String> future = Futures.immediateFuture(value);
 		return Futures.transform(future, new Function<String, String>() {
 			@Override

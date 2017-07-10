@@ -32,7 +32,7 @@ public class ObstructionDetectedCharacteristic extends BooleanCharacteristic imp
     }
 
     @Override
-    protected ListenableFuture<Boolean> getValue() {
+    public ListenableFuture<Boolean> getValue() {
         return getter.get();
     }
 

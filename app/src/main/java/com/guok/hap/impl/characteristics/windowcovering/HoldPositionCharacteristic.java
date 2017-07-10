@@ -23,7 +23,7 @@ public class HoldPositionCharacteristic extends BooleanCharacteristic {
 	}
 
 	@Override
-	protected ListenableFuture<Boolean> getValue() {
+	public ListenableFuture<Boolean> getValue() {
 		//Write only
 		return Futures.immediateFuture(null);
 	}

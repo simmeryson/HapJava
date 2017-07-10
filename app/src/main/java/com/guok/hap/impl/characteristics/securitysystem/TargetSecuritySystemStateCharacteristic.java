@@ -20,7 +20,7 @@ public class TargetSecuritySystemStateCharacteristic extends EnumCharacteristic 
     }
 
     @Override
-    protected ListenableFuture<Integer> getValue() {
+    public ListenableFuture<Integer> getValue() {
         return Futures.transform(securitySystem.getTargetSecuritySystemState(), new Function<TargetSecuritySystemState, Integer>() {
             @Override
             public Integer apply(TargetSecuritySystemState targetSecuritySystemState) {

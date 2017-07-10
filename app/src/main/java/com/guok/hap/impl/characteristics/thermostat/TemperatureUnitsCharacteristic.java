@@ -7,7 +7,6 @@ import com.guok.hap.accessories.thermostat.BasicThermostat;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.impl.responses.HapStatusCodes;
 
-import java.util.concurrent.CompletableFuture;
 
 public class TemperatureUnitsCharacteristic extends EnumCharacteristic {
 
@@ -25,7 +24,7 @@ public class TemperatureUnitsCharacteristic extends EnumCharacteristic {
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return Futures.immediateFuture(thermostat.getTemperatureUnit().getCode());
 	}
 

@@ -34,7 +34,7 @@ public class RotationSpeedCharacteristic extends IntegerCharacteristic implement
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return fan.getRotationSpeed();
 	}
 

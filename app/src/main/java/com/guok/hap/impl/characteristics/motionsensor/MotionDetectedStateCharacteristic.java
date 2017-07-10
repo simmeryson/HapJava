@@ -18,7 +18,7 @@ public class MotionDetectedStateCharacteristic extends BooleanCharacteristic imp
     }
 
     @Override
-    protected ListenableFuture<Boolean> getValue() {
+    public ListenableFuture<Boolean> getValue() {
         return motionSensor.getMotionDetected();
     }
 

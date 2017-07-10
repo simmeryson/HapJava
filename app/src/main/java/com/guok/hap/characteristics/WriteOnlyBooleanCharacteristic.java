@@ -30,7 +30,7 @@ public abstract class WriteOnlyBooleanCharacteristic extends BooleanCharacterist
 	}
 	
 	@Override
-	protected final ListenableFuture<Boolean> getValue() { return Futures.immediateFuture(false); }
+	public final ListenableFuture<Boolean> getValue() { return Futures.immediateFuture(false); }
 
 	@Override
 	protected final int setJsonValue(JsonObjectBuilder builder, Boolean value) {

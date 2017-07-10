@@ -34,7 +34,7 @@ public class BrightnessCharacteristic extends IntegerCharacteristic implements E
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return lightbulb.getBrightness();
 	}
 

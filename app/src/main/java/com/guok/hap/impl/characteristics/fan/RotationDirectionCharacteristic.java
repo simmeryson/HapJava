@@ -25,7 +25,7 @@ public class RotationDirectionCharacteristic extends EnumCharacteristic implemen
 	}
 
 	@Override
-	protected ListenableFuture<Integer> getValue() {
+	public ListenableFuture<Integer> getValue() {
 		return Futures.transform(fan.getRotationDirection(), new Function<RotationDirection, Integer>() {
 			@Override
 			public Integer apply(RotationDirection rotationDirection) {

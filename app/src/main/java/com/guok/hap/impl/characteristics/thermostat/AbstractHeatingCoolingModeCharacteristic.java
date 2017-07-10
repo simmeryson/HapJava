@@ -8,7 +8,6 @@ import com.guok.hap.accessories.properties.ThermostatMode;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
 
-import java.util.concurrent.CompletableFuture;
 
 abstract class AbstractHeatingCoolingModeCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
@@ -22,7 +21,7 @@ abstract class AbstractHeatingCoolingModeCharacteristic extends EnumCharacterist
 	}
 
 	@Override
-	protected final ListenableFuture<Integer> getValue() {
+	public final ListenableFuture<Integer> getValue() {
 		return Futures.transform(getModeValue(), new Function<ThermostatMode, Integer>() {
 			@Override
 			public Integer apply(ThermostatMode thermostatMode) {

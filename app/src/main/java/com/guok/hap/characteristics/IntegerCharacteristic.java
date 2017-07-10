@@ -37,6 +37,7 @@ public abstract class IntegerCharacteristic extends BaseCharacteristic<Integer> 
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 		this.unit = unit;
+		this.value = minValue;
 	}
 	
 	/**
