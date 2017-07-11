@@ -35,6 +35,7 @@ public class SubscriptionManager {
 					@Override
 					public void changed() {
 						publish(aid, iid, characteristic);
+
 					}
 				});
 			}

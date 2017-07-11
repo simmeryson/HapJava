@@ -66,7 +66,7 @@ public class MockSwitch extends Lightbulb {
     public ListenableFuture<Void> setLightbulbPowerState(boolean powerState)
             throws Exception {
         this.powerState = powerState;
-        mCallBack.setValueCallback(powerState);
+        mCallBack.setValueCallback(powerState, subscribeCallback != null);
         if (subscribeCallback != null) {
             subscribeCallback.changed();
         }

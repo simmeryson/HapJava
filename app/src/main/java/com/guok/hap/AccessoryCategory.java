@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by guokai on 26/06/2017.
+ * Known category values. Category is a hint to iOS clients about what "type" of Accessory this represents, for UI only.
+ * Created by guokai.
  */
 public enum AccessoryCategory {
     OTHER(1),

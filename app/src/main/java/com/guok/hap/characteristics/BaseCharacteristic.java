@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.impl.Consumer;
 import com.guok.hap.impl.responses.HapStatusCodes;
 
 import org.slf4j.Logger;
@@ -38,8 +37,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
 
     protected T value;
     protected CharacteristicCallBack<T> mCallBack;
-    protected Consumer<HomekitCharacteristicChangeCallback> subscriber;
-    protected Runnable unsubscriber;
+    protected HomekitCharacteristicChangeCallback subcribeCallback;
 
     /**
      * Default constructor
@@ -134,6 +132,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
         }
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -162,7 +161,17 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      * @param value the new value to set.
      * @throws Exception if the value cannot be set.
      */
-    protected abstract int setValue(T value) throws Exception;
+    protected  int setValue(T value) throws Exception {
+        this.value = value;
+        System.out.println("OnCharact mCallBack  :" + this.mCallBack);
+
+        if (this.subcribeCallback != null)
+            this.subcribeCallback.changed();
+
+        if (this.mCallBack != null)
+            return this.mCallBack.setValueCallback(value, this.subcribeCallback != null);
+        return HapStatusCodes.SUCCESS;
+    }
 
     /**
      * Retrieves the current value of the characteristic.
@@ -220,15 +229,16 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
         this.mCallBack = callBack;
     }
 
-    public void setSubscriber(Consumer<HomekitCharacteristicChangeCallback> subscriber) {
-        this.subscriber = subscriber;
-    }
-
-    public void setUnsubscriber(Runnable unsubscriber){
-        this.unsubscriber = unsubscriber;
-    }
 
     public ListenableFuture<T> getValueImmediately(){
         return Futures.immediateFuture(value);
+    }
+
+    public HomekitCharacteristicChangeCallback getSubcribeCallback() {
+        return subcribeCallback;
+    }
+
+    public void setSubcribeCallback(HomekitCharacteristicChangeCallback subcribeCallback) {
+        this.subcribeCallback = subcribeCallback;
     }
 }

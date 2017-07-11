@@ -38,7 +38,7 @@ public abstract class BaseService implements Service{
     }
 
 
-    protected void addCharacteristic(Characteristic characteristic) {
+    public void addCharacteristic(Characteristic characteristic) {
         if (characteristics.size() > 99) {
             logger.error("A service must not have more than 100 characteristics!");
             return;

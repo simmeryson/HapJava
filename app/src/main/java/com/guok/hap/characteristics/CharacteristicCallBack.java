@@ -7,10 +7,11 @@ import com.google.common.util.concurrent.ListenableFuture;
  */
 
 public interface CharacteristicCallBack<T> {
-    int setValueCallback(T value);
-    ListenableFuture<T> getValueCallback(BaseCharacteristic<T> characteristic, FetchCallBack<T> callBack);
+    int setValueCallback(T value, boolean subscribe);
 
-    interface FetchCallBack<T>{
-         void fetchValue(T val);
+    ListenableFuture<T> getValueCallback(BaseCharacteristic<T> characteristic, boolean subscribe, FetchCallBack<T> callBack);
+
+    interface FetchCallBack<T> {
+        void fetchValue(T val);
     }
 }

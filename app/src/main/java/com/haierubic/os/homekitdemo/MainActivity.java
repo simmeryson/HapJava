@@ -10,9 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import com.haierubic.os.homekitdemo.daemon.IntentWrapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private HomekitReceiver mReceiver;
 
     private boolean power = true;
+    private int volume = 2;
+
+    private Map<String, Boolean> subscribes = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,31 @@ public class MainActivity extends AppCompatActivity {
         IntentWrapper.onBackPressed(this);
     }
 
-    public  class HomekitReceiver extends BroadcastReceiver {
+    public boolean isPower() {
+        return power;
+    }
+
+    public void setPower(boolean power) {
+        this.power = power;
+        Boolean subs = subscribes.get("power");
+        if (subs != null && subs){
+            
+        }
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+        Boolean subs = subscribes.get("volume");
+        if (subs != null && subs){
+
+        }
+    }
+
+    public class HomekitReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && BroadcastCharactCallback.SEND_ACTION.equals(intent.getAction())) {
@@ -73,21 +101,29 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("GK", "homekit broadcast receive: " + entry.getKey() + "=" + entry.getValue().get(0));
                     }
 
+                    List<String> target = decoder.parameters().get("target");
+                    if (target == null || target.size() == 0 || !target.get(0).equals("player"))
+                        return;
+
                     List<String> methods = decoder.parameters().get("method");
-                    if (methods == null ||  methods.size() == 0)
+                    if (methods == null || methods.size() == 0 || methods.get(0).length() == 0)
                         return;
 
                     if (methods.get(0).equals("get"))
-                        sendResponseOfGet(decoder);
-                    if (methods.get(0).equals("set")) {
-                        List<String> target = decoder.parameters().get("target");
-                        if (target == null || target.size() == 0 || !target.get(0).equals("player")) return;
+                        handleGetRequest(decoder);
+                    else if (methods.get(0).equals("set")) {
+                        handleSetRequest(decoder);
+                    }
+
+                    List<String> subscribe = decoder.parameters().get("subscribe");
+                    if (subscribe != null && subscribe.size() > 0 && subscribe.get(0).length() > 0) {
+                        String s = subscribe.get(0);
                         List<String> object = decoder.parameters().get("object");
-                        if (object == null || object.size() == 0 || !object.get(0).equals("power")) return;
-                        List<String> value = decoder.parameters().get("value");
-                        if (value != null && value.size() > 0) {
-                            MainActivity.this.power = Boolean.valueOf(value.get(0));
-                            System.out.println("MainActivity set player powser: "+ MainActivity.this.power);
+                        if (object != null && object.size() > 0 && object.get(0).length() > 0) {
+                            String obj = object.get(0);
+                            if ("true".equals(s) || "1".equals(s) || "false".equals(s) || "0".equals(s)) {
+                                subscribes.put(obj, Boolean.valueOf(s));
+                            }
                         }
                     }
 
@@ -95,21 +131,65 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        private void sendResponseOfGet(QueryStringDecoder decoder) {
-            HapValueVO<Boolean> valueVO = new HapValueVO<>();
-            List<String> targets = decoder.parameters().get("target");
-            if (targets != null && targets.size() > 0)
-                valueVO.setTarge(targets.get(0));
-            List<String> objects = decoder.parameters().get("object");
-            if (objects != null && objects.size() > 0)
-                valueVO.setObject(objects.get(0));
-            valueVO.setValue(power);
+        private void handleSetRequest(QueryStringDecoder decoder) {
 
-            String json = new Gson().toJson(valueVO);
-            Intent sender = new Intent(BroadcastCharactCallback.RECEIVE_ACTION);
-            sender.putExtra("value", json);
-            MainActivity.this.sendBroadcast(sender);
-            System.out.println("MainActivity send player powser: "+ json);
+            List<String> object = decoder.parameters().get("object");
+            if (object == null || object.size() == 0 || object.get(0).length() == 0)
+                return;
+
+            List<String> value = decoder.parameters().get("value");
+            if (value != null && value.size() > 0 && value.get(0).length() > 0) {
+                if (object.get(0).equals("power")) {
+                    MainActivity.this.power = Boolean.valueOf(value.get(0));
+                } else if (object.get(0).equals("volume")) {
+                    MainActivity.this.volume = Integer.valueOf(value.get(0));
+                }
+                System.out.println("MainActivity set player  " + object.get(0) + ": " + value.get(0));
+            }
         }
+
+        private HapValueVO handleGetRequest(QueryStringDecoder decoder) {
+            HapValueVO valueVO = genHapValueVO(decoder);
+            if (valueVO == null) {
+                System.err.println("HomekitReceiver receives wrong request!");
+                return null;
+            }
+            List<String> targets = decoder.parameters().get("target");
+            if (targets != null && targets.size() > 0 && targets.get(0).length() > 0)
+                valueVO.setTarget(targets.get(0));
+            else {
+                return null;
+            }
+
+            sendToHomekit(valueVO);
+            return valueVO;
+        }
+
+        private HapValueVO genHapValueVO(QueryStringDecoder decoder) {
+            List<String> objects = decoder.parameters().get("object");
+            if (objects != null && objects.size() > 0 && objects.get(0).length() > 0) {
+                String s = objects.get(0);
+                if ("power".equals(s)) {
+                    HapValueVO<Boolean> vo = new HapValueVO<>();
+                    vo.setObject(s);
+                    vo.setValue(power);
+                    return vo;
+                } else if ("volume".equals(s)) {
+                    HapValueVO<Integer> vo = new HapValueVO<>();
+                    vo.setObject(s);
+                    vo.setValue(volume);
+                    return vo;
+                }
+            }
+            return null;
+        }
+    }
+
+    private void sendToHomekit(HapValueVO valueVO) {
+        String json = JSON.toJSONString(valueVO);
+        Intent sender = new Intent(BroadcastCharactCallback.RECEIVE_ACTION);
+        sender.putExtra(valueVO.getTarget() + valueVO.getObject(), json);
+        MainActivity.this.sendBroadcast(sender);
+        System.out.println("MainActivity send player powser: " + json);
     }
 }

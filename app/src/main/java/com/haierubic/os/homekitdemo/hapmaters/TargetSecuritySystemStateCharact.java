@@ -1,28 +1,24 @@
-package com.guok.hap.impl.characteristics.media;
+package com.haierubic.os.homekitdemo.hapmaters;
 
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.characteristics.CharacteristicCallBack;
-import com.guok.hap.characteristics.CharacteristicUnits;
+import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
-import com.guok.hap.characteristics.IntegerCharacteristic;
-import com.guok.hap.impl.responses.HapStatusCodes;
 
 /**
  * @author guok
  */
 
-public class VolumeCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
+public class TargetSecuritySystemStateCharact extends EnumCharacteristic implements EventableCharacteristic {
 
-    public VolumeCharacteristic() {
+    public TargetSecuritySystemStateCharact() {
         this(null);
     }
 
-
-    public VolumeCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("00000119-0000-1000-8000-0026BB765291",
-                true, true, "volume of audio", 0, 100, CharacteristicUnits.percentage);
+    public TargetSecuritySystemStateCharact(CharacteristicCallBack<Integer> callBack) {
+        super("00000067-0000-1000-8000-0026BB765291", true, true, "Target security system state", 3);
         this.mCallBack = callBack;
     }
 
@@ -34,18 +30,6 @@ public class VolumeCharacteristic extends IntegerCharacteristic implements Event
     @Override
     public void unsubscribe() {
         this.subcribeCallback = null;
-    }
-
-    @Override
-    protected int setValue(Integer value) throws Exception {
-        this.value = value;
-
-        if (this.subcribeCallback != null)
-            this.subcribeCallback.changed();
-
-        if (this.mCallBack != null)
-            return this.mCallBack.setValueCallback(value, this.subcribeCallback != null);
-        return HapStatusCodes.SUCCESS;
     }
 
     @Override
