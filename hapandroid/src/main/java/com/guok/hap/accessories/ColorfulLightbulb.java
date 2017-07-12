@@ -4,7 +4,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Extends {@link Lightbulb} with color settings. This will usually be implemented along with 

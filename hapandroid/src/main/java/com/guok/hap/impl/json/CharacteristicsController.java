@@ -25,6 +25,9 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
+/**
+ * only receiving "ev" param in request , the characteristic begin to push "change" value.
+ */
 public class CharacteristicsController {
 
     Logger logger = LoggerFactory.getLogger(CharacteristicsController.class);
@@ -102,6 +105,7 @@ public class CharacteristicsController {
                     resultsBuilder.add(resBuilder);
                 }
 
+                //only receiving "ev" param in request , the characteristic begin to push "change" value.
                 if (jsonCharacteristic.containsKey("ev")) {
                     if (characteristic instanceof EventableCharacteristic) {
                         if (jsonCharacteristic.getBoolean("ev")) {

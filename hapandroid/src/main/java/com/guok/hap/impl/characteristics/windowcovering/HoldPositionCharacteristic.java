@@ -6,8 +6,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.accessories.WindowCovering;
 import com.guok.hap.characteristics.BooleanCharacteristic;
 
-import java.util.concurrent.CompletableFuture;
-
 public class HoldPositionCharacteristic extends BooleanCharacteristic {
 
 	private final WindowCovering windowCovering;

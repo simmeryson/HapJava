@@ -9,7 +9,6 @@ import com.guok.hap.impl.services.LightbulbService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * A simple light with a binary state.

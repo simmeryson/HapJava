@@ -4,8 +4,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 
-import java.util.concurrent.CompletableFuture;
-
 /**
  * Extends {@link Lightbulb} with brightness values.
  *

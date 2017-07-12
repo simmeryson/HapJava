@@ -10,7 +10,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -36,4 +36,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':hapandroid')
+    compile 'com.android.support:multidex:1.0.1'
 }

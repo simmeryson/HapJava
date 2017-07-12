@@ -9,7 +9,6 @@ import com.guok.hap.impl.services.SwitchService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * A simple switch with a binary state.
