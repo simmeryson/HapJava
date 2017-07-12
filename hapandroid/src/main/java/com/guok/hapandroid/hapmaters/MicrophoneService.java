@@ -1,4 +1,4 @@
-package com.haierubic.os.homekitdemo.hapmaters;
+package com.guok.hapandroid.hapmaters;
 
 import com.guok.hap.impl.characteristics.common.Name;
 import com.guok.hap.impl.characteristics.media.MuteCharacteristic;

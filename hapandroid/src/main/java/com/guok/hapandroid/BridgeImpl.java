@@ -5,8 +5,8 @@ import android.content.Context;
 import com.guok.hap.HomekitRoot;
 import com.guok.hap.HomekitServer;
 import com.guok.hap.impl.advertiser.IAdvertiser;
-import com.haierubic.os.homekitdemo.AndroidAdvtiser;
-import com.haierubic.os.homekitdemo.hapmaters.MediaPlayer;
+import com.guok.hapandroid.AndroidAdvtiser;
+import com.guok.hapandroid.hapmaters.MediaPlayer;
 
 /**
  * @author guok

@@ -1,4 +1,4 @@
-package com.haierubic.os.homekitdemo.hapmaters;
+package com.guok.hapandroid.hapmaters;
 
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;

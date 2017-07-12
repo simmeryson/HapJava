@@ -1,4 +1,4 @@
-package com.haierubic.os.homekitdemo.daemon;
+package com.guok.hapandroid.daemon;
 
 import android.app.Activity;
 import android.app.AlertDialog;

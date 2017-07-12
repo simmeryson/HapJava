@@ -1,4 +1,4 @@
-package com.haierubic.os.homekitdemo.daemon;
+package com.guok.hapandroid.daemon;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

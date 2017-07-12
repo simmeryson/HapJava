@@ -17,6 +17,7 @@ import com.guok.hapandroid.HapMainService;
 import com.guok.hapandroid.HapReveiver;
 import com.guok.hapandroid.HapValueVO;
 import com.guok.hapandroid.PreferencesUtil;
+import com.guok.hapandroid.daemon.IntentWrapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     //防止华为机型未加入白名单时按返回键回到桌面再锁屏后几秒钟进程被杀
     @Override
     public void onBackPressed() {
-        com.haierubic.os.homekitdemo.daemon.IntentWrapper.onBackPressed(this);
+        IntentWrapper.onBackPressed(this);
     }
 
 

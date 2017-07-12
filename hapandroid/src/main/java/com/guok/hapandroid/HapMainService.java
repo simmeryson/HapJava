@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
-import com.haierubic.os.homekitdemo.daemon.AbsWorkService;
-import com.haierubic.os.homekitdemo.daemon.DaemonEnv;
+import com.guok.hapandroid.daemon.AbsWorkService;
+import com.guok.hapandroid.daemon.DaemonEnv;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;

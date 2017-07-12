@@ -1,4 +1,4 @@
-package com.haierubic.os.homekitdemo;
+package com.guok.hapandroid;
 
 import android.content.Context;
 import android.net.nsd.NsdManager;
