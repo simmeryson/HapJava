@@ -2,7 +2,6 @@ package com.guok.hap; /**
  * Created by guokai on 15/06/2017.
  */
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -69,23 +68,18 @@ public class MockAuthInfo implements BridgeAuthInfo {
     }
 
     @Override
-    public String initMac() {
-        return null;
-    }
-
-    @Override
-    public byte[] initPrivateKey() {
-        return new byte[0];
-    }
-
-    @Override
-    public Map initUsernamePublicKey() {
-        return null;
-    }
-
-    @Override
     public void initPairParams() {
 
+    }
+
+    @Override
+    public int getPort() {
+        return 9125;
+    }
+
+    @Override
+    public String getPIN() {
+        return PIN;
     }
 
 }

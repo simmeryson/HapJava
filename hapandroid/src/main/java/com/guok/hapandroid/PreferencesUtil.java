@@ -9,41 +9,69 @@ import java.util.Set;
  *
  */
 public class PreferencesUtil {
-    private static final String PREFERENCE_NAME = "HapJava";
+    public static final String KEYS = "HapKeys";
+    public static final String CONFIG = "HapConfig";
 
-    public static boolean putString(Context context, String key, String value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+    public enum NameSpace {
+        HapKeys,
+        HapConfig
+    }
+
+    private static Context sContext;
+
+    public static void setContext(Context context) {
+        sContext = context;
+    }
+
+    public static boolean putString(NameSpace nameSpace, String key, String value) {
+        SharedPreferences settings = sContext.getSharedPreferences(nameSpace.name(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
         return editor.commit();
     }
 
-    public static String getString(Context context, String key) {
-        return getString(context, key, "");
+    public static String getString(NameSpace nameSpace, String key) {
+        return getString(nameSpace, key, "");
     }
 
-    public static String getString(Context context, String key, String defaultValue) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+    public static String getString(NameSpace nameSpace, String key, String defaultValue) {
+        SharedPreferences settings = sContext.getSharedPreferences(nameSpace.name(), Context.MODE_PRIVATE);
         return settings.getString(key, defaultValue);
     }
 
+    public static boolean putInt(NameSpace nameSpace, String key, int value) {
+        SharedPreferences settings = sContext.getSharedPreferences(nameSpace.name(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(key, value);
+        return editor.commit();
+    }
 
-    public static boolean putStringSet(Context context, String key, Set<String> values) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+
+    public static boolean putStringSet(NameSpace nameSpace, String key, Set<String> values) {
+        SharedPreferences settings = sContext.getSharedPreferences(nameSpace.name(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putStringSet(key, values);
         return editor.commit();
     }
 
-    public static boolean removeKey(Context context, String key) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+    public static int getInt(NameSpace nameSpace, String key) {
+        return getInt(nameSpace, key, -1);
+    }
+
+    public static int getInt(NameSpace nameSpace, String key, int defaultValue) {
+        SharedPreferences settings = sContext.getSharedPreferences(nameSpace.name(), Context.MODE_PRIVATE);
+        return settings.getInt(key, defaultValue);
+    }
+
+    public static boolean removeKey(NameSpace nameSpace, String key) {
+        SharedPreferences settings = sContext.getSharedPreferences(nameSpace.name(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.remove(key);
         return editor.commit();
     }
 
-    public static void clear(Context context){
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+    public static void clear(NameSpace nameSpace) {
+        SharedPreferences settings = sContext.getSharedPreferences(nameSpace.name(), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.clear();
         editor.apply();

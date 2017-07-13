@@ -8,8 +8,13 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.guok.hapandroid.BroadcastCharactCallback;
@@ -34,11 +39,16 @@ public class MainActivity extends AppCompatActivity {
 
     private Map<String, Boolean> subscribes = new HashMap<>();
 
+    private InputMethodManager imm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BroadcastCharactCallback.setContext(this);
         setContentView(R.layout.activity_main);
+
+
+        initViews();
 
         mReceiver = new HomekitReceiver();
         IntentFilter filter = new IntentFilter(BroadcastCharactCallback.SEND_ACTION);
@@ -51,6 +61,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void initViews() {
+        imm = (InputMethodManager) getApplicationContext().
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        EditText editPort = (EditText) findViewById(R.id.edit_port);
+        EditText editPin = (EditText) findViewById(R.id.edit_pin);
+        editPin.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (imm != null && imm.isActive()) {
+                    imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                }
+                String s = v.getText().toString();
+                if (!TextUtils.isEmpty(s))
+                    PreferencesUtil.putString(PreferencesUtil.NameSpace.HapConfig, "PIN", s);
+                return true;
+            }
+        });
+
+        editPort.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (imm != null && imm.isActive()) {
+                    imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                }
+                String s = v.getText().toString();
+                if (!TextUtils.isEmpty(s))
+                    PreferencesUtil.putInt(PreferencesUtil.NameSpace.HapConfig, "Port", Integer.valueOf(s));
+                return true;
+            }
+        });
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -58,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearSP(View view) {
-        PreferencesUtil.clear(this);
+        PreferencesUtil.clear(PreferencesUtil.NameSpace.HapKeys);
     }
 
     public void reStart(View view) {

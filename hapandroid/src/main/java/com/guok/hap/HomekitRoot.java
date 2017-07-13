@@ -147,6 +147,7 @@ public class HomekitRoot {
         stop();
         authInfo.initPairParams();
         advertiser.setReStart(true);
+        webHandler.setPort(authInfo.getPort());
         start();
     }
 

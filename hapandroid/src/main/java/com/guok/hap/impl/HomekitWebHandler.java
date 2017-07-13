@@ -12,5 +12,7 @@ public interface HomekitWebHandler {
 	void stop();
 
 	void resetConnections();
+
+	void setPort(int port);
 	
 }

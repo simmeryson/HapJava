@@ -8,7 +8,7 @@ import com.guok.hap.impl.http.HomekitClientConnectionFactory;
 public class HomekitHttpServer implements HomekitWebHandler {
 
 	private volatile NettyHomekitHttpService service = null;
-	private final int port;
+	private int port;
 	private final int nThreads;
 
 	@Override
@@ -39,4 +39,11 @@ public class HomekitHttpServer implements HomekitWebHandler {
 		service.resetConnections();
 	}
 
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
 }

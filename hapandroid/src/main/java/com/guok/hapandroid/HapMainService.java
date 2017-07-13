@@ -35,6 +35,7 @@ public class HapMainService extends AbsWorkService {
         DaemonEnv.initialize(this, HapMainService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         super.onCreate();
         registerReceiver(new HapReveiver(this), new IntentFilter(HapReveiver.ACTION_HAP));
+        PreferencesUtil.setContext(this);
     }
 
     /**

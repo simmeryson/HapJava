@@ -24,7 +24,7 @@ public class AndroidAdvtiser extends AbstractAdvertiser {
         mNsdManager = (NsdManager) context.getApplicationContext().getSystemService(Context.NSD_SERVICE);
         mRegistrationListener = new MDNSRegistrationListener();
 
-        discoverable = Boolean.valueOf(PreferencesUtil.getString(context, "IsPairing", "1"));
+        discoverable = Boolean.valueOf(PreferencesUtil.getString(PreferencesUtil.NameSpace.HapKeys, "IsPairing", "1"));
     }
 
     public void registerService() {
