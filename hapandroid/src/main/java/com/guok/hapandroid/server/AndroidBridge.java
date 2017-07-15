@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.guok.hap.AbstractBridge;
 import com.guok.hapandroid.PreferencesUtil;
-import com.guok.hapandroid.hapmaters.ServiceConfig;
+import com.guok.hap.ServiceConfig;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;

@@ -1,4 +1,4 @@
-package com.guok.hapandroid.hapmaters;
+package com.guok.hap;
 
 import java.util.Map;
 

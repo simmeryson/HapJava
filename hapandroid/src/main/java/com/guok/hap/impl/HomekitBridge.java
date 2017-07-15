@@ -1,7 +1,9 @@
 package com.guok.hap.impl;
 
-import com.guok.hap.Service;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.AccessoryIdentify;
 import com.guok.hap.impl.accessories.Bridge;
+import com.guok.hap.Service;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,55 +13,68 @@ import java.util.Collections;
  */
 public class HomekitBridge implements Bridge {
 
-	private final String label;
-	private final String serialNumber;
-	private final String model;
-	private final String manufacturer;
-	
-	public HomekitBridge(String label, String serialNumber, String model,
-			String manufacturer) {
-		this.label = label;
-		this.serialNumber = serialNumber;
-		this.model = model;
-		this.manufacturer = manufacturer;
-	}
+    private final AccessoryDisplayInfo mDisplayInfo;
+    private AccessoryIdentify mIdentify;
 
-	@Override
-	public String getLabel() {
-		return label;
-	}
-	
-	@Override
-	public String getSerialNumber() {
-		return serialNumber;
-	}
-	
-	@Override
-	public String getModel() {
-		return model;
-	}
-	
-	@Override
-	public String getManufacturer() {
-		return manufacturer;
-	}
+    public HomekitBridge(AccessoryDisplayInfo displayInfo) {
+        mDisplayInfo = displayInfo;
+    }
 
-	@Override
-	public String getFirmwareRevision() {
-		return "1.0.0";
-	}
+    public HomekitBridge(AccessoryDisplayInfo displayInfo, AccessoryIdentify identify) {
+        this(displayInfo);
+        mIdentify = identify;
+    }
 
-	@Override
-	public Collection<Service> getServices() {
-		return Collections.emptyList();
-	}
-	
-	@Override
-	public int getId() {
-		return 1;
-	}
+    @Override
+    public String getLabel() {
+        return mDisplayInfo.getLabel();
+    }
 
-	@Override
-	public void identify() {
-	}
+    @Override
+    public String getSerialNumber() {
+        return mDisplayInfo.getSerialNumber();
+    }
+
+    @Override
+    public String getModel() {
+        return mDisplayInfo.getModel();
+    }
+
+    @Override
+    public String getManufacturer() {
+        return mDisplayInfo.getManufacturer();
+    }
+
+    @Override
+    public String getFirmwareRevision() {
+        return mDisplayInfo.getFirmwareRevision();
+    }
+
+    @Override
+    public Collection<Service> getServices() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public int getId() {
+        return 1;
+    }
+
+    @Override
+    public void identify() {
+        if (mIdentify != null)
+            mIdentify.identify();
+    }
+
+    public AccessoryIdentify getIdentify() {
+        return mIdentify;
+    }
+
+    public void setIdentify(AccessoryIdentify identify) {
+        mIdentify = identify;
+    }
+
+    public AccessoryDisplayInfo getDisplayInfo() {
+        return mDisplayInfo;
+    }
 }

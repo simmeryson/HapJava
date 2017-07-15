@@ -1,5 +1,9 @@
 package com.guok.hap;
 
+import com.guok.hap.impl.advertiser.IAdvertiser;
+import com.guok.hap.impl.advertiser.JmdnsHomekitAdvertiser;
+import com.guok.hap.impl.http.impl.HomeKitHttpServer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +32,11 @@ public class MainTest {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         try {
-            HomekitServer homekit = new HomekitServer(PORT);
-            HomekitRoot bridge = homekit.createBridge(new MockAuthInfo(), "Java bridge", "TestBridge, Inc.", "G6", "111abe234");
+            AccessoryDisplayInfo displayInfo = new AccessoryDisplayInfo("Java bridge", "TestBridge, Inc.", "G6", "111abe234","1.0.0");
+            HomeKitHttpServer httpServer = new HomeKitHttpServer(PORT);
+            IAdvertiser mAdvertiser = new JmdnsHomekitAdvertiser(httpServer.getInetAddress());
+            HomeKitRoot bridge = new HomeKitRoot(displayInfo, httpServer, new MockAuthInfo(), mAdvertiser);
+
             bridge.addAccessory(new MockSwitch(2, "GKPlayer","123", "", ""));
             bridge.addAccessory(new MockSwitch(4,"GKFan","321", "", ""));
             bridge.start();

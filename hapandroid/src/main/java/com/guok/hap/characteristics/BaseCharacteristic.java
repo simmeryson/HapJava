@@ -164,7 +164,6 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      */
     protected  int setValue(T value) throws Exception {
         this.value = value;
-        System.out.println("OnCharact mCallBack  :" + this.mCallBack);
 
         if (this.subcribeCallback != null)
             this.subcribeCallback.changed();

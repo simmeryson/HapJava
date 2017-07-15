@@ -1,5 +1,6 @@
 package com.guok.hapandroid.hapmaters;
 
+import com.guok.hap.AccessoryDisplayInfo;
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.Service;
 import com.guok.hap.impl.services.BaseService;
@@ -22,12 +23,11 @@ public abstract class BaseAccessory implements HomekitAccessory {
 
     protected final Map<String, Service> services = new ConcurrentHashMap<>();
     protected final int ID;
-    protected final String label;
-
+    protected final AccessoryDisplayInfo defaultDisplayInfo;
 
     public BaseAccessory(int ID, String label, Service service) {
         this.ID = ID;
-        this.label = label;
+        defaultDisplayInfo = new AccessoryDisplayInfo(label, "Manufacturer", "model", "SerialNumber", "1.0.0");
         addServices(service);
     }
 
@@ -43,7 +43,7 @@ public abstract class BaseAccessory implements HomekitAccessory {
 
     @Override
     public String getLabel() {
-        return this.label;
+        return defaultDisplayInfo.getLabel();
     }
 
     @Override
@@ -53,22 +53,22 @@ public abstract class BaseAccessory implements HomekitAccessory {
 
     @Override
     public String getSerialNumber() {
-        return "none";
+        return defaultDisplayInfo.getSerialNumber();
     }
 
     @Override
     public String getModel() {
-        return "none";
+        return defaultDisplayInfo.getModel();
     }
 
     @Override
     public String getManufacturer() {
-        return "none";
+        return defaultDisplayInfo.getManufacturer();
     }
 
     @Override
     public String getFirmwareRevision() {
-        return "1.0";
+        return defaultDisplayInfo.getFirmwareRevision();
     }
 
     public <T extends Service> T addServices(T service) {

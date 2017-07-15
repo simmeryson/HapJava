@@ -59,7 +59,7 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
 
     @Override
     public int setValueCallback(T value, boolean subscribe) {
-        Log.i("GK", "setValueCallback sendBroadcast!" + value);
+        Log.d("GK", "setValueCallback sendBroadcast!" + value);
         String s = String.format(URI_FORMAT,
                 queryEscapers.escape(this.target),
                 queryEscapers.escape(this.object),
@@ -73,7 +73,7 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
 
     @Override
     public ListenableFuture<T> getValueCallback(BaseCharacteristic<T> characteristic, boolean subscribe, FetchCallBack<T> callBack) {
-        Log.i("GK", "getValueCallback sendBroadcast!");
+        Log.d("GK", "getValueCallback sendBroadcast!");
         mFetchCallBack = callBack;
         sLatch = new CountDownLatch(1);
         String s = String.format(URI_FORMAT,
@@ -100,7 +100,7 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
                 String value1 = intent.getStringExtra(target + object);
                 if (value1 == null) return;
                 HapValueVO vo = JSON.parseObject(value1, HapValueVO.class);
-                System.out.println("HapReceiver get response: " + vo.toString());
+                Log.d("GK", "HapReceiver get response: " + vo.toString());
                 if (mFetchCallBack != null) {
                     T v = clazzCast(vo);
                     if (v != null)
@@ -113,7 +113,7 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
         private T clazzCast(HapValueVO vo) {
             Object value = vo.getValue();
             Class type = getSingleGenericType(BroadcastCharactCallback.this);
-            if (value.getClass().getName().equals(type.getName())){
+            if (value.getClass().getName().equals(type.getName())) {
                 return (T) value;
             }
             if (Number.class.isInstance(value) && Number.class.isAssignableFrom(type)) {

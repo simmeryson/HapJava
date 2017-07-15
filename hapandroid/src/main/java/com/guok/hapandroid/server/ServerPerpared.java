@@ -1,7 +1,6 @@
 package com.guok.hapandroid.server;
 
-import com.guok.hap.HomekitRoot;
-import com.guok.hap.HomekitServer;
+import com.guok.hap.HomeKitRoot;
 
 /**
  * @author guok
@@ -9,5 +8,5 @@ import com.guok.hap.HomekitServer;
 
 public interface
 ServerPerpared {
-    void serverPerpared(HomekitRoot bridge, HomekitServer homekit);
+    void serverPerpared(HomeKitRoot bridge);
 }

@@ -2,60 +2,53 @@ package com.guok.hap;
 
 import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
-
+import com.guok.hap.impl.HomekitBridge;
 import com.guok.hap.impl.HomekitRegistry;
 import com.guok.hap.impl.HomekitWebHandler;
 import com.guok.hap.impl.accessories.Bridge;
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.connections.HomekitClientConnectionFactoryImpl;
 import com.guok.hap.impl.connections.SubscriptionManager;
-import com.guok.hap.impl.advertiser.JmdnsHomekitAdvertiser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.InetAddress;
 
 /**
  * Provides advertising and handling for Homekit accessories. This class handles the advertising of
  * Homekit accessories and contains one or more accessories. When implementing a bridge accessory,
  * you will interact with this class directly. Instantiate it via {@link
- * HomekitServer#createBridge(BridgeAuthInfo, String, String, String, String)}. For single
+ * HomekitServer#createBridge(BridgeAuthInfo, AccessoryDisplayInfo)}. For single
  * accessories, this is composed by {@link HomekitStandaloneAccessoryServer}.
  *
  * @author Andy Lintner
  */
-public class HomekitRoot {
+public class HomeKitRoot {
 
-    private final static Logger logger = LoggerFactory.getLogger(HomekitRoot.class);
+    private final static Logger logger = LoggerFactory.getLogger(HomeKitRoot.class);
 
     private final IAdvertiser advertiser;
     private final HomekitWebHandler webHandler;
     private final BridgeAuthInfo authInfo;
-    private final String label;
     private final HomekitRegistry registry;
     private final SubscriptionManager subscriptions = new SubscriptionManager();
 
     private volatile boolean started = false;
     private int configurationIndex = 1;
+    private final AccessoryDisplayInfo mDisplayInfo;
 
-    HomekitRoot(String label,
-                HomekitWebHandler webHandler,
-                BridgeAuthInfo authInfo,
-                InetAddress localhost) throws IOException {
-        this(label, webHandler, authInfo, new JmdnsHomekitAdvertiser(localhost));
-    }
-
-    HomekitRoot(String label,
-                HomekitWebHandler webHandler,
-                BridgeAuthInfo authInfo,
-                IAdvertiser advertiser) throws IOException {
+    public HomeKitRoot(AccessoryDisplayInfo displayInfo,
+                       HomekitWebHandler webHandler,
+                       BridgeAuthInfo authInfo,
+                       IAdvertiser advertiser) throws IOException {
         this.advertiser = advertiser;
         this.webHandler = webHandler;
         this.authInfo = authInfo;
-        this.label = label;
-        this.registry = new HomekitRegistry(label);
+        this.mDisplayInfo = displayInfo;
+        this.registry = new HomekitRegistry(displayInfo.getLabel());
+
+        addAccessory(new HomekitBridge(displayInfo));
     }
 
     /**
@@ -124,7 +117,7 @@ public class HomekitRoot {
                         public Object apply(Integer port) {
                             try {
                                 refreshAuthInfo();
-                                advertiser.advertise(label, authInfo.getMac(), port, configurationIndex);
+                                advertiser.advertise(mDisplayInfo.getLabel(), authInfo.getMac(), port, configurationIndex);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
