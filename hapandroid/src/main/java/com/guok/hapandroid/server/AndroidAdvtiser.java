@@ -1,6 +1,8 @@
-package com.guok.hapandroid;
+package com.guok.hapandroid.server;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.util.Log;
 import com.guok.hap.AccessoryCategory;
 import com.guok.hap.impl.advertiser.AbstractAdvertiser;
 import com.guok.hapandroid.PreferencesUtil;
+import com.guok.hapandroid.client.HomeKitClientRecevier;
 
 /**
  *
@@ -19,12 +22,16 @@ public class AndroidAdvtiser extends AbstractAdvertiser {
     private MDNSRegistrationListener mRegistrationListener;
 
     private volatile boolean isStart = false;
+    private Context mContext;
 
     public AndroidAdvtiser(Context context) {
+        mContext = context.getApplicationContext();
         mNsdManager = (NsdManager) context.getApplicationContext().getSystemService(Context.NSD_SERVICE);
         mRegistrationListener = new MDNSRegistrationListener();
 
         discoverable = Boolean.valueOf(PreferencesUtil.getString(PreferencesUtil.NameSpace.HapKeys, "IsPairing", "1"));
+
+        homeKitServerSetup(false);
     }
 
     public void registerService() {
@@ -45,7 +52,7 @@ public class AndroidAdvtiser extends AbstractAdvertiser {
 
     @Override
     public synchronized void stop() {
-        if (isStart){
+        if (isStart) {
             mNsdManager.unregisterService(mRegistrationListener);
         }
     }
@@ -75,6 +82,10 @@ public class AndroidAdvtiser extends AbstractAdvertiser {
 
     }
 
+    private void homeKitServerSetup(boolean setup) {
+        Intent intent = new Intent(HomeKitClientRecevier.SETUP_ACTION, Uri.parse("homekit://com.guok")).putExtra(HomeKitClientRecevier.SETUP_KEY, setup);
+        mContext.sendBroadcast(intent);
+    }
 
     private final class MDNSRegistrationListener implements NsdManager.RegistrationListener {
         @Override
@@ -93,6 +104,8 @@ public class AndroidAdvtiser extends AbstractAdvertiser {
             isReStart = false;
             isStart = true;
             logger.info("onServiceRegistered:" + serviceInfo.toString());
+
+            homeKitServerSetup(true);
         }
 
         @Override

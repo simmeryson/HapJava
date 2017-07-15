@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         >
 
-        <service android:name=".HapMainService"/>
+        <service android:name=".server.HapMainService"/>
 
         <receiver
             android:name=".daemon.WakeUpReceiver"

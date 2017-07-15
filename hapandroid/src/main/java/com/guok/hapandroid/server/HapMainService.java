@@ -1,13 +1,13 @@
-package com.guok.hapandroid;
+package com.guok.hapandroid.server;
 
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 
+import com.guok.hapandroid.PreferencesUtil;
 import com.guok.hapandroid.daemon.AbsWorkService;
 import com.guok.hapandroid.daemon.DaemonEnv;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,11 +17,11 @@ import java.util.concurrent.Executors;
 
 public class HapMainService extends AbsWorkService {
 
-    BridgeImpl mBridge;
+    private static volatile BridgeServer sBridgeServer;
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     //是否 任务完成, 不再需要服务运行?
     public static boolean sShouldStopService;
-    ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public static void stopService() {
         //我们现在不再需要服务运行了, 将标志位置为 true
@@ -34,7 +34,7 @@ public class HapMainService extends AbsWorkService {
     public void onCreate() {
         DaemonEnv.initialize(this, HapMainService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
         super.onCreate();
-        registerReceiver(new HapReveiver(this), new IntentFilter(HapReveiver.ACTION_HAP));
+        registerReceiver(new HapServerReveiver(this), new IntentFilter(HapServerReveiver.ACTION_HAP));
         PreferencesUtil.setContext(this);
     }
 
@@ -50,21 +50,21 @@ public class HapMainService extends AbsWorkService {
 
     @Override
     public void startWork(Intent intent, int flags, int startId) {
-        mBridge = new BridgeImpl();
+        sBridgeServer = new BridgeServer();
 
-        executor.submit(new Callable<Object>() {
+        executor.submit(new Runnable() {
             @Override
-            public Object call() throws Exception {
-                mBridge.registerHap(HapMainService.this);
-                return null;
+            public void run() {
+                sBridgeServer.registerHap(HapMainService.this);
             }
         });
     }
 
     @Override
     public void stopWork(Intent intent, int flags, int startId) {
-        mBridge.stop();
+        sBridgeServer.stop();
         stopService();
+        sBridgeServer = null;
     }
 
     /**
@@ -74,7 +74,7 @@ public class HapMainService extends AbsWorkService {
      */
     @Override
     public Boolean isWorkRunning(Intent intent, int flags, int startId) {
-        return mBridge != null && mBridge.getBridge() != null;
+        return sBridgeServer != null;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class HapMainService extends AbsWorkService {
 
     }
 
-    public BridgeImpl getBridge() {
-        return mBridge;
+    public static BridgeServer getBridge() {
+        return sBridgeServer;
     }
 }

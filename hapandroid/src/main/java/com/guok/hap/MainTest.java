@@ -18,7 +18,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
- * Created by guokai on 21/06/2017.
+ * Created by guokai.
  */
 public class MainTest {
 
@@ -30,8 +30,8 @@ public class MainTest {
         try {
             HomekitServer homekit = new HomekitServer(PORT);
             HomekitRoot bridge = homekit.createBridge(new MockAuthInfo(), "Java bridge", "TestBridge, Inc.", "G6", "111abe234");
-            bridge.addAccessory(new MockSwitch(2, "海尔播放器","123", "", ""));
-            bridge.addAccessory(new MockSwitch(4,"空调","321", "", ""));
+            bridge.addAccessory(new MockSwitch(2, "GKPlayer","123", "", ""));
+            bridge.addAccessory(new MockSwitch(4,"GKFan","321", "", ""));
             bridge.start();
         } catch (Exception e) {
             e.printStackTrace();

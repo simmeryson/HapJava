@@ -4,10 +4,16 @@ import com.guok.hap.HomekitAccessory;
 import com.guok.hap.Service;
 import com.guok.hap.characteristics.Characteristic;
 import com.guok.hap.impl.services.AccessoryInformationService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -81,6 +87,8 @@ public class HomekitRegistry {
 	}
 
 	public void add(HomekitAccessory accessory) {
+		if (accessories.containsKey(accessory.getId()))
+			logger.debug("Duplicate accessory aid!");
 		accessories.put(accessory.getId(), accessory);
 	}
 
@@ -96,4 +104,15 @@ public class HomekitRegistry {
 		this.isAllowUnauthenticatedRequests = allow;
 	}
 
+	public <T extends HomekitAccessory> T getSpecificAccessory(Class<T> t) {
+		for (HomekitAccessory accessory : accessories.values()) {
+			if (t.isInstance(accessory))
+				return (T) accessory;
+		}
+		return null;
+	}
+
+	public HomekitAccessory getSpecificAccessory(int id){
+		return accessories.get(id);
+	}
 }

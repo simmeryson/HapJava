@@ -10,6 +10,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 /**
+ * <p>必须在manifest.xml的application中加上标签android:icon="@mipmap/ic_launcher"。否则会报错"Bad notification for startForeground: java.lang.RuntimeException: icon must be non-zero"。
+ *
  * @author guok
  */
 
@@ -77,7 +79,7 @@ public abstract class AbsWorkService extends Service {
             //启动前台服务而不显示通知的漏洞已在 API Level 25 修复，大快人心！
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
                 //利用漏洞在 API Level 17 及以下的 Android 系统中，启动前台服务而不显示通知
-                startForeground(HASH_CODE, new Notification());
+                startForeground(HASH_CODE, new Notification());//注意application的icon标签
                 //利用漏洞在 API Level 18 及以上的 Android 系统中，启动前台服务而不显示通知
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                     try {

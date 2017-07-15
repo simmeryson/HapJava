@@ -17,12 +17,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.guok.hapandroid.BroadcastCharactCallback;
-import com.guok.hapandroid.HapMainService;
-import com.guok.hapandroid.HapReveiver;
 import com.guok.hapandroid.HapValueVO;
 import com.guok.hapandroid.PreferencesUtil;
 import com.guok.hapandroid.daemon.IntentWrapper;
+import com.guok.hapandroid.server.BroadcastCharactCallback;
+import com.guok.hapandroid.server.HapMainService;
+import com.guok.hapandroid.server.HapServerReveiver;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         BroadcastCharactCallback.setContext(this);
         setContentView(R.layout.activity_main);
 
-
         initViews();
 
         mReceiver = new HomekitReceiver();
@@ -57,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             startService(new Intent(this, HapMainService.class));
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reStart(View view) {
-        sendBroadcast(new Intent(HapReveiver.ACTION_HAP));
+        sendBroadcast(new Intent(HapServerReveiver.ACTION_HAP));
     }
 
     //防止华为机型未加入白名单时按返回键回到桌面再锁屏后几秒钟进程被杀

@@ -1,4 +1,4 @@
-package com.guok.hapandroid;
+package com.guok.hapandroid.hapmaters;
 
 import java.util.Map;
 
@@ -31,4 +31,6 @@ public interface ServiceConfig {
      * Paired PublicKey and pairingID must be initially set by default. This should persist as pairs after pairSetup done.
      */
     Map getUsernamePublicKey();
+
+
 }

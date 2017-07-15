@@ -1,4 +1,4 @@
-package com.guok.hapandroid;
+package com.guok.hapandroid.server;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,9 +14,14 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.characteristics.BaseCharacteristic;
 import com.guok.hap.characteristics.CharacteristicCallBack;
 import com.guok.hap.impl.responses.HapStatusCodes;
+import com.guok.hapandroid.HapValueVO;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import static com.guok.hap.impl.HomekitUtils.getSingleGenericType;
 
 /**
  * @author guok
@@ -94,11 +99,38 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
             if (intent != null && BroadcastCharactCallback.RECEIVE_ACTION.equals(intent.getAction())) {
                 String value1 = intent.getStringExtra(target + object);
                 if (value1 == null) return;
-                HapValueVO<T> vo = JSON.parseObject(value1, HapValueVO.class);
+                HapValueVO vo = JSON.parseObject(value1, HapValueVO.class);
                 System.out.println("HapReceiver get response: " + vo.toString());
-                mFetchCallBack.fetchValue(vo.getValue());
-                sLatch.countDown();
+                if (mFetchCallBack != null) {
+                    T v = clazzCast(vo);
+                    if (v != null)
+                        mFetchCallBack.fetchValue(v);
+                }
+                if (sLatch != null) sLatch.countDown();
             }
+        }
+
+        private T clazzCast(HapValueVO vo) {
+            Object value = vo.getValue();
+            Class type = getSingleGenericType(BroadcastCharactCallback.this);
+            if (value.getClass().getName().equals(type.getName())){
+                return (T) value;
+            }
+            if (Number.class.isInstance(value) && Number.class.isAssignableFrom(type)) {
+                String clazzName = type.getSimpleName().toLowerCase();
+                try {
+                    Method method = Number.class.getDeclaredMethod(clazzName + "Value", null);
+                    try {
+                        Object o = method.invoke((Number) value, null);
+                        return (T) o;
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
         }
     }
 }

@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 24 //must be 24
     buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.guok.homekitdemo"
         minSdkVersion 22
-        targetSdkVersion 24
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -36,5 +36,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':hapandroid')
-    compile 'com.android.support:multidex:1.0.1'
+//    compile 'com.android.support:multidex:1.0.1'
 }

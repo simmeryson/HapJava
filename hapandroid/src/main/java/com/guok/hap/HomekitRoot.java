@@ -36,6 +36,7 @@ public class HomekitRoot {
     private final String label;
     private final HomekitRegistry registry;
     private final SubscriptionManager subscriptions = new SubscriptionManager();
+
     private volatile boolean started = false;
     private int configurationIndex = 1;
 
@@ -65,11 +66,12 @@ public class HomekitRoot {
      *
      * @param accessory to IAdvertiser and handle.
      */
-    public void addAccessory(HomekitAccessory accessory) {
+    public <T extends HomekitAccessory> T addAccessory(T accessory) {
         if (accessory.getId() <= 1 && !(accessory instanceof Bridge)) {
             throw new IndexOutOfBoundsException("The ID of an accessory used in a bridge must be greater than 1");
         }
         addAccessorySkipRangeCheck(accessory);
+        return accessory;
     }
 
     /**
@@ -81,10 +83,15 @@ public class HomekitRoot {
     void addAccessorySkipRangeCheck(HomekitAccessory accessory) {
         this.registry.add(accessory);
         logger.info("Added accessory " + accessory.getLabel());
-        if (started) {
-            registry.reset();
-            webHandler.resetConnections();
-        }
+        reLoadAccessory();
+    }
+
+    public <T extends HomekitAccessory> T getSpecificAccessory(Class<T> t) {
+        return this.registry.getSpecificAccessory(t);
+    }
+
+    public HomekitAccessory getSpecificAccessory(int id) {
+        return this.registry.getSpecificAccessory(id);
     }
 
     /**
@@ -97,10 +104,7 @@ public class HomekitRoot {
     public void removeAccessory(HomekitAccessory accessory) {
         this.registry.remove(accessory);
         logger.info("Removed accessory " + accessory.getLabel());
-        if (started) {
-            registry.reset();
-            webHandler.resetConnections();
-        }
+        reLoadAccessory();
     }
 
     /**
@@ -127,7 +131,7 @@ public class HomekitRoot {
                             return null;
                         }
                     });
-        }else
+        } else
             logger.error("Bridge accessory already running!");
     }
 
@@ -197,4 +201,11 @@ public class HomekitRoot {
         return registry;
     }
 
+
+    public void reLoadAccessory() {
+        if (started) {
+            registry.reset();
+            webHandler.resetConnections();
+        }
+    }
 }

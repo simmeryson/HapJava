@@ -20,6 +20,8 @@ import io.reactivex.functions.Consumer;
 
 /**
  * 守护服务，运行在:watch子进程中
+ * <p>必须在manifest.xml的application中加上标签android:icon="@mipmap/ic_launcher"。否则会报错"Bad notification for startForeground: java.lang.RuntimeException: icon must be non-zero"。
+ *
  * @author guok
  */
 public class WatchDogService extends Service {
@@ -36,7 +38,7 @@ public class WatchDogService extends Service {
         if (sDisposable != null && !sDisposable.isDisposed()) return START_STICKY;
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-            startForeground(HASH_CODE, new Notification());
+            startForeground(HASH_CODE, new Notification());//注意application的icon标签
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                 try {startService(new Intent(DaemonEnv.sApp, WatchDogNotificationService.class));} catch (Exception ignored) {}
         }

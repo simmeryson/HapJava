@@ -5,6 +5,8 @@ import com.nimbusds.srp6.SRP6Routines;
 import net.i2p.crypto.eddsa.spec.EdDSANamedCurveTable;
 import net.i2p.crypto.eddsa.spec.EdDSAParameterSpec;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
@@ -16,7 +18,7 @@ public class HomekitUtils {
         return new BigInteger(SRP6Routines.generateRandomSalt(16));
     }
 
-    public static byte[] generateKey(){
+    public static byte[] generateKey() {
         EdDSAParameterSpec spec = EdDSANamedCurveTable.getByName("ed25519-sha-512");
         byte[] seed = new byte[spec.getCurve().getField().getb() / 8];
         getSecureRandom().nextBytes(seed);
@@ -61,5 +63,24 @@ public class HomekitUtils {
             }
         }
         return result;
+    }
+
+    public static Class getGenericType(Object o, int index) {
+        Type genType = o.getClass().getGenericSuperclass();
+        if (!(genType instanceof ParameterizedType)) {
+            return Object.class;
+        }
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        if (index >= params.length || index < 0) {
+            throw new RuntimeException("Index outof bounds");
+        }
+        if (!(params[index] instanceof Class)) {
+            return Object.class;
+        }
+        return (Class) params[index];
+    }
+
+    public static Class getSingleGenericType(Object o) {
+        return getGenericType(o, 0);
     }
 }

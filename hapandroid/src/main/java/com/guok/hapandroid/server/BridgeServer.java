@@ -1,4 +1,4 @@
-package com.guok.hapandroid;
+package com.guok.hapandroid.server;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -6,7 +6,9 @@ import android.text.TextUtils;
 import com.guok.hap.HomekitRoot;
 import com.guok.hap.HomekitServer;
 import com.guok.hap.impl.advertiser.IAdvertiser;
+import com.guok.hapandroid.PreferencesUtil;
 import com.guok.hapandroid.hapmaters.MediaPlayer;
+import com.guok.hapandroid.hapmaters.ServiceConfig;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -16,28 +18,37 @@ import java.util.Map;
  * @author guok
  */
 
-public class BridgeImpl {
+public class BridgeServer {
 
     public static final String DEFAULT_PIN = "031-45-155";
 
-    private static int DEFAULT_PORT = 7225;
+    public static int DEFAULT_PORT = 7225;
 
     private HomekitRoot bridge;
 
-
     private final ServiceConfig mConfig;
+    private static ServerPerpared mServerPerpared;
 
-    public BridgeImpl() {
+    public BridgeServer() {
         mConfig = new AndroidConfig();
+    }
+
+    public BridgeServer(ServerPerpared serverPerpared) {
+        this();
+        mServerPerpared = serverPerpared;
     }
 
     public void registerHap(Context context) {
         try {
             IAdvertiser mAdvertiser = new AndroidAdvtiser(context);
             HomekitServer homekit = new HomekitServer(mConfig.getPort());
-            bridge = homekit.createBridge(new AndroidBridge(context, mConfig), "Android Bridge3", "Haier, Inc.", "G6", "111abe234", mAdvertiser);
+            bridge = homekit.createBridge(new AndroidBridge(context, mConfig), "Android Bridge3", "guok, Inc.", "G6", "12321", mAdvertiser);
 //            bridge.addAccessory(new MockSwitch());
             bridge.addAccessory(new MediaPlayer());
+
+            if (mServerPerpared != null) {
+                mServerPerpared.serverPerpared(bridge, homekit);
+            }
             bridge.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,5 +130,13 @@ public class BridgeImpl {
             }
             return Collections.emptyMap();
         }
+    }
+
+    public static ServerPerpared getmServerPerpared() {
+        return mServerPerpared;
+    }
+
+    public static void setmServerPerpared(ServerPerpared mServerPerpared) {
+        BridgeServer.mServerPerpared = mServerPerpared;
     }
 }

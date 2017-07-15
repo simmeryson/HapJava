@@ -1,8 +1,10 @@
-package com.guok.hapandroid;
+package com.guok.hapandroid.server;
 
 import android.content.Context;
 
 import com.guok.hap.AbstractBridge;
+import com.guok.hapandroid.PreferencesUtil;
+import com.guok.hapandroid.hapmaters.ServiceConfig;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;

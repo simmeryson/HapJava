@@ -6,6 +6,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.accessories.Lightbulb;
 import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hapandroid.server.BroadcastCharactCallback;
 
 
 /**

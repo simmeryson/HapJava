@@ -13,10 +13,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * all services require iOS 10 or 10.3 have not supported
+ *
  * @author guok
  */
 
-public abstract class BaseService implements Service{
+public abstract class BaseService implements Service {
 
     private final static Logger logger = LoggerFactory.getLogger(BaseService.class);
 
@@ -39,17 +40,18 @@ public abstract class BaseService implements Service{
     }
 
 
-    public void addCharacteristic(Characteristic characteristic) {
+    public <T extends Characteristic> T addCharacteristic(T characteristic) {
         if (characteristics.size() > 99) {
             logger.error("A service must not have more than 100 characteristics!");
-            return;
+            return null;
         }
         if (characteristics.containsKey(characteristic.getType())) {
             logger.error("Duplicate characteristic!");
-            return;
+            return null;
         }
 
         this.characteristics.put(characteristic.getType(), characteristic);
+        return characteristic;
     }
 
     public <T extends Characteristic> T getSpecificCharact(Class<T> t) {
@@ -58,5 +60,18 @@ public abstract class BaseService implements Service{
                 return (T) characteristic;
         }
         return null;
+    }
+
+    public void removeCharact(Characteristic characteristic) {
+        this.characteristics.remove(characteristic.getType());
+    }
+
+    public <T extends Characteristic> void removeCharact(Class<T> t) {
+        for (Map.Entry<String, Characteristic> entry : characteristics.entrySet()) {
+            if (t.isInstance(entry.getValue())) {
+                characteristics.remove(entry.getKey());
+                break;
+            }
+        }
     }
 }

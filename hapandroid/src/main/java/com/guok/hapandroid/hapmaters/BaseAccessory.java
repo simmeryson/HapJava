@@ -71,17 +71,18 @@ public abstract class BaseAccessory implements HomekitAccessory {
         return "1.0";
     }
 
-    protected void addServices(Service service) {
+    public <T extends Service> T addServices(T service) {
         if (services.size() > 99) {
             logger.error("A accessory must not have more than 100 services!");
-            return;
+            return null;
         }
         if (services.containsKey(service.getType())) {
             logger.error("Duplicate service!");
-            return;
+            return null;
         }
 
         this.services.put(service.getType(), service);
+        return service;
     }
 
     public <T extends Service> T getSpecificService(Class<T> t) {
@@ -90,5 +91,9 @@ public abstract class BaseAccessory implements HomekitAccessory {
                 return (T) service;
         }
         return null;
+    }
+
+    public void removeService(Service service) {
+        services.remove(service.getType());
     }
 }

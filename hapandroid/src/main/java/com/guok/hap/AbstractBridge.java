@@ -1,6 +1,6 @@
 package com.guok.hap;
 
-import com.guok.hapandroid.ServiceConfig;
+import com.guok.hapandroid.hapmaters.ServiceConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

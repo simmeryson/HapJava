@@ -20,7 +20,8 @@ public class PreferencesUtil {
     private static Context sContext;
 
     public static void setContext(Context context) {
-        sContext = context;
+        if (sContext == null && context != null)
+            sContext = context.getApplicationContext();
     }
 
     public static boolean putString(NameSpace nameSpace, String key, String value) {
