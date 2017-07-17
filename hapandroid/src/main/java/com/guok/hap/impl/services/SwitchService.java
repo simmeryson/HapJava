@@ -1,48 +1,17 @@
 package com.guok.hap.impl.services;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import com.guok.hap.impl.characteristics.common.OnCharact;
 
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.accessories.Switch;
-import com.guok.hap.impl.Consumer;
-import com.guok.hap.impl.ExceptionalConsumer;
-import com.guok.hap.impl.Supplier;
-import com.guok.hap.impl.characteristics.common.OnCharacteristic;
+public class SwitchService extends BaseService {
 
-public class SwitchService extends AbstractServiceImpl {
+    public SwitchService() {
+        this(null);
+    }
 
-	public SwitchService(Switch switchAccessory) {
-		this(switchAccessory, switchAccessory.getLabel());
-	}
+    public SwitchService(String serviceName) {
+        super("00000049-0000-1000-8000-0026BB765291", serviceName);
 
-	public SwitchService(final Switch switchAccessory, String serviceName) {
-		super("00000049-0000-1000-8000-0026BB765291", switchAccessory, serviceName);
-		addCharacteristic(new OnCharacteristic(
-				new Supplier<ListenableFuture<Boolean>>() {
-					@Override
-					public ListenableFuture<Boolean> get() {
-						return switchAccessory.getSwitchState();
-					}
-				},
-				new ExceptionalConsumer<Boolean>() {
-					@Override
-					public void accept(Boolean v) throws Exception {
-						switchAccessory.setSwitchState(v);
-					}
-				},
-				new Consumer<HomekitCharacteristicChangeCallback>() {
-					@Override
-					public void accept(HomekitCharacteristicChangeCallback c) {
-						switchAccessory.subscribeSwitchState(c);
-					}
-				},
-				new Runnable() {
-					@Override
-					public void run() {
-						switchAccessory.unsubscribeSwitchState();
-					}
-				}
-		));
-	}
+        addCharacteristic(new OnCharact());
+    }
 
 }

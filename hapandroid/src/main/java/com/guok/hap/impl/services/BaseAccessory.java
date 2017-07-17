@@ -1,9 +1,8 @@
-package com.guok.hapandroid.hapmaters;
+package com.guok.hap.impl.services;
 
 import com.guok.hap.AccessoryDisplayInfo;
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.Service;
-import com.guok.hap.impl.services.BaseService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

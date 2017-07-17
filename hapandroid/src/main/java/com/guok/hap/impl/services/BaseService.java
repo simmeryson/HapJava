@@ -2,6 +2,7 @@ package com.guok.hap.impl.services;
 
 import com.guok.hap.Service;
 import com.guok.hap.characteristics.Characteristic;
+import com.guok.hap.impl.characteristics.common.Name;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,12 @@ public abstract class BaseService implements Service {
     public BaseService(String type) {
         String s = Integer.toHexString(Integer.parseInt(type.split("-")[0], 16));
         this.type = s.toUpperCase();
+    }
+
+    public BaseService(String type, String serviceName) {
+        this(type);
+        if (serviceName != null && serviceName.length() > 0)
+            addCharacteristic(new Name(serviceName));
     }
 
     @Override

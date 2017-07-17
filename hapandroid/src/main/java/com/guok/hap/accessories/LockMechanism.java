@@ -41,6 +41,6 @@ public abstract class LockMechanism implements HomekitAccessory {
 
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service)new LockMechanismService(this));
+		return Collections.singleton((Service)new LockMechanismService());
 	}
 }

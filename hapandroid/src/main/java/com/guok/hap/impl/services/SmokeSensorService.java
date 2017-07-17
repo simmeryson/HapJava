@@ -1,16 +1,16 @@
 package com.guok.hap.impl.services;
 
-import com.guok.hap.accessories.SmokeSensor;
 import com.guok.hap.impl.characteristics.smokesensor.SmokeDetectedCharacteristic;
 
-public class SmokeSensorService extends AbstractServiceImpl {
+public class SmokeSensorService extends BaseService {
 
-    public SmokeSensorService(SmokeSensor smokeSensor) {
-        this(smokeSensor, smokeSensor.getLabel());
+    public SmokeSensorService() {
+        this(null);
     }
 
-    public SmokeSensorService(SmokeSensor smokeSensor, String serviceName) {
-        super("00000087-0000-1000-8000-0026BB765291", smokeSensor, serviceName);
-        addCharacteristic(new SmokeDetectedCharacteristic(smokeSensor));
+    public SmokeSensorService(String serviceName) {
+        super("00000087-0000-1000-8000-0026BB765291", serviceName);
+
+        addCharacteristic(new SmokeDetectedCharacteristic());
     }
 }

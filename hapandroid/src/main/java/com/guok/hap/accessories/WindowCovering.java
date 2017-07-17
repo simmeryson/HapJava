@@ -44,7 +44,7 @@ public abstract class WindowCovering implements HomekitAccessory {
 	
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service)new WindowCoveringService(this));
+		return Collections.singleton((Service)new WindowCoveringService());
 	}
 	
 	/**

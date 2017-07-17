@@ -33,7 +33,7 @@ public abstract class Lightbulb implements HomekitAccessory {
 	
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service) new LightbulbService(this));
+		return Collections.singleton((Service) new LightbulbService());
 	}
 	
 	/**

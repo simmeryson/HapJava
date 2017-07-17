@@ -9,7 +9,6 @@ import com.guok.hap.ServiceConfig;
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.http.impl.HomeKitHttpServer;
 import com.guok.hapandroid.PreferencesUtil;
-import com.guok.hapandroid.hapmaters.MediaPlayer;
 
 /**
  * @author guok

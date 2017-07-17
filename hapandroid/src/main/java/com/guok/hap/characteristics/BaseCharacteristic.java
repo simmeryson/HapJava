@@ -36,6 +36,11 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
     private final boolean isEventable;
     private final String description;
 
+    protected T minValue;
+    protected T maxValue;
+    protected T minStep;
+    protected CharacteristicUnits unit;
+
     protected T value;
     protected CharacteristicCallBack<T> mCallBack;
     protected HomekitCharacteristicChangeCallback subcribeCallback;
@@ -158,11 +163,11 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
     /**
      * Update the characteristic value using a new value supplied by the connected client.
      *
-     * @return 0 when set successfully. {@link HapStatusCodes} when set failure.
      * @param value the new value to set.
+     * @return 0 when set successfully. {@link HapStatusCodes} when set failure.
      * @throws Exception if the value cannot be set.
      */
-    protected  int setValue(T value) throws Exception {
+    protected int setValue(T value) throws Exception {
         this.value = value;
 
         if (this.subcribeCallback != null)
@@ -178,7 +183,19 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      *
      * @return a future that will complete with the current value.
      */
-    public abstract ListenableFuture<T> getValue();
+    public ListenableFuture<T> getValue() {
+        if (this.mCallBack != null) {
+            return this.mCallBack.getValueCallback(this, this.subcribeCallback != null, new CharacteristicCallBack.FetchCallBack<T>() {
+                @Override
+                public void fetchValue(T val) {
+                    value = val;
+                    if (subcribeCallback != null)
+                        subcribeCallback.changed();//iOS could receive new value via this method
+                }
+            });
+        }
+        return Futures.immediateFuture(value);
+    }
 
     /**
      * Supplies a default value for the characteristic to send to connected clients when the real
@@ -230,7 +247,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
     }
 
 
-    public ListenableFuture<T> getValueImmediately(){
+    public ListenableFuture<T> getValueImmediately() {
         return Futures.immediateFuture(value);
     }
 

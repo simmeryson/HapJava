@@ -25,7 +25,7 @@ public abstract class HumiditySensor implements HomekitAccessory {
 	
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service)new HumiditySensorService(this));
+		return Collections.singleton((Service)new HumiditySensorService());
 	}
 	
 	/**

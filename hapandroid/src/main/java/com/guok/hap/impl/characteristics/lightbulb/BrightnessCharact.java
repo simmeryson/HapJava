@@ -1,7 +1,5 @@
-package com.guok.hapandroid.hapmaters;
+package com.guok.hap.impl.characteristics.lightbulb;
 
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.characteristics.CharacteristicCallBack;
 import com.guok.hap.characteristics.CharacteristicUnits;
@@ -36,18 +34,4 @@ public class BrightnessCharact extends IntegerCharacteristic implements Eventabl
         this.subcribeCallback = null;
     }
 
-
-    @Override
-    public ListenableFuture<Integer> getValue() {
-        if (this.mCallBack != null)
-            return this.mCallBack.getValueCallback(this, this.subcribeCallback != null, new CharacteristicCallBack.FetchCallBack<Integer>() {
-                @Override
-                public void fetchValue(Integer val) {
-                    value = val;
-                    if (subcribeCallback != null)
-                        subcribeCallback.changed();
-                }
-            });
-        return Futures.immediateFuture(value);
-    }
 }

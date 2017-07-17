@@ -26,7 +26,7 @@ public abstract class LightSensor implements HomekitAccessory {
 
     @Override
     public Collection<Service> getServices() {
-        return Collections.singleton((Service)new LightSensorService(this));
+        return Collections.singleton((Service)new LightSensorService());
     }
 
     /**

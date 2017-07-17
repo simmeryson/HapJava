@@ -63,7 +63,7 @@ public abstract class Fan implements HomekitAccessory {
 	
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service)new FanService(this));
+		return Collections.singleton((Service)new FanService());
 	}
 	
 	/**

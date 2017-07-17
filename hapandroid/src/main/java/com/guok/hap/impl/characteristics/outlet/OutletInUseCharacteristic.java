@@ -1,42 +1,39 @@
 package com.guok.hap.impl.characteristics.outlet;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
 import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.accessories.Outlet;
 import com.guok.hap.characteristics.BooleanCharacteristic;
+import com.guok.hap.characteristics.CharacteristicCallBack;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.impl.responses.HapStatusCodes;
 
-public class OutletInUseCharacteristic  extends BooleanCharacteristic implements EventableCharacteristic {
+public class OutletInUseCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
-	private final Outlet outlet;
-	
-	public OutletInUseCharacteristic(Outlet outlet) {
-		super("00000026-0000-1000-8000-0026BB765291", false, true, "The outlet is in use");
-		this.outlet = outlet;
-	}
+//	private final Outlet outlet;
 
-	@Override
-	protected int setValue(Boolean value) throws Exception {
-		return HapStatusCodes.READ_OLNY;
-	}
+    public OutletInUseCharacteristic() {
+        this(null);
+    }
 
-	@Override
-	public ListenableFuture<Boolean> getValue() {
-		return outlet.getOutletInUse();
-	}
+    public OutletInUseCharacteristic(CharacteristicCallBack<Boolean> callBack) {
+        super("00000026-0000-1000-8000-0026BB765291", false, true, "The outlet is in use");
+        this.mCallBack = callBack;
+    }
 
-	@Override
-	public void subscribe(HomekitCharacteristicChangeCallback callback) {
-		outlet.subscribeOutletInUse(callback);
-	}
+    @Override
+    protected int setValue(Boolean value) throws Exception {
+        return HapStatusCodes.READ_OLNY;
+    }
 
-	@Override
-	public void unsubscribe() {
-		outlet.unsubscribeOutletInUse();
-	}
 
-	
+    @Override
+    public void subscribe(HomekitCharacteristicChangeCallback callback) {
+        this.subcribeCallback = callback;
+    }
+
+    @Override
+    public void unsubscribe() {
+        this.subcribeCallback = null;
+    }
+
 
 }

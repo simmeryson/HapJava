@@ -30,7 +30,7 @@ public abstract class SmokeSensor implements HomekitAccessory {
 
     @Override
     public Collection<Service> getServices() {
-        return Collections.singleton((Service) new SmokeSensorService(this));
+        return Collections.singleton((Service) new SmokeSensorService());
     }
 
     /**

@@ -1,20 +1,24 @@
-package com.guok.hap.impl.characteristics.fan;
+package com.guok.hap.impl.characteristics.common;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.characteristics.CharacteristicCallBack;
 import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
 
-public class RotationDirectionCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
+/**
+ * Describing the service is active or not. 0 means inactive. 1 means active.
+ *
+ * @author guok
+ */
 
-//	private final Fan fan;
+public class ActiveCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
-    public RotationDirectionCharacteristic() {
+    public ActiveCharacteristic() {
         this(null);
     }
 
-    public RotationDirectionCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("00000028-0000-1000-8000-0026BB765291", true, true, "Rotation Direction", 1);
+    public ActiveCharacteristic(CharacteristicCallBack<Integer> callBack) {
+        super("000000B0-0000-1000-8000-0026BB765291", true, true, "if the service current active", 1);
 
         this.mCallBack = callBack;
     }

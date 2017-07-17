@@ -30,7 +30,7 @@ public abstract class CarbonMonoxideSensor implements HomekitAccessory {
 
     @Override
     public Collection<Service> getServices() {
-        CarbonMonoxideSensorService carbonMonoxideSensorService = new CarbonMonoxideSensorService(this);
+        CarbonMonoxideSensorService carbonMonoxideSensorService = new CarbonMonoxideSensorService();
         return Collections.singleton((Service)carbonMonoxideSensorService);
     }
 

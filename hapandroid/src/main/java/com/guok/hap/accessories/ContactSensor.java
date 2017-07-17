@@ -33,7 +33,7 @@ public abstract class ContactSensor implements HomekitAccessory {
 
     @Override
     public Collection<Service> getServices() {
-        return Collections.singleton((Service) new ContactSensorService(this));
+        return Collections.singleton((Service) new ContactSensorService());
     }
 
     /**

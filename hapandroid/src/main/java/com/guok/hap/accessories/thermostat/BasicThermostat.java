@@ -85,6 +85,6 @@ public abstract class BasicThermostat extends TemperatureSensor implements Homek
 	
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service) new ThermostatService(this));
+		return Collections.singleton((Service) new ThermostatService());
 	}
 }

@@ -19,7 +19,7 @@ public abstract class Outlet implements HomekitAccessory {
 
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service)new OutletService(this));
+		return Collections.singleton((Service)new OutletService());
 	}
 
 	/**

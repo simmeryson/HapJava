@@ -1,38 +1,17 @@
 package com.guok.hap.impl.characteristics.thermostat;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.accessories.thermostat.HeatingThermostat;
+import com.guok.hap.characteristics.CharacteristicCallBack;
 
 public class HeatingThresholdTemperatureCharacteristic extends
-		AbstractTemperatureCharacteristic {
+        AbstractTemperatureCharacteristic {
 
-	private final HeatingThermostat thermostat;
-	
-	public HeatingThresholdTemperatureCharacteristic(HeatingThermostat thermostat) {
-		super("00000012-0000-1000-8000-0026BB765291", true, "Temperature below which heating will be active", thermostat);
-		this.thermostat = thermostat;
-	}
+    public HeatingThresholdTemperatureCharacteristic() {
+        this(null);
+    }
 
-	@Override
-	public void subscribe(HomekitCharacteristicChangeCallback callback) {
-		thermostat.subscribeHeatingThresholdTemperature(callback);
-	}
+    public HeatingThresholdTemperatureCharacteristic(CharacteristicCallBack<Double> callBack) {
+        super("00000012-0000-1000-8000-0026BB765291", true, "Temperature below which heating will be active", 0, 25);
 
-	@Override
-	public void unsubscribe() {
-		thermostat.unsubscribeHeatingThresholdTemperature();
-	}
-
-	@Override
-	protected ListenableFuture<Double> getDoubleValue() {
-		return thermostat.getHeatingThresholdTemperature();
-	}
-
-	@Override
-	protected int setValue(Double value) throws Exception {
-		return thermostat.setHeatingThresholdTemperature(value);
-	}
-
+        this.mCallBack = callBack;
+    }
 }

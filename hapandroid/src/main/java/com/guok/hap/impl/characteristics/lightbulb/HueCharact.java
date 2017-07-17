@@ -1,7 +1,5 @@
-package com.guok.hapandroid.hapmaters;
+package com.guok.hap.impl.characteristics.lightbulb;
 
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.characteristics.CharacteristicCallBack;
 import com.guok.hap.characteristics.CharacteristicUnits;
@@ -33,18 +31,4 @@ public class HueCharact extends FloatCharacteristic implements EventableCharacte
         this.subcribeCallback = null;
     }
 
-
-    @Override
-    protected ListenableFuture<Double> getDoubleValue() {
-        if (this.mCallBack != null)
-            return this.mCallBack.getValueCallback(this, this.subcribeCallback != null, new CharacteristicCallBack.FetchCallBack<Double>() {
-                @Override
-                public void fetchValue(Double val) {
-                    value = val;
-                    if (subcribeCallback != null)
-                        subcribeCallback.changed();//iOS could receive new value via this method
-                }
-            });
-        return Futures.immediateFuture(value);
-    }
 }

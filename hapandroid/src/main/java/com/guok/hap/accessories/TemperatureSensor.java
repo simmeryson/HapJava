@@ -26,7 +26,7 @@ public abstract class TemperatureSensor implements HomekitAccessory {
 	
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service) new TemperatureSensorService(this));
+		return Collections.singleton((Service) new TemperatureSensorService());
 	}
 	
 	/**

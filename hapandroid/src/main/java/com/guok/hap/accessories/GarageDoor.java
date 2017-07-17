@@ -80,6 +80,6 @@ public abstract class GarageDoor implements HomekitAccessory {
 
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service) new GarageDoorService(this));
+		return Collections.singleton((Service) new GarageDoorService());
 	}
 }

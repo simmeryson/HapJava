@@ -2,21 +2,20 @@ package com.guok.hap.impl.characteristics.fan;
 
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.characteristics.CharacteristicCallBack;
-import com.guok.hap.characteristics.CharacteristicUnits;
+import com.guok.hap.characteristics.EnumCharacteristic;
 import com.guok.hap.characteristics.EventableCharacteristic;
-import com.guok.hap.characteristics.IntegerCharacteristic;
 
-public class RotationSpeedCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
+/**
+ * @author guok
+ */
 
-//	private final Fan fan;
+public class TargetFanStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic{
 
-    public RotationSpeedCharacteristic() {
+    public TargetFanStateCharacteristic() {
         this(null);
     }
-
-    public RotationSpeedCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("00000029-0000-1000-8000-0026BB765291", true, true, "Rotation speed", 0,
-                100, CharacteristicUnits.percentage);
+    public TargetFanStateCharacteristic(CharacteristicCallBack<Integer> callBack) {
+        super("000000BF-0000-1000-8000-0026BB765291", true, true, "target state of a fan", 1);
 
         this.mCallBack = callBack;
     }
@@ -30,6 +29,4 @@ public class RotationSpeedCharacteristic extends IntegerCharacteristic implement
     public void unsubscribe() {
         this.subcribeCallback = null;
     }
-
-
 }

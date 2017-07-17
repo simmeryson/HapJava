@@ -33,7 +33,7 @@ public abstract class Switch implements  HomekitAccessory {
 	
 	@Override
 	public Collection<Service> getServices() {
-		return Collections.singleton((Service)new SwitchService(this));
+		return Collections.singleton((Service)new SwitchService());
 	}
 	
 	/**

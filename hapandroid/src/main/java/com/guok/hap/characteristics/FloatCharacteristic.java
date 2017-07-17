@@ -16,14 +16,9 @@ import javax.json.JsonValue;
  *
  * @author Andy Lintner
  */
-public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
+public class FloatCharacteristic extends BaseCharacteristic<Double> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FloatCharacteristic.class);
-
-    private final double minValue;
-    private final double maxValue;
-    private final double minStep;
-    private final CharacteristicUnits unit;
 
     /**
      * Default constructor
@@ -47,6 +42,7 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
         this.maxValue = maxValue;
         this.minStep = minStep;
         this.unit = unit;
+
         this.value = minValue;
     }
 
@@ -82,7 +78,7 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
     @Override
     public final ListenableFuture<Double> getValue() {
         final double rounder = 1 / this.minStep;
-        ListenableFuture<Double> future = Futures.transform(getDoubleValue(), new Function<Double, Double>() {
+        ListenableFuture<Double> future = Futures.transform(super.getValue(), new Function<Double, Double>() {
             @Override
             public Double apply(Double d) {
 
@@ -123,5 +119,4 @@ public abstract class FloatCharacteristic extends BaseCharacteristic<Double> {
      *
      * @return a future that will contain the value.
      */
-    protected abstract ListenableFuture<Double> getDoubleValue();
 }

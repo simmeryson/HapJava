@@ -29,7 +29,7 @@ public abstract class MotionSensor implements HomekitAccessory {
 
     @Override
     public Collection<Service> getServices() {
-        return Collections.singleton((Service) new MotionSensorService(this));
+        return Collections.singleton((Service) new MotionSensorService());
     }
 
     /**

@@ -93,6 +93,6 @@ public abstract class SecuritySystem implements HomekitAccessory {
 
     @Override
     public Collection<Service> getServices() {
-        return Collections.singleton((Service)new SecuritySystemService(this));
+        return Collections.singleton((Service)new SecuritySystemService());
     }
 }

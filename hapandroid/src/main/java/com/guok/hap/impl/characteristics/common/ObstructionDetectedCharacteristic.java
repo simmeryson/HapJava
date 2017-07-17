@@ -1,28 +1,23 @@
 package com.guok.hap.impl.characteristics.common;
 
 
-import com.google.common.util.concurrent.ListenableFuture;
-
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.characteristics.BooleanCharacteristic;
+import com.guok.hap.characteristics.CharacteristicCallBack;
 import com.guok.hap.characteristics.EventableCharacteristic;
-import com.guok.hap.impl.Consumer;
-import com.guok.hap.impl.Supplier;
 import com.guok.hap.impl.responses.HapStatusCodes;
 
 
 public class ObstructionDetectedCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
-    private final Supplier<ListenableFuture<Boolean>> getter;
-    private final Consumer<HomekitCharacteristicChangeCallback> subscriber;
-    private final Runnable unsubscriber;
+    public ObstructionDetectedCharacteristic() {
+        this(null);
+    }
 
-    public ObstructionDetectedCharacteristic(Supplier<ListenableFuture<Boolean>> getter,
-                                             Consumer<HomekitCharacteristicChangeCallback> subscriber, Runnable unsubscriber) {
+    public ObstructionDetectedCharacteristic(CharacteristicCallBack<Boolean> callBack) {
         super("00000024-0000-1000-8000-0026BB765291", false, true, "An obstruction has been detected");
-        this.getter = getter;
-        this.subscriber = subscriber;
-        this.unsubscriber = unsubscriber;
+
+        this.mCallBack = callBack;
     }
 
     @Override
@@ -31,20 +26,15 @@ public class ObstructionDetectedCharacteristic extends BooleanCharacteristic imp
         return HapStatusCodes.READ_OLNY;
     }
 
-    @Override
-    public ListenableFuture<Boolean> getValue() {
-        return getter.get();
-    }
 
     @Override
     public void subscribe(HomekitCharacteristicChangeCallback callback) {
-        subscriber.accept(callback);
+        this.subcribeCallback = callback;
     }
 
     @Override
     public void unsubscribe() {
-        unsubscriber.run();
+        this.subcribeCallback = null;
     }
-
 
 }

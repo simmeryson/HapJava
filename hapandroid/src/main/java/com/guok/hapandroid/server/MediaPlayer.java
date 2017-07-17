@@ -1,6 +1,9 @@
-package com.guok.hapandroid.hapmaters;
+package com.guok.hapandroid.server;
 
-import com.guok.hapandroid.server.BroadcastCharactCallback;
+import com.guok.hap.impl.characteristics.common.OnCharact;
+import com.guok.hap.impl.characteristics.lightbulb.BrightnessCharact;
+import com.guok.hap.impl.services.BaseAccessory;
+import com.guok.hap.impl.services.LightbulbService;
 
 /**
  * @author guok

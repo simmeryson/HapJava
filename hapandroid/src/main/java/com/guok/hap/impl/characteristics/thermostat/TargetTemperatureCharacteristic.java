@@ -1,38 +1,17 @@
 package com.guok.hap.impl.characteristics.thermostat;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.accessories.thermostat.BasicThermostat;
+import com.guok.hap.characteristics.CharacteristicCallBack;
 
 public class TargetTemperatureCharacteristic extends
-		AbstractTemperatureCharacteristic {
-	
-	private final BasicThermostat thermostat;
+        AbstractTemperatureCharacteristic {
 
-	public TargetTemperatureCharacteristic(BasicThermostat thermostat) {
-		super("00000035-0000-1000-8000-0026BB765291", true, "Target Temperature", thermostat);
-		this.thermostat = thermostat;
-	}
+    public TargetTemperatureCharacteristic() {
+        this(null);
+    }
 
-	@Override
-	public void subscribe(HomekitCharacteristicChangeCallback callback) {
-		thermostat.subscribeTargetTemperature(callback);
-	}
+    public TargetTemperatureCharacteristic(CharacteristicCallBack<Double> callBack) {
+        super("00000035-0000-1000-8000-0026BB765291", true, "Target Temperature", 10, 38);
 
-	@Override
-	public void unsubscribe() {
-		thermostat.unsubscribeTargetTemperature();
-	}
-
-	@Override
-	protected ListenableFuture<Double> getDoubleValue() {
-		return thermostat.getTargetTemperature();
-	}
-
-	@Override
-	protected int setValue(Double value) throws Exception {
-		return thermostat.setTargetTemperature(value);
-	}
-
+        this.mCallBack = callBack;
+    }
 }
