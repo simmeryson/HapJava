@@ -9,12 +9,15 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 public class SmokeDetectedCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
     //    private final SmokeSensor smokeSensor;
+    public static final String UUID = "00000076-0000-1000-8000-0026BB765291";
+
     public SmokeDetectedCharacteristic() {
         this(null);
     }
 
     public SmokeDetectedCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("00000076-0000-1000-8000-0026BB765291", false, true, "Smoke Detected", 1);
+        super(UUID, false, true, "Smoke Detected", 1);
+
         this.mCallBack = callBack;
     }
 

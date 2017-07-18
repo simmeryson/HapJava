@@ -11,7 +11,6 @@ public class AbstractHeatingCoolingModeCharacteristic extends EnumCharacteristic
 		super(UUID, isWritable, true, description, 3);
 	}
 
-
 	@Override
 	public void subscribe(HomekitCharacteristicChangeCallback callback) {
 		this.subcribeCallback = callback;

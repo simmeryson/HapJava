@@ -13,12 +13,14 @@ import com.guok.hap.characteristics.EventableCharacteristic;
 
 public class ActiveCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
+    public static final String UUID = "000000B0-0000-1000-8000-0026BB765291";
+
     public ActiveCharacteristic() {
         this(null);
     }
 
     public ActiveCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("000000B0-0000-1000-8000-0026BB765291", true, true, "if the service current active", 1);
+        super(UUID, true, true, "if the service current active", 1);
 
         this.mCallBack = callBack;
     }

@@ -14,13 +14,14 @@ import com.guok.hap.characteristics.EventableCharacteristic;
 
 public class MuteCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
+    public static final String UUID = "0000011A-0000-1000-8000-0026BB765291";
 
     public MuteCharacteristic() {
         this(null);
     }
 
     public MuteCharacteristic(CharacteristicCallBack<Boolean> callBack) {
-        super("0000011A-0000-1000-8000-0026BB765291", true, true, "control of audio output");
+        super(UUID, true, true, "control of audio output");
         this.mCallBack = callBack;
     }
 

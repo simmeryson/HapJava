@@ -2,7 +2,9 @@ package com.guok.hap;
 
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.advertiser.JmdnsHomekitAdvertiser;
+import com.guok.hap.impl.characteristics.lightbulb.BrightnessCharacteristic;
 import com.guok.hap.impl.http.impl.HomeKitHttpServer;
+import com.guok.hap.impl.services.LightbulbService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +39,10 @@ public class MainTest {
             IAdvertiser mAdvertiser = new JmdnsHomekitAdvertiser(httpServer.getInetAddress());
             HomeKitRoot bridge = new HomeKitRoot(displayInfo, httpServer, new MockAuthInfo(), mAdvertiser);
 
-            bridge.addAccessory(new MockSwitch(2, "GKPlayer","123", "", ""));
-            bridge.addAccessory(new MockSwitch(4,"GKFan","321", "", ""));
+            bridge.addAccessory(new MockSwitch(2, "GKPlayer"));
+            bridge.addAccessory(new MockSwitch(4, "GKPlayer"));
+            bridge.getSpecificAccessory(2).getSpecificService(LightbulbService.UUID).addOptionalCharacteristic(new BrightnessCharacteristic());
+
             bridge.start();
         } catch (Exception e) {
             e.printStackTrace();

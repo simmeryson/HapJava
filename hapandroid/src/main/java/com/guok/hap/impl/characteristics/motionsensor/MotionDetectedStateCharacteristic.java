@@ -8,14 +8,16 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class MotionDetectedStateCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
-//    private final MotionSensor motionSensor;
+    //    private final MotionSensor motionSensor;
+    public static final String UUID = "00000022-0000-1000-8000-0026BB765291";
 
     public MotionDetectedStateCharacteristic() {
         this(null);
     }
 
     public MotionDetectedStateCharacteristic(CharacteristicCallBack<Boolean> callBack) {
-        super("00000022-0000-1000-8000-0026BB765291", false, true, "Motion Detected");
+        super(UUID, false, true, "Motion Detected");
+
         this.mCallBack = callBack;
     }
 

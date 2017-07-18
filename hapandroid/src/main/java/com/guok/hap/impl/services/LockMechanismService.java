@@ -5,12 +5,14 @@ import com.guok.hap.impl.characteristics.lock.mechanism.LockTargetStateCharacter
 
 public class LockMechanismService extends BaseService {
 
+    public static final String UUID = "00000045-0000-1000-8000-0026BB765291";
+
     public LockMechanismService() {
         this(null);
     }
 
     public LockMechanismService(String serviceName) {
-        super("00000045-0000-1000-8000-0026BB765291", serviceName);
+        super(UUID, serviceName);
 
         addCharacteristic(new LockCurrentStateCharacteristic());
         addCharacteristic(new LockTargetStateCharacteristic());

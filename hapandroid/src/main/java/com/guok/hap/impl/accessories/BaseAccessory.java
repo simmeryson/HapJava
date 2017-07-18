@@ -1,8 +1,10 @@
-package com.guok.hap.impl.services;
+package com.guok.hap.impl.accessories;
 
 import com.guok.hap.AccessoryDisplayInfo;
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.Service;
+import com.guok.hap.impl.HomekitUtils;
+import com.guok.hap.impl.services.BaseService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,12 @@ public abstract class BaseAccessory implements HomekitAccessory {
     protected final Map<String, Service> services = new ConcurrentHashMap<>();
     protected final int ID;
     protected final AccessoryDisplayInfo defaultDisplayInfo;
+
+    public BaseAccessory(int ID, AccessoryDisplayInfo displayInfo, Service service) {
+        this.ID = ID;
+        defaultDisplayInfo = displayInfo;
+        addServices(service);
+    }
 
     public BaseAccessory(int ID, String label, Service service) {
         this.ID = ID;
@@ -89,6 +97,13 @@ public abstract class BaseAccessory implements HomekitAccessory {
             if (t.isInstance(service))
                 return (T) service;
         }
+        return null;
+    }
+
+    public BaseService getSpecificService(String UUID) {
+        String type = HomekitUtils.getTypeFromUUID(UUID);
+        if (type != null)
+            return (BaseService) services.get(type);
         return null;
     }
 

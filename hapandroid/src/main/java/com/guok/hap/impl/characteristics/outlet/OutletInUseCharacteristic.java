@@ -8,14 +8,16 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class OutletInUseCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
-//	private final Outlet outlet;
+    //	private final Outlet outlet;
+    public static final String UUID = "00000026-0000-1000-8000-0026BB765291";
 
     public OutletInUseCharacteristic() {
         this(null);
     }
 
     public OutletInUseCharacteristic(CharacteristicCallBack<Boolean> callBack) {
-        super("00000026-0000-1000-8000-0026BB765291", false, true, "The outlet is in use");
+        super(UUID, false, true, "The outlet is in use");
+
         this.mCallBack = callBack;
     }
 

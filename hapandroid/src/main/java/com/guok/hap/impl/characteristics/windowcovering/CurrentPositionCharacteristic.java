@@ -9,14 +9,15 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CurrentPositionCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
 
-//	private final WindowCovering windowCovering;
+    //	private final WindowCovering windowCovering;
+    public static final String UUID = "0000006D-0000-1000-8000-0026BB765291";
 
     public CurrentPositionCharacteristic() {
         this(null);
     }
 
     public CurrentPositionCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("0000006D-0000-1000-8000-0026BB765291", false, true, "The current position", 0, 100, CharacteristicUnits.percentage);
+        super(UUID, false, true, "The current position", 0, 100, CharacteristicUnits.percentage);
         this.mCallBack = callBack;
     }
 

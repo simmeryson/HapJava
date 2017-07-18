@@ -9,10 +9,12 @@ import com.guok.hap.impl.responses.HapStatusCodes;
  */
 public class Identify extends WriteOnlyBooleanCharacteristic {
 
+    public static final String UUID = "00000014-0000-1000-8000-0026BB765291";
+
     private HomekitAccessory accessory;
 
     public Identify(HomekitAccessory accessory) throws Exception {
-        super("00000014-0000-1000-8000-0026BB765291",
+        super(UUID,
                 "Identifies the accessory via a physical action on the accessory");
         this.accessory = accessory;
     }

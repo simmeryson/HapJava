@@ -8,14 +8,15 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class LockCurrentStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
-//	private final LockMechanism lock;
+    //	private final LockMechanism lock;
+    public static final String UUID = "0000001D-0000-1000-8000-0026BB765291";
 
     public LockCurrentStateCharacteristic() {
         this(null);
     }
 
     public LockCurrentStateCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("0000001D-0000-1000-8000-0026BB765291", false, true, "Current lock state", 3);
+        super(UUID, false, true, "Current lock state", 3);
         this.mCallBack = callBack;
     }
 

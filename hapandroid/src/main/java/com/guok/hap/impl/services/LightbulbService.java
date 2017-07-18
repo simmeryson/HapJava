@@ -1,6 +1,6 @@
 package com.guok.hap.impl.services;
 
-import com.guok.hap.impl.characteristics.common.OnCharact;
+import com.guok.hap.impl.characteristics.common.OnCharacteristic;
 
 /**
  * @author guok
@@ -8,13 +8,15 @@ import com.guok.hap.impl.characteristics.common.OnCharact;
 
 public class LightbulbService extends BaseService {
 
+    public static final String UUID = "00000043-0000-1000-8000-0026BB765291";
+
     public LightbulbService() {
         this(null);
     }
 
     public LightbulbService(String serviceName) {
-        super("00000043-0000-1000-8000-0026BB765291", serviceName);
+        super(UUID, serviceName);
 
-        addCharacteristic(new OnCharact());
+        addCharacteristic(new OnCharacteristic());
     }
 }

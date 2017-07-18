@@ -10,12 +10,14 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class ObstructionDetectedCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
+    public static final String UUID = "00000024-0000-1000-8000-0026BB765291";
+
     public ObstructionDetectedCharacteristic() {
         this(null);
     }
 
     public ObstructionDetectedCharacteristic(CharacteristicCallBack<Boolean> callBack) {
-        super("00000024-0000-1000-8000-0026BB765291", false, true, "An obstruction has been detected");
+        super(UUID, false, true, "An obstruction has been detected");
 
         this.mCallBack = callBack;
     }

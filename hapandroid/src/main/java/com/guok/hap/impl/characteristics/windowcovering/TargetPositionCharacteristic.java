@@ -8,14 +8,16 @@ import com.guok.hap.characteristics.IntegerCharacteristic;
 
 public class TargetPositionCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
 
-//    private final WindowCovering windowCovering;
+    //    private final WindowCovering windowCovering;
+    public static final String UUID = "0000007C-0000-1000-8000-0026BB765291";
 
     public TargetPositionCharacteristic() {
         this(null);
     }
 
     public TargetPositionCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("0000007C-0000-1000-8000-0026BB765291", true, true, "The target position", 0, 100, CharacteristicUnits.percentage);
+        super(UUID, true, true, "The target position", 0, 100, CharacteristicUnits.percentage);
+
         this.mCallBack = callBack;
     }
 

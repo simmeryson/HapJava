@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.Futures;
 import com.guok.hap.impl.HomekitBridge;
 import com.guok.hap.impl.HomekitRegistry;
 import com.guok.hap.impl.HomekitWebHandler;
+import com.guok.hap.impl.accessories.BaseAccessory;
 import com.guok.hap.impl.accessories.Bridge;
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.connections.HomekitClientConnectionFactoryImpl;
@@ -79,11 +80,7 @@ public class HomeKitRoot {
         reLoadAccessory();
     }
 
-    public <T extends HomekitAccessory> T getSpecificAccessory(Class<T> t) {
-        return this.registry.getSpecificAccessory(t);
-    }
-
-    public HomekitAccessory getSpecificAccessory(int id) {
+    public BaseAccessory getSpecificAccessory(int id) {
         return this.registry.getSpecificAccessory(id);
     }
 

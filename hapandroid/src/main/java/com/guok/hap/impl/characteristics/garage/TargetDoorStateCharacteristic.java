@@ -8,14 +8,14 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class TargetDoorStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
-//    private final GarageDoor door;
+    public static final String UUID = "0000000E-0000-1000-8000-0026BB765291";
 
     public TargetDoorStateCharacteristic() {
         this(null);
     }
 
     public TargetDoorStateCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("0000000E-0000-1000-8000-0026BB765291", false, true, "Current Door State", 4);
+        super(UUID, false, true, "Current Door State", 4);
         this.mCallBack = callBack;
     }
 

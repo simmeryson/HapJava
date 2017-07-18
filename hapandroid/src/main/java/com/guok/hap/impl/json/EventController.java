@@ -1,14 +1,14 @@
 package com.guok.hap.impl.json;
 
+import com.guok.hap.characteristics.EventableCharacteristic;
+import com.guok.hap.impl.http.HttpResponse;
+
 import java.io.ByteArrayOutputStream;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-
-import com.guok.hap.characteristics.EventableCharacteristic;
-import com.guok.hap.impl.http.HttpResponse;
 
 public class EventController {
 

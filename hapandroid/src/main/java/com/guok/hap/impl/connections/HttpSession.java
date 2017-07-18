@@ -58,7 +58,7 @@ class HttpSession {
 			if (registry.isAllowUnauthenticatedRequests()) {
 				return handleAuthenticatedRequest(request);
 			} else {
-				logger.info("Unrecognized request for "+request.getUri());
+				logger.error("Unrecognized request for "+request.getUri());
 				return new GeneralErrorResponse(HttpStatusCodes.NOT_FOUND);
 			}
 		}
@@ -76,7 +76,7 @@ class HttpSession {
 					return getCharacteristicsController().put(request, connection);
 					
 				default:
-					logger.info("Unrecognized method for "+request.getUri());
+					logger.error("Unrecognized method for "+request.getUri());
 					return new GeneralErrorResponse(HttpStatusCodes.NOT_FOUND);
 				}
 				
@@ -87,7 +87,7 @@ class HttpSession {
 				if (request.getUri().startsWith("/characteristics?")) {
 					return getCharacteristicsController().get(request);
 				}
-				logger.info("Unrecognized request for "+request.getUri());
+				logger.error("Unrecognized request for "+request.getUri());
 				return new GeneralErrorResponse(HttpStatusCodes.NOT_FOUND);
 			}
 		} catch (Exception e) {

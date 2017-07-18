@@ -9,12 +9,15 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 public class SecuritySystemAlarmTypeCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
     //    private final SecuritySystem securitySystem;
+    public static final String UUID = "0000008E-0000-1000-8000-0026BB765291";
+
     public SecuritySystemAlarmTypeCharacteristic() {
         this(null);
     }
 
     public SecuritySystemAlarmTypeCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("0000008E-0000-1000-8000-0026BB765291", false, true, "Security system alarm type", 1);
+        super(UUID, false, true, "Security system alarm type", 1);
+
         this.mCallBack = callBack;
     }
 

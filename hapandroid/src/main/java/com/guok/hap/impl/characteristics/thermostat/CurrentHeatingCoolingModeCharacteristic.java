@@ -6,12 +6,14 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 public class CurrentHeatingCoolingModeCharacteristic extends
         AbstractHeatingCoolingModeCharacteristic {
 
+    public static final String UUID = "0000000F-0000-1000-8000-0026BB765291";
+
     public CurrentHeatingCoolingModeCharacteristic() {
         this(null);
     }
 
     public CurrentHeatingCoolingModeCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("0000000F-0000-1000-8000-0026BB765291", false, "Current Mode");
+        super(UUID, false, "Current Mode");
 
         this.mCallBack = callBack;
     }

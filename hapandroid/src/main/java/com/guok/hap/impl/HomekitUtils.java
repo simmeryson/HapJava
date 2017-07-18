@@ -83,4 +83,10 @@ public class HomekitUtils {
     public static Class getSingleGenericType(Object o) {
         return getGenericType(o, 0);
     }
+
+    public static String getTypeFromUUID(String UUID) {
+        if (UUID == null || UUID.length() != 36 || !UUID.contains("-"))
+            return null;
+        return Integer.toHexString(Integer.parseInt(UUID.split("-")[0], 16)).toLowerCase();
+    }
 }

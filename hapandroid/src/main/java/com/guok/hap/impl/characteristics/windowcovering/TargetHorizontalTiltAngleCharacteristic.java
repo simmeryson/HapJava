@@ -8,14 +8,16 @@ import com.guok.hap.characteristics.IntegerCharacteristic;
 
 public class TargetHorizontalTiltAngleCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
 
-//	private final HorizontalTiltingWindowCovering windowCovering;
+    //	private final HorizontalTiltingWindowCovering windowCovering;
+    public static final String UUID = "0000007B-0000-1000-8000-0026BB765291";
 
     public TargetHorizontalTiltAngleCharacteristic() {
         this(null);
     }
 
     public TargetHorizontalTiltAngleCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("0000007B-0000-1000-8000-0026BB765291", true, true, "The target horizontal tilt angle", -90, 90, CharacteristicUnits.arcdegrees);
+        super(UUID, true, true, "The target horizontal tilt angle", -90, 90, CharacteristicUnits.arcdegrees);
+
         this.mCallBack = callBack;
     }
 

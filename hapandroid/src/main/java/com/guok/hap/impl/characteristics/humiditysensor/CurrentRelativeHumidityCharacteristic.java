@@ -10,12 +10,14 @@ public class CurrentRelativeHumidityCharacteristic extends FloatCharacteristic i
 
 //    private final HumiditySensor sensor;
 
+    public static final String UUID = "00000010-0000-1000-8000-0026BB765291";
+
     public CurrentRelativeHumidityCharacteristic() {
         this(null);
     }
 
     public CurrentRelativeHumidityCharacteristic(CharacteristicCallBack<Double> callBack) {
-        super("00000010-0000-1000-8000-0026BB765291", false, true, "Current relative humidity", 0, 100,
+        super(UUID, false, true, "Current relative humidity", 0, 100,
                 0.1, CharacteristicUnits.percentage);
         this.mCallBack = callBack;
     }

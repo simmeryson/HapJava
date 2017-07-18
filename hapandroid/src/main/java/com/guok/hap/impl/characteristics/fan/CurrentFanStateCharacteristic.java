@@ -11,11 +11,13 @@ import com.guok.hap.characteristics.EventableCharacteristic;
 
 public class CurrentFanStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
+    public static final String UUID = "000000AF-0000-1000-8000-0026BB765291";
+
     public CurrentFanStateCharacteristic() {
         this(null);
     }
     public CurrentFanStateCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("000000AF-0000-1000-8000-0026BB765291", false, true, "current state of a fan", 2);
+        super(UUID, false, true, "current state of a fan", 2);
 
         this.mCallBack = callBack;
     }

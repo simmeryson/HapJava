@@ -9,12 +9,15 @@ import com.guok.hap.impl.characteristics.media.MuteCharacteristic;
  */
 
 public class MicrophoneService extends BaseService {
+
+    public static final String UUID = "00000112-0000-1000-8000-0026BB765291";
+
     public MicrophoneService() {
         this(null);
     }
 
     public MicrophoneService(String serviceName) {
-        super("00000112-0000-1000-8000-0026BB765291", serviceName);
+        super(UUID, serviceName);
 
         addCharacteristic(new MuteCharacteristic());
     }

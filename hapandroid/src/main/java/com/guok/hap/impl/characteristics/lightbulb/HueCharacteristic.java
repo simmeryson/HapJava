@@ -10,15 +10,16 @@ import com.guok.hap.characteristics.FloatCharacteristic;
  * @author guok
  */
 
-public class SaturationCharact extends FloatCharacteristic implements EventableCharacteristic {
+public class HueCharacteristic extends FloatCharacteristic implements EventableCharacteristic {
 
-    public SaturationCharact() {
+    public static final String UUID = "00000013-0000-1000-8000-0026BB765291";
+
+    public HueCharacteristic() {
         this(null);
     }
 
-    public SaturationCharact(CharacteristicCallBack<Double> callBack) {
-        super("0000002F-0000-1000-8000-0026BB765291", true, true, "Adjust saturation of the light", 0,
-                100, 1, CharacteristicUnits.percentage);
+    public HueCharacteristic(CharacteristicCallBack<Double> callBack) {
+        super(UUID, true, true, "Adjust hue of the light", 0, 360, 1, CharacteristicUnits.arcdegrees);
 
         this.mCallBack = callBack;
     }
@@ -32,4 +33,5 @@ public class SaturationCharact extends FloatCharacteristic implements EventableC
     public void unsubscribe() {
         this.subcribeCallback = null;
     }
+
 }

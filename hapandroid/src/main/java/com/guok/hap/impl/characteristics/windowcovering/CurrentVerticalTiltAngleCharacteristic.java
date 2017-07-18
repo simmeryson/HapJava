@@ -9,14 +9,16 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CurrentVerticalTiltAngleCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
 
-//    private final VerticalTiltingWindowCovering windowCovering;
+    //    private final VerticalTiltingWindowCovering windowCovering;
+    public static final String UUID = "0000006E-0000-1000-8000-0026BB765291";
 
     public CurrentVerticalTiltAngleCharacteristic() {
         this(null);
     }
 
     public CurrentVerticalTiltAngleCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("0000006E-0000-1000-8000-0026BB765291", false, true, "The current vertical tilt angle", -90, 90, CharacteristicUnits.arcdegrees);
+        super(UUID, false, true, "The current vertical tilt angle", -90, 90, CharacteristicUnits.arcdegrees);
+
         this.mCallBack = callBack;
     }
 

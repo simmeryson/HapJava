@@ -12,14 +12,15 @@ import com.guok.hap.characteristics.IntegerCharacteristic;
 
 public class VolumeCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
 
+    public static final String UUID = "00000119-0000-1000-8000-0026BB765291";
+
     public VolumeCharacteristic() {
         this(null);
     }
 
-
     public VolumeCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("00000119-0000-1000-8000-0026BB765291",
-                true, true, "volume of audio", 0, 100, CharacteristicUnits.percentage);
+        super(UUID, true, true, "volume of audio", 0, 100, CharacteristicUnits.percentage);
+
         this.mCallBack = callBack;
     }
 

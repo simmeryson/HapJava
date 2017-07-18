@@ -9,14 +9,16 @@ import com.guok.hap.characteristics.EventableCharacteristic;
  * @author guok
  */
 
-public class OnCharact extends BooleanCharacteristic implements EventableCharacteristic {
+public class OnCharacteristic extends BooleanCharacteristic implements EventableCharacteristic {
 
-    public OnCharact() {
+    public static final String UUID = "00000025-0000-1000-8000-0026BB765291";
+
+    public OnCharacteristic() {
         this(null);
     }
 
-    public OnCharact(CharacteristicCallBack<Boolean> callBack) {
-        super("00000025-0000-1000-8000-0026BB765291",
+    public OnCharacteristic(CharacteristicCallBack<Boolean> callBack) {
+        super(UUID,
                 true,
                 true,
                 "Turn on and off");

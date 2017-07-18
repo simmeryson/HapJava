@@ -10,14 +10,16 @@ import com.guok.hap.characteristics.IntegerCharacteristic;
  * @author guok
  */
 
-public class BrightnessCharact extends IntegerCharacteristic implements EventableCharacteristic {
+public class BrightnessCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
 
-    public BrightnessCharact() {
+    public static final String UUID = "00000008-0000-1000-8000-0026BB765291";
+
+    public BrightnessCharacteristic() {
         this(null);
     }
 
-    public BrightnessCharact(CharacteristicCallBack<Integer> callBack) {
-        super("00000008-0000-1000-8000-0026BB765291", true, true, "Adjust brightness of the light", 0,
+    public BrightnessCharacteristic(CharacteristicCallBack<Integer> callBack) {
+        super(UUID, true, true, "Adjust brightness of the light", 0,
                 100, CharacteristicUnits.percentage);
 
         this.mCallBack = callBack;

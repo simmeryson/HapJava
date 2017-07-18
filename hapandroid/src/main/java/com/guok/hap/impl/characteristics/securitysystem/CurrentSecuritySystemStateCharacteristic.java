@@ -8,14 +8,16 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CurrentSecuritySystemStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
-//    private final SecuritySystem securitySystem;
+    //    private final SecuritySystem securitySystem;
+    public static final String UUID = "00000066-0000-1000-8000-0026BB765291";
 
     public CurrentSecuritySystemStateCharacteristic() {
         this(null);
     }
 
     public CurrentSecuritySystemStateCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("00000066-0000-1000-8000-0026BB765291", false, true, "Current security system state", 4);
+        super(UUID, false, true, "Current security system state", 4);
+
         this.mCallBack = callBack;
     }
 

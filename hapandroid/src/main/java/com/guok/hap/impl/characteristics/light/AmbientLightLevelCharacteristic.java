@@ -9,14 +9,15 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class AmbientLightLevelCharacteristic extends FloatCharacteristic implements EventableCharacteristic {
 
-//    private final LightSensor lightSensor;
+    //    private final LightSensor lightSensor;
+    public static final String UUID = "0000006B-0000-1000-8000-0026BB765291";
 
     public AmbientLightLevelCharacteristic() {
         this(null);
     }
 
     public AmbientLightLevelCharacteristic(CharacteristicCallBack<Double> callBack) {
-        super("0000006B-0000-1000-8000-0026BB765291", false, true, "Current ambient light level", 0.0001, 100000,
+        super(UUID, false, true, "Current ambient light level", 0.0001, 100000,
                 0.0001, CharacteristicUnits.lux);
         this.mCallBack = callBack;
     }

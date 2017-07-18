@@ -7,14 +7,16 @@ import com.guok.hap.characteristics.CharacteristicCallBack;
 
 public class HoldPositionCharacteristic extends BooleanCharacteristic {
 
-//    private final WindowCovering windowCovering;
+    //    private final WindowCovering windowCovering;
+    public static final String UUID = "0000006F-0000-1000-8000-0026BB765291";
 
     public HoldPositionCharacteristic() {
         this(null);
     }
 
     public HoldPositionCharacteristic(CharacteristicCallBack<Boolean> callBack) {
-        super("0000006F-0000-1000-8000-0026BB765291", true, false, "Whether or not to hold position");
+        super(UUID, true, false, "Whether or not to hold position");
+
         this.mCallBack = callBack;
     }
 

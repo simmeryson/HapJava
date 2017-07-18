@@ -8,14 +8,14 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class ContactSensorStateCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
-//    private final ContactSensor contactSensor;
+    public static final String UUID = "0000006A-0000-1000-8000-0026BB765291";
 
     public ContactSensorStateCharacteristic() {
         this(null);
     }
 
     public ContactSensorStateCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("0000006A-0000-1000-8000-0026BB765291", false, true, "Contact State", 1);
+        super(UUID, false, true, "Contact State", 1);
 
         this.mCallBack = callBack;
     }

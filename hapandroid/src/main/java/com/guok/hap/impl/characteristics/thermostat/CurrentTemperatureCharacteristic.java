@@ -6,12 +6,14 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 public class CurrentTemperatureCharacteristic extends
         AbstractTemperatureCharacteristic {
 
+    public static final String UUID = "00000011-0000-1000-8000-0026BB765291";
+
     public CurrentTemperatureCharacteristic() {
         this(null);
     }
 
     public CurrentTemperatureCharacteristic(CharacteristicCallBack<Double> callBack) {
-        super("00000011-0000-1000-8000-0026BB765291", false, "Current Temperature", 0, 100);
+        super(UUID, false, "Current Temperature", 0, 100);
 
         this.mCallBack = callBack;
     }

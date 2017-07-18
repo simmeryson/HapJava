@@ -8,14 +8,14 @@ import com.guok.hap.characteristics.IntegerCharacteristic;
 
 public class RotationSpeedCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
 
-//	private final Fan fan;
+    public static final String UUID = "00000029-0000-1000-8000-0026BB765291";
 
     public RotationSpeedCharacteristic() {
         this(null);
     }
 
     public RotationSpeedCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("00000029-0000-1000-8000-0026BB765291", true, true, "Rotation speed", 0,
+        super(UUID, true, true, "Rotation speed", 0,
                 100, CharacteristicUnits.percentage);
 
         this.mCallBack = callBack;

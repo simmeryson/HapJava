@@ -6,12 +6,14 @@ import com.guok.hap.impl.characteristics.windowcovering.TargetPositionCharacteri
 
 public class WindowCoveringService extends BaseService {
 
+    public static final String UUID = "0000008C-0000-1000-8000-0026BB765291";
+
     public WindowCoveringService() {
         this(null);
     }
 
     public WindowCoveringService(String serviceName) {
-        super("0000008C-0000-1000-8000-0026BB765291", serviceName);
+        super(UUID, serviceName);
 
         addCharacteristic(new TargetPositionCharacteristic());
         addCharacteristic(new CurrentPositionCharacteristic());

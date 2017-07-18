@@ -7,12 +7,14 @@ import com.guok.hap.impl.characteristics.carbonmonoxide.CarbonMonoxideDetectedCh
  */
 public class CarbonMonoxideSensorService extends BaseService {
 
+    public static final String UUID = "0000007F-0000-1000-8000-0026BB765291";
+
     public CarbonMonoxideSensorService() {
         this(null);
     }
 
     public CarbonMonoxideSensorService(String serviceName) {
-        super("0000007F-0000-1000-8000-0026BB765291", serviceName);
+        super(UUID, serviceName);
 
         addCharacteristic(new CarbonMonoxideDetectedCharacteristic());
     }

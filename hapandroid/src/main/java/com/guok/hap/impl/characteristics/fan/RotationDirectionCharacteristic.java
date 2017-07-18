@@ -7,14 +7,14 @@ import com.guok.hap.characteristics.EventableCharacteristic;
 
 public class RotationDirectionCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
-//	private final Fan fan;
+    public static final String UUID = "00000028-0000-1000-8000-0026BB765291";
 
     public RotationDirectionCharacteristic() {
         this(null);
     }
 
     public RotationDirectionCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("00000028-0000-1000-8000-0026BB765291", true, true, "Rotation Direction", 1);
+        super(UUID, true, true, "Rotation Direction", 1);
 
         this.mCallBack = callBack;
     }

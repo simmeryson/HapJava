@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.impl.HomekitUtils;
 import com.guok.hap.impl.responses.HapStatusCodes;
 
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      * Default constructor
      *
      * @param type        a string containing a type that indicates the type of characteristic.
-     *                    Apple defines a set of these, however implementors can creat their own as
+     *                    Apple defines a set of these, however implementors can create their own as
      *                    well.
      * @param format      a string indicating the value type, which must be a recognized type by the
      *                    consuming device.
@@ -61,8 +62,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
         if (type == null || format == null || description == null) {
             throw new NullPointerException();
         }
-        String s = Integer.toHexString(Integer.parseInt(type.split("-")[0], 16));
-        this.type = s.toUpperCase();
+        this.type = HomekitUtils.getTypeFromUUID(type);
         this.format = format;
         this.isWritable = isWritable;
         this.isReadable = isReadable;

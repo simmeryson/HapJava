@@ -4,12 +4,14 @@ import com.guok.hap.impl.characteristics.humiditysensor.CurrentRelativeHumidityC
 
 public class HumiditySensorService extends BaseService {
 
+    public static final String UUID = "00000082-0000-1000-8000-0026BB765291";
+
     public HumiditySensorService() {
         this(null);
     }
 
     public HumiditySensorService(String serviceName) {
-        super("00000082-0000-1000-8000-0026BB765291", serviceName);
+        super(UUID, serviceName);
 
         addCharacteristic(new CurrentRelativeHumidityCharacteristic());
     }

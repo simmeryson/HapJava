@@ -89,7 +89,6 @@ abstract class AbstractServiceImpl implements Service {
         }
     }
 
-    @Override
     public Collection<Characteristic> getCharacteristics() {
         return Collections.unmodifiableCollection(characteristics.values());
     }

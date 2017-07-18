@@ -8,14 +8,14 @@ import com.guok.hap.impl.responses.HapStatusCodes;
 
 public class CarbonMonoxideDetectedCharacteristic extends EnumCharacteristic implements EventableCharacteristic {
 
-    //    private final CarbonMonoxideSensor carbonMonoxideSensor;
+    public static final String UUID = "00000069-0000-1000-8000-0026BB765291";
 
     public CarbonMonoxideDetectedCharacteristic() {
         this(null);
     }
 
     public CarbonMonoxideDetectedCharacteristic(CharacteristicCallBack<Integer> callBack) {
-        super("00000069-0000-1000-8000-0026BB765291", false, true, "Carbon Monoxide Detected", 1);
+        super(UUID, false, true, "Carbon Monoxide Detected", 1);
 
         this.mCallBack = callBack;
     }
