@@ -185,7 +185,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
      */
     public ListenableFuture<T> getValue() {
         if (this.mCallBack != null) {
-            return this.mCallBack.getValueCallback(this, this.subcribeCallback != null, new CharacteristicCallBack.FetchCallBack<T>() {
+            ListenableFuture<T> valueCallback = this.mCallBack.getValueCallback(this, this.subcribeCallback != null, new CharacteristicCallBack.FetchCallBack<T>() {
                 @Override
                 public void fetchValue(T val) {
                     value = val;
@@ -193,8 +193,9 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
                         subcribeCallback.changed();//iOS could receive new value via this method
                 }
             });
+            return valueCallback != null ? valueCallback : getValueImmediately();
         }
-        return Futures.immediateFuture(value);
+        return getValueImmediately();
     }
 
     /**
@@ -255,7 +256,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
         return subcribeCallback;
     }
 
-    public void setSubcribeCallback(HomekitCharacteristicChangeCallback subcribeCallback) {
+    protected void setSubcribeCallback(HomekitCharacteristicChangeCallback subcribeCallback) {
         this.subcribeCallback = subcribeCallback;
     }
 }

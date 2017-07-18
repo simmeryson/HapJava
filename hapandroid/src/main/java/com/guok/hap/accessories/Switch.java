@@ -1,49 +1,37 @@
 package com.guok.hap.accessories;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitAccessory;
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.Service;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.accessories.BaseAccessory;
+import com.guok.hap.impl.characteristics.common.OnCharacteristic;
 import com.guok.hap.impl.services.SwitchService;
-
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * A simple switch with a binary state.
  *
- * @author Andy Lintner
+ * @author guokai
  */
-public abstract class Switch implements  HomekitAccessory {
+public class Switch extends BaseAccessory {
 
-	/**
-	 * Retrieves the current binary state of the switch.
-	 * @return a future that will contain the binary state
-	 */
-	public abstract ListenableFuture<Boolean> getSwitchState();
-	
-	/**
-	 * Sets the binary state of the switch
-	 * @param state the binary state to set
-	 * @return a future that completes when the change is made
-	 * @throws Exception when the change cannot be made
-	 */
-	public abstract ListenableFuture<Void> setSwitchState(boolean state) throws Exception;
-	
-	@Override
-	public Collection<Service> getServices() {
-		return Collections.singleton((Service)new SwitchService());
-	}
-	
-	/**
-	 * Subscribes to changes in the binary state of the switch.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeSwitchState(HomekitCharacteristicChangeCallback callback);
-	
-	/**
-	 * Unsubscribes from changes in the binary state of the switch.
-	 */
-	public abstract void unsubscribeSwitchState();
+    public Switch(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo, new SwitchService());
+    }
+
+    public Switch(int ID, String label) {
+        super(ID, label, new SwitchService());
+    }
+
+    public Switch(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, new SwitchService(serviceName));
+    }
+
+    public Switch(int ID, String label, String serviceName) {
+        super(ID, label, new SwitchService(serviceName));
+    }
+
+    public Switch setOnCallback(CharacteristicCallBack<Boolean> callbask) {
+        getSpecificService(SwitchService.class).
+                getSpecificCharact(OnCharacteristic.class).setCallBack(callbask);
+        return this;
+    }
 }

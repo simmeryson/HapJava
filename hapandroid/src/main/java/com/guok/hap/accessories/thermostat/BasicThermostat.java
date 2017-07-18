@@ -1,90 +1,60 @@
 package com.guok.hap.accessories.thermostat;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitAccessory;
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.Service;
+import com.guok.hap.AccessoryDisplayInfo;
 import com.guok.hap.accessories.TemperatureSensor;
-import com.guok.hap.accessories.properties.ThermostatMode;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.characteristics.thermostat.CurrentHeatingCoolingModeCharacteristic;
+import com.guok.hap.impl.characteristics.thermostat.CurrentTemperatureCharacteristic;
+import com.guok.hap.impl.characteristics.thermostat.TargetHeatingCoolingModeCharacteristic;
+import com.guok.hap.impl.characteristics.thermostat.TargetTemperatureCharacteristic;
+import com.guok.hap.impl.characteristics.thermostat.TemperatureUnitsCharacteristic;
 import com.guok.hap.impl.services.ThermostatService;
 
-import java.util.Collection;
-import java.util.Collections;
+public class BasicThermostat extends TemperatureSensor {
 
-public abstract class BasicThermostat extends TemperatureSensor implements HomekitAccessory {
+    private ThermostatService mThermostatService;
 
-	/**
-	 * Retrieves the current {@link ThermostatMode} of the thermostat.
-	 * @return a future that will contain the mode.
-	 */
-	public abstract ListenableFuture<ThermostatMode> getCurrentMode();
+    public BasicThermostat(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo);
+        mThermostatService = addServices(new ThermostatService());
+    }
 
-	/**
-	 * Subscribes to changes in the {@link ThermostatMode} of the thermostat.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeCurrentMode(HomekitCharacteristicChangeCallback callback);
+    public BasicThermostat(int ID, String label) {
+        super(ID, label);
+        mThermostatService = addServices(new ThermostatService());
+    }
 
-	/**
-	 * Unsubscribes from changes in the mode of the thermostat.
-	 */
-	public abstract void unsubscribeCurrentMode();
+    public BasicThermostat(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, serviceName);
+        mThermostatService = addServices(new ThermostatService());
+    }
 
-	/**
-	 * Sets the {@link ThermostatMode} of the thermostat.
-	 * @param mode The {@link ThermostatMode} to set.
-	 *
-	 * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
-	 * @throws Exception when the change cannot be made.
-	 */
-	public abstract int setTargetMode(ThermostatMode mode) throws Exception;
+    public BasicThermostat(int ID, String label, String serviceName) {
+        super(ID, label, serviceName);
+        mThermostatService = addServices(new ThermostatService());
+    }
 
-	/**
-	 * Retrieves the pending, but not yet complete, {@link ThermostatMode} of the thermostat.
-	 * @return a future that will contain the target mode.
-	 */
-	public abstract ListenableFuture<ThermostatMode> getTargetMode();
 
-	/**
-	 * Subscribes to changes in the pending, but not yet complete, {@link ThermostatMode} of the thermostat.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeTargetMode(HomekitCharacteristicChangeCallback callback);
+    public BasicThermostat setCurrentHeatingCoolingModeCallback(CharacteristicCallBack<Integer> callback) {
+        mThermostatService.getSpecificCharact(CurrentHeatingCoolingModeCharacteristic.class).setCallBack(callback);
+        return this;
+    }
 
-	/**
-	 * Unsubscribes from changes in the pending, but not yet complete, {@link ThermostatMode} of the thermostat.
-	 */
-	public abstract void unsubscribeTargetMode();
+    public BasicThermostat setCurrentTemperatureCallback(CharacteristicCallBack<Double> callback) {
+        mThermostatService.getSpecificCharact(CurrentTemperatureCharacteristic.class).setCallBack(callback);
+        return this;
+    }
 
-	/**
-	 * Retrieves the target temperature, in celsius degrees.
-	 * @return a future that will contain the target temperature.
-	 */
-	public abstract ListenableFuture<Double> getTargetTemperature();
-
-	/**
-	 * 	/**
-	 * Sets the target temperature.
-	 * @param value the target temperature, in celsius degrees.
-	 * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
-	 * @throws Exception when the temperature cannot be changed.
-	 */
-	public abstract int setTargetTemperature(Double value) throws Exception;
-	
-	/**
-	 * Subscribes to changes in the target temperature.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeTargetTemperature(HomekitCharacteristicChangeCallback callback);
-
-	/**
-	 * Unsubscribes from changes in the target temperature.
-	 */
-	public abstract void unsubscribeTargetTemperature();
-	
-	@Override
-	public Collection<Service> getServices() {
-		return Collections.singleton((Service) new ThermostatService());
-	}
+    public BasicThermostat setTargetHeatingCoolingModeCallback(CharacteristicCallBack<Integer> callback) {
+        mThermostatService.getSpecificCharact(TargetHeatingCoolingModeCharacteristic.class).setCallBack(callback);
+        return this;
+    }
+    public BasicThermostat setTargetTemperatureCallback(CharacteristicCallBack<Double> callback) {
+        mThermostatService.getSpecificCharact(TargetTemperatureCharacteristic.class).setCallBack(callback);
+        return this;
+    }
+    public BasicThermostat setTemperatureUnitsCallback(CharacteristicCallBack<Integer> callback) {
+        mThermostatService.getSpecificCharact(TemperatureUnitsCharacteristic.class).setCallBack(callback);
+        return this;
+    }
 }

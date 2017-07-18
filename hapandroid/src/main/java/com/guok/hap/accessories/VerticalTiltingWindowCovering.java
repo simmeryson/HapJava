@@ -1,55 +1,50 @@
 package com.guok.hap.accessories;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.characteristics.windowcovering.CurrentVerticalTiltAngleCharacteristic;
+import com.guok.hap.impl.characteristics.windowcovering.TargetVerticalTiltAngleCharacteristic;
+import com.guok.hap.impl.services.WindowCoveringService;
 
 /**
  * Extends WindowCovering with the ability to control vertical tilt angles
  *
- * @author Andy Lintner
+ * @author guokai
  */
-public abstract class VerticalTiltingWindowCovering extends WindowCovering {
+public class VerticalTiltingWindowCovering extends WindowCovering {
 
-	/**
-	 * Retrieves the current vertical tilt angle
-	 * @return a future that will contain the position as a value between -90 and 90
-	 */
-	public abstract ListenableFuture<Integer> getCurrentVerticalTiltAngle();
-	
-	/**
-	 * Retrieves the target vertical tilt angle
-	 * @return a future that will contain the target position as a value between -90 and 90
-	 */
-	public abstract ListenableFuture<Integer> getTargetVerticalTiltAngle();
-	
-	/**
-	 * Sets the target position
-	 * @param angle the target angle to set, as a value between -90 and 90
-	 * @return a future that completes when the change is made, Integer object means result.
-	 * @throws Exception when the change cannot be made
-	 */
-	public abstract ListenableFuture<Integer> setTargetVerticalTiltAngle(int angle) throws Exception;
-	
-	/**
-	 * Subscribes to changes in the current vertical tilt angle.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeCurrentVerticalTiltAngle(HomekitCharacteristicChangeCallback callback);
-	
-	/**
-	 * Subscribes to changes in the target vertical tilt angle.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeTargetVerticalTiltAngle(HomekitCharacteristicChangeCallback callback);
-	
-	/**
-	 * Unsubscribes from changes in the current vertical tilt angle
-	 */
-	public abstract void unsubscribeCurrentVerticalTiltAngle();
-	
-	/**
-	 * Unsubscribes from changes in the target vertical tilt angle
-	 */
-	public abstract void unsubscribeTargetVerticalTiltAngle();
+    public VerticalTiltingWindowCovering(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo);
+        addHorizontalCharacteristic();
+    }
+
+    public VerticalTiltingWindowCovering(int ID, String label) {
+        super(ID, label);
+        addHorizontalCharacteristic();
+    }
+
+    public VerticalTiltingWindowCovering(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, serviceName);
+        addHorizontalCharacteristic();
+    }
+
+    public VerticalTiltingWindowCovering(int ID, String label, String serviceName) {
+        super(ID, label, serviceName);
+        addHorizontalCharacteristic();
+    }
+
+    private void addHorizontalCharacteristic() {
+        getSpecificService(WindowCoveringService.class).addOptionalCharacteristic(new CurrentVerticalTiltAngleCharacteristic());
+        getSpecificService(WindowCoveringService.class).addOptionalCharacteristic(new TargetVerticalTiltAngleCharacteristic());
+    }
+
+    public VerticalTiltingWindowCovering setCurrentTiltAngleCallback(CharacteristicCallBack<Integer> callback) {
+        getSpecificService(WindowCoveringService.class).getSpecificCharact(CurrentVerticalTiltAngleCharacteristic.class).setCallBack(callback);
+        return this;
+    }
+
+    public VerticalTiltingWindowCovering setTargetTiltAngleCallback(CharacteristicCallBack<Integer> callback) {
+        getSpecificService(WindowCoveringService.class).getSpecificCharact(TargetVerticalTiltAngleCharacteristic.class).setCallBack(callback);
+        return this;
+    }
 }
