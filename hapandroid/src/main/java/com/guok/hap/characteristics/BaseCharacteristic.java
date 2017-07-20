@@ -28,7 +28,7 @@ import javax.json.JsonValue;
  */
 public abstract class BaseCharacteristic<T> implements Characteristic {
 
-    private final Logger logger = LoggerFactory.getLogger(BaseCharacteristic.class);
+    protected final Logger logger = LoggerFactory.getLogger(BaseCharacteristic.class);
 
     private final String type;
     private final CharacteristicValueFormats format;

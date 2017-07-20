@@ -69,7 +69,7 @@ class FinalPairHandler {
 			return TypeLengthValueUtils.createTLVErrorResponse(err, TLVState.M6.getKey(), TLVError.AUTHENTICATION);
 		}
 		authInfo.createUser(new String(iOSDevicePairingID, StandardCharsets.UTF_8), iOSCurveLTPK);
-		advertiser.setDiscoverable(false);
+		advertiser.setDiscoverable(false);// can't discover after pair setup
 		return createM6Response();
 	}
 

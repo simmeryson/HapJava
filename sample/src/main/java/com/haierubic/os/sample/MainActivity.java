@@ -17,12 +17,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.guok.hap.HomeKitRoot;
 import com.guok.hapandroid.HapValueVO;
 import com.guok.hapandroid.PreferencesUtil;
 import com.guok.hapandroid.daemon.IntentWrapper;
+import com.guok.hapandroid.server.BridgeServer;
 import com.guok.hapandroid.server.BroadcastCharactCallback;
 import com.guok.hapandroid.server.HapMainService;
 import com.guok.hapandroid.server.HapServerReveiver;
+import com.guok.hapandroid.server.MediaPlayer;
+import com.guok.hapandroid.server.ServerPerpared;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +58,20 @@ public class MainActivity extends AppCompatActivity {
         filter.addDataScheme("homekit");
         registerReceiver(mReceiver, filter);
 
+        BridgeServer.setmServerPerpared(new ServerPerpared() {
+
+            @Override
+            public void serverPerpared(HomeKitRoot bridge) {
+                if (bridge != null) {
+                    MediaPlayer player = bridge.addAccessory(new MediaPlayer(2, "GKPlayer"));
+                    player.setOnCallback(new BroadcastCharactCallback<Boolean>(MediaPlayer.TARGET, MediaPlayer.OBJ_POWER));
+                    player.setBrightCallback(new BroadcastCharactCallback<Integer>(MediaPlayer.TARGET, MediaPlayer.OBJ_VOLUME));
+
+//                    SearchEngine searcher = bridge.addAccessory(new SearchEngine(3, "GKSearcher"));
+//                    searcher.setOnCallback(new BroadcastCharactCallback<String>(SearchEngine.TARGET, SearchEngine.OBJ_KEYWORD));
+                }
+            }
+        });
         try {
             startService(new Intent(this, HapMainService.class));
         } catch (Exception e) {

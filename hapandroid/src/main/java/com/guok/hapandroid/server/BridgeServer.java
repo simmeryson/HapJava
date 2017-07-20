@@ -42,8 +42,6 @@ public class BridgeServer {
             HomeKitHttpServer httpServer = new HomeKitHttpServer(mServiceConfig.getPort());
             rootBridge = new HomeKitRoot(mDisplayInfo, httpServer, new AndroidBridge(context, mServiceConfig), mAdvertiser);
 
-            rootBridge.addAccessory(new MediaPlayer());
-
             if (mServerPerpared != null) {
                 mServerPerpared.serverPerpared(rootBridge);
             }

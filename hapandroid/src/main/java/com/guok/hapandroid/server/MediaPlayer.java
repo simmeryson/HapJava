@@ -1,25 +1,32 @@
 package com.guok.hapandroid.server;
 
-import com.guok.hap.impl.characteristics.common.OnCharacteristic;
-import com.guok.hap.impl.characteristics.lightbulb.BrightnessCharacteristic;
-import com.guok.hap.impl.accessories.BaseAccessory;
-import com.guok.hap.impl.services.LightbulbService;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.accessories.DimmableLightbulb;
 
 /**
  * @author guok
  */
 
-public class MediaPlayer extends BaseAccessory {
+public class MediaPlayer extends DimmableLightbulb {
 
     public static final String TARGET = "player";
+    public static final String OBJ_VOLUME = "volume";
+    public static final String OBJ_POWER = "power";
 
-    public MediaPlayer() {
-        super(4, "海尔播放器1", new LightbulbService("海尔播放器1"));
 
-        LightbulbService lightbulbService = getSpecificService(LightbulbService.class);
-        lightbulbService.addCharacteristic(new BrightnessCharacteristic());
+    public MediaPlayer(int ID, String label) {
+        super(ID, label);
+    }
 
-        lightbulbService.getSpecificCharact(OnCharacteristic.class).setCallBack(new BroadcastCharactCallback<Boolean>(TARGET, "power"));
-        lightbulbService.getSpecificCharact(BrightnessCharacteristic.class).setCallBack(new BroadcastCharactCallback<Integer>(TARGET, "volume"));
+    public MediaPlayer(int ID, String label, String serviceName) {
+        super(ID, label, serviceName);
+    }
+
+    public MediaPlayer(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, serviceName);
+    }
+
+    public MediaPlayer(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo);
     }
 }

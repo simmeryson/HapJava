@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.guok.hap.AccessoryCategory;
 import com.guok.hap.impl.advertiser.AbstractAdvertiser;
-import com.guok.hapandroid.PreferencesUtil;
 import com.guok.hapandroid.client.HomeKitClientRecevier;
 
 /**
@@ -29,7 +28,8 @@ public class AndroidAdvtiser extends AbstractAdvertiser {
         mNsdManager = (NsdManager) context.getApplicationContext().getSystemService(Context.NSD_SERVICE);
         mRegistrationListener = new MDNSRegistrationListener();
 
-        discoverable = Boolean.valueOf(PreferencesUtil.getString(PreferencesUtil.NameSpace.HapKeys, "IsPairing", "1"));
+//        discoverable = Boolean.valueOf(PreferencesUtil.getString(PreferencesUtil.NameSpace.HapKeys, "IsPairing", "1"));
+        discoverable = true;
 
         homeKitServerSetup(false);
     }
