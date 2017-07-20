@@ -1,8 +1,5 @@
 package com.guok.hap.characteristics;
 
-/**
- * Created by guokai on 29/06/2017.
- */
 public enum CharacteristicValueFormats {
     bool,
     uint8,
@@ -16,6 +13,9 @@ public enum CharacteristicValueFormats {
     data;
 
 
+    /**
+     * @author guok
+     */
     @Override
     public String toString() {
         return super.toString().toLowerCase();

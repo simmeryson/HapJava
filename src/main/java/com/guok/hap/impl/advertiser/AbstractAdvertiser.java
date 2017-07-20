@@ -32,7 +32,7 @@ public abstract class AbstractAdvertiser implements IAdvertiser {
     protected static String SERVICE_TYPE = "_hap._tcp";
 
     protected volatile boolean discoverable = true;
-    protected boolean isAdvertising = false;
+    protected volatile boolean isAdvertising = false;
     protected String label;
     protected String mac;
     protected int port;

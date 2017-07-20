@@ -1,50 +1,37 @@
 package com.guok.hap.accessories;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitAccessory;
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.Service;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.accessories.BaseAccessory;
+import com.guok.hap.impl.characteristics.common.OnCharacteristic;
 import com.guok.hap.impl.services.LightbulbService;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * A simple light with a binary state.
  *
- * @author Andy Lintner
+ * @author guokai
  */
-public abstract class Lightbulb implements HomekitAccessory {
+public class Lightbulb extends BaseAccessory {
 
-	/**
-	 * Retrieves the current binary state of the light.
-	 * @return a future that will contain the binary state
-	 */
-	public abstract ListenableFuture<Boolean> getLightbulbPowerState();
-	
-	/**
-	 * Sets the binary state of the light
-	 * @param powerState the binary state to set
-	 * @return a future that completes when the change is made
-	 * @throws Exception when the change cannot be made
-	 */
-	public abstract ListenableFuture<Void> setLightbulbPowerState(boolean powerState) throws Exception;
-	
-	@Override
-	public Collection<Service> getServices() {
-		return Collections.singleton((Service) new LightbulbService(this));
-	}
-	
-	/**
-	 * Subscribes to changes in the binary state of the light.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeLightbulbPowerState(HomekitCharacteristicChangeCallback callback);
-	
-	/**
-	 * Unsubscribes from changes in the binary state of the light.
-	 */
-	public abstract void unsubscribeLightbulbPowerState();
+    public Lightbulb(int ID, String label) {
+        super(ID, label, new LightbulbService());
+    }
+
+    public Lightbulb(int ID, String label, String serviceName) {
+        super(ID, label, new LightbulbService(serviceName));
+    }
+
+    public Lightbulb(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, new LightbulbService(serviceName));
+    }
+
+    public Lightbulb(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo, new LightbulbService());
+    }
+
+    public Lightbulb setOnCallback(CharacteristicCallBack<Boolean> onCallbask) {
+        getSpecificService(LightbulbService.class).
+                getSpecificCharact(OnCharacteristic.class).setCallBack(onCallbask);
+        return this;
+    }
 }

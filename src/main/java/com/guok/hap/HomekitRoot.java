@@ -2,59 +2,54 @@ package com.guok.hap;
 
 import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
-
+import com.guok.hap.impl.HomekitBridge;
 import com.guok.hap.impl.HomekitRegistry;
 import com.guok.hap.impl.HomekitWebHandler;
+import com.guok.hap.impl.accessories.BaseAccessory;
 import com.guok.hap.impl.accessories.Bridge;
 import com.guok.hap.impl.advertiser.IAdvertiser;
 import com.guok.hap.impl.connections.HomekitClientConnectionFactoryImpl;
 import com.guok.hap.impl.connections.SubscriptionManager;
-import com.guok.hap.impl.advertiser.JmdnsHomekitAdvertiser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.InetAddress;
 
 /**
  * Provides advertising and handling for Homekit accessories. This class handles the advertising of
  * Homekit accessories and contains one or more accessories. When implementing a bridge accessory,
  * you will interact with this class directly. Instantiate it via {@link
- * HomekitServer#createBridge(BridgeAuthInfo, String, String, String, String)}. For single
+ * HomekitServer#createBridge(BridgeAuthInfo, AccessoryDisplayInfo)}. For single
  * accessories, this is composed by {@link HomekitStandaloneAccessoryServer}.
  *
  * @author Andy Lintner
  */
-public class HomekitRoot {
+public class HomeKitRoot {
 
-    private final static Logger logger = LoggerFactory.getLogger(HomekitRoot.class);
+    private final static Logger logger = LoggerFactory.getLogger(HomeKitRoot.class);
 
     private final IAdvertiser advertiser;
     private final HomekitWebHandler webHandler;
     private final BridgeAuthInfo authInfo;
-    private final String label;
     private final HomekitRegistry registry;
     private final SubscriptionManager subscriptions = new SubscriptionManager();
+
     private volatile boolean started = false;
     private int configurationIndex = 1;
+    private final AccessoryDisplayInfo mDisplayInfo;
 
-    HomekitRoot(String label,
-                HomekitWebHandler webHandler,
-                BridgeAuthInfo authInfo,
-                InetAddress localhost) throws IOException {
-        this(label, webHandler, authInfo, new JmdnsHomekitAdvertiser(localhost));
-    }
-
-    HomekitRoot(String label,
-                HomekitWebHandler webHandler,
-                BridgeAuthInfo authInfo,
-                IAdvertiser advertiser) throws IOException {
+    public HomeKitRoot(AccessoryDisplayInfo displayInfo,
+                       HomekitWebHandler webHandler,
+                       BridgeAuthInfo authInfo,
+                       IAdvertiser advertiser) throws IOException {
         this.advertiser = advertiser;
         this.webHandler = webHandler;
         this.authInfo = authInfo;
-        this.label = label;
-        this.registry = new HomekitRegistry(label);
+        this.mDisplayInfo = displayInfo;
+        this.registry = new HomekitRegistry(displayInfo.getLabel());
+
+        addAccessory(new HomekitBridge(displayInfo));
     }
 
     /**
@@ -65,11 +60,12 @@ public class HomekitRoot {
      *
      * @param accessory to IAdvertiser and handle.
      */
-    public void addAccessory(HomekitAccessory accessory) {
+    public <T extends HomekitAccessory> T addAccessory(T accessory) {
         if (accessory.getId() <= 1 && !(accessory instanceof Bridge)) {
             throw new IndexOutOfBoundsException("The ID of an accessory used in a bridge must be greater than 1");
         }
         addAccessorySkipRangeCheck(accessory);
+        return accessory;
     }
 
     /**
@@ -81,10 +77,11 @@ public class HomekitRoot {
     void addAccessorySkipRangeCheck(HomekitAccessory accessory) {
         this.registry.add(accessory);
         logger.info("Added accessory " + accessory.getLabel());
-        if (started) {
-            registry.reset();
-            webHandler.resetConnections();
-        }
+        reLoadAccessory();
+    }
+
+    public BaseAccessory getSpecificAccessory(int id) {
+        return this.registry.getSpecificAccessory(id);
     }
 
     /**
@@ -97,10 +94,7 @@ public class HomekitRoot {
     public void removeAccessory(HomekitAccessory accessory) {
         this.registry.remove(accessory);
         logger.info("Removed accessory " + accessory.getLabel());
-        if (started) {
-            registry.reset();
-            webHandler.resetConnections();
-        }
+        reLoadAccessory();
     }
 
     /**
@@ -120,14 +114,14 @@ public class HomekitRoot {
                         public Object apply(Integer port) {
                             try {
                                 refreshAuthInfo();
-                                advertiser.advertise(label, authInfo.getMac(), port, configurationIndex);
+                                advertiser.advertise(mDisplayInfo.getLabel(), authInfo.getMac(), port, configurationIndex);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
                             return null;
                         }
                     });
-        }else
+        } else
             logger.error("Bridge accessory already running!");
     }
 
@@ -145,8 +139,9 @@ public class HomekitRoot {
      */
     public void reStart() {
         stop();
-        advertiser.setReStart(true);
         authInfo.initPairParams();
+        advertiser.setReStart(true);
+        webHandler.setPort(authInfo.getPort());
         start();
     }
 
@@ -157,6 +152,7 @@ public class HomekitRoot {
      */
     public void refreshAuthInfo() throws IOException {
         advertiser.setDiscoverable(!authInfo.hasUser());
+//        advertiser.setDiscoverable(true); //gk
     }
 
     /**
@@ -196,4 +192,11 @@ public class HomekitRoot {
         return registry;
     }
 
+
+    public void reLoadAccessory() {
+        if (started) {
+            registry.reset();
+            webHandler.resetConnections();
+        }
+    }
 }

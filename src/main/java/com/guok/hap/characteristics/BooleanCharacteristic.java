@@ -26,7 +26,7 @@ public abstract class BooleanCharacteristic extends BaseCharacteristic<Boolean> 
 				isWritable,
 				isReadable,
 				description);
-		
+		value = false;
 	}
 	
 	/**

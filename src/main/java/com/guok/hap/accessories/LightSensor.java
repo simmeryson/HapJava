@@ -1,43 +1,37 @@
 package com.guok.hap.accessories;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitAccessory;
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.Service;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.accessories.BaseAccessory;
+import com.guok.hap.impl.characteristics.light.AmbientLightLevelCharacteristic;
 import com.guok.hap.impl.services.LightSensorService;
-
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * A light sensor that reports current ambient light level.
  *
- * @author Gaston Dombiak
+ * @author guokai
  */
-public abstract class LightSensor implements HomekitAccessory {
+public class LightSensor extends BaseAccessory {
 
-    /**
-     * Retrieves the current ambient light level.
-     *
-     * @return a future that will contain the luminance level expressed in LUX.
-     */
-    public abstract ListenableFuture<Double> getCurrentAmbientLightLevel();
-
-    @Override
-    public Collection<Service> getServices() {
-        return Collections.singleton((Service)new LightSensorService(this));
+    public LightSensor(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo, new LightSensorService());
     }
 
-    /**
-     * Subscribes to changes in the current ambient light level.
-     *
-     * @param callback the function to call when the state changes.
-     */
-    public abstract void subscribeCurrentAmbientLightLevel(HomekitCharacteristicChangeCallback callback);
+    public LightSensor(int ID, String label) {
+        super(ID, label, new LightSensorService());
+    }
 
-    /**
-     * Unsubscribes from changes in the current ambient light level.
-     */
-    public abstract void unsubscribeCurrentAmbientLightLevel();
+    public LightSensor(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, new LightSensorService(serviceName));
+    }
+
+    public LightSensor(int ID, String label, String serviceName) {
+        super(ID, label, new LightSensorService(serviceName));
+    }
+
+    public LightSensor setAmbientLightLevelCallback(CharacteristicCallBack<Double> callbask) {
+        getSpecificService(LightSensorService.class).
+                getSpecificCharact(AmbientLightLevelCharacteristic.class).setCallBack(callbask);
+        return this;
+    }
 }

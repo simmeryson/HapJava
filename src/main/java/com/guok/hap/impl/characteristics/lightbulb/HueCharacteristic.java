@@ -1,42 +1,37 @@
 package com.guok.hap.impl.characteristics.lightbulb;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
 import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.accessories.ColorfulLightbulb;
+import com.guok.hap.characteristics.CharacteristicCallBack;
 import com.guok.hap.characteristics.CharacteristicUnits;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.characteristics.FloatCharacteristic;
 
+/**
+ * @author guok
+ */
+
 public class HueCharacteristic extends FloatCharacteristic implements EventableCharacteristic {
 
-	private final ColorfulLightbulb lightbulb;
-	
-	public HueCharacteristic(ColorfulLightbulb lightbulb) {
-		super("00000013-0000-1000-8000-0026BB765291", true, true, "Adjust hue of the light", 0, 360, 1, CharacteristicUnits.arcdegrees);
-		this.lightbulb = lightbulb;
-	}
+    public static final String UUID = "00000013-0000-1000-8000-0026BB765291";
 
-	@Override
-	protected int setValue(Double value) throws Exception {
-		return lightbulb.setHue(value).get();
-	}
+    public HueCharacteristic() {
+        this(null);
+    }
 
-	@Override
-	protected ListenableFuture<Double> getDoubleValue() {
-		return lightbulb.getHue();
-	}
+    public HueCharacteristic(CharacteristicCallBack<Double> callBack) {
+        super(UUID, true, true, "Adjust hue of the light", 0, 360, 1, CharacteristicUnits.arcdegrees);
 
-	@Override
-	public void subscribe(HomekitCharacteristicChangeCallback callback) {
-		lightbulb.subscribeHue(callback);
-	}
+        this.mCallBack = callBack;
+    }
 
-	@Override
-	public void unsubscribe() {
-		lightbulb.unsubscribeHue();
-	}
+    @Override
+    public void subscribe(HomekitCharacteristicChangeCallback callback) {
+        this.subcribeCallback = callback;
+    }
 
-	
+    @Override
+    public void unsubscribe() {
+        this.subcribeCallback = null;
+    }
 
 }

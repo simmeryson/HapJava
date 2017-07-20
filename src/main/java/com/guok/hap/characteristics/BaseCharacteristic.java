@@ -3,7 +3,8 @@ package com.guok.hap.characteristics;
 import com.google.common.base.Function;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-
+import com.guok.hap.HomekitCharacteristicChangeCallback;
+import com.guok.hap.impl.HomekitUtils;
 import com.guok.hap.impl.responses.HapStatusCodes;
 
 import org.slf4j.Logger;
@@ -20,13 +21,14 @@ import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
 /**
+ * all characteristics require iOS 10 or 10.3 have not supported.
  * Base class for implementing {@link Characteristic}.
  *
  * @author Andy Lintner
  */
 public abstract class BaseCharacteristic<T> implements Characteristic {
 
-    private final Logger logger = LoggerFactory.getLogger(BaseCharacteristic.class);
+    protected final Logger logger = LoggerFactory.getLogger(BaseCharacteristic.class);
 
     private final String type;
     private final CharacteristicValueFormats format;
@@ -35,11 +37,20 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
     private final boolean isEventable;
     private final String description;
 
+    protected T minValue;
+    protected T maxValue;
+    protected T minStep;
+    protected CharacteristicUnits unit;
+
+    protected T value;
+    protected CharacteristicCallBack<T> mCallBack;
+    protected HomekitCharacteristicChangeCallback subcribeCallback;
+
     /**
      * Default constructor
      *
      * @param type        a string containing a type that indicates the type of characteristic.
-     *                    Apple defines a set of these, however implementors can creat their own as
+     *                    Apple defines a set of these, however implementors can create their own as
      *                    well.
      * @param format      a string indicating the value type, which must be a recognized type by the
      *                    consuming device.
@@ -51,8 +62,7 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
         if (type == null || format == null || description == null) {
             throw new NullPointerException();
         }
-        String s = Integer.toHexString(Integer.parseInt(type.split("-")[0], 16));
-        this.type = s.toUpperCase();
+        this.type = HomekitUtils.getTypeFromUUID(type);
         this.format = format;
         this.isWritable = isWritable;
         this.isReadable = isReadable;
@@ -128,13 +138,14 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
         }
     }
 
+
     /**
      * {@inheritDoc}
      */
     @Override
     public int supplyValue(JsonObjectBuilder builder) {
         try {
-            return setJsonValue(builder, getValue().get());
+            return setJsonValue(builder, getValueImmediately().get());
         } catch (InterruptedException | ExecutionException e) {
             logger.error("Error retrieving value", e);
             return setJsonValue(builder, getDefault());
@@ -152,18 +163,40 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
     /**
      * Update the characteristic value using a new value supplied by the connected client.
      *
-     * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
      * @param value the new value to set.
+     * @return 0 when set successfully. {@link HapStatusCodes} when set failure.
      * @throws Exception if the value cannot be set.
      */
-    protected abstract int setValue(T value) throws Exception;
+    protected int setValue(T value) throws Exception {
+        this.value = value;
+
+        if (this.subcribeCallback != null)
+            this.subcribeCallback.changed();
+
+        if (this.mCallBack != null)
+            return this.mCallBack.setValueCallback(value, this.subcribeCallback != null);
+        return HapStatusCodes.SUCCESS;
+    }
 
     /**
      * Retrieves the current value of the characteristic.
      *
      * @return a future that will complete with the current value.
      */
-    protected abstract ListenableFuture<T> getValue();
+    public ListenableFuture<T> getValue() {
+        if (this.mCallBack != null) {
+            ListenableFuture<T> valueCallback = this.mCallBack.getValueCallback(this, this.subcribeCallback != null, new CharacteristicCallBack.FetchCallBack<T>() {
+                @Override
+                public void fetchValue(T val) {
+                    value = val;
+                    if (subcribeCallback != null)
+                        subcribeCallback.changed();//iOS could receive new value via this method
+                }
+            });
+            return valueCallback != null ? valueCallback : getValueImmediately();
+        }
+        return getValueImmediately();
+    }
 
     /**
      * Supplies a default value for the characteristic to send to connected clients when the real
@@ -208,5 +241,22 @@ public abstract class BaseCharacteristic<T> implements Characteristic {
 
     private static final class FutureException extends Exception {
 
+    }
+
+    public void setCallBack(CharacteristicCallBack<T> callBack) {
+        this.mCallBack = callBack;
+    }
+
+
+    public ListenableFuture<T> getValueImmediately() {
+        return Futures.immediateFuture(value);
+    }
+
+    public HomekitCharacteristicChangeCallback getSubcribeCallback() {
+        return subcribeCallback;
+    }
+
+    protected void setSubcribeCallback(HomekitCharacteristicChangeCallback subcribeCallback) {
+        this.subcribeCallback = subcribeCallback;
     }
 }

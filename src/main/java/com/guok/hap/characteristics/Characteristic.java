@@ -49,4 +49,5 @@ public interface Characteristic {
      * @return
      */
 	String getType();
+
 }

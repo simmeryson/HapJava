@@ -1,16 +1,18 @@
 package com.guok.hap.impl.services;
 
-import com.guok.hap.accessories.ContactSensor;
 import com.guok.hap.impl.characteristics.contactsensor.ContactSensorStateCharacteristic;
 
-public class ContactSensorService extends AbstractServiceImpl {
+public class ContactSensorService extends BaseService {
 
-    public ContactSensorService(ContactSensor contactSensor) {
-        this(contactSensor, contactSensor.getLabel());
+    public static final String UUID = "00000080-0000-1000-8000-0026BB765291";
+
+    public ContactSensorService() {
+        this(null);
     }
 
-    public ContactSensorService(ContactSensor contactSensor, String serviceName) {
-        super("00000080-0000-1000-8000-0026BB765291", contactSensor, serviceName);
-        addCharacteristic(new ContactSensorStateCharacteristic(contactSensor));
+    public ContactSensorService(String serviceName) {
+        super(UUID, serviceName);
+
+        addCharacteristic(new ContactSensorStateCharacteristic());
     }
 }

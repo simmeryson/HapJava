@@ -1,39 +1,20 @@
 package com.guok.hap.impl.characteristics.thermostat;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.accessories.properties.ThermostatMode;
-import com.guok.hap.accessories.thermostat.BasicThermostat;
+import com.guok.hap.characteristics.CharacteristicCallBack;
 
 public class TargetHeatingCoolingModeCharacteristic extends
-		AbstractHeatingCoolingModeCharacteristic {
+        AbstractHeatingCoolingModeCharacteristic {
 
-	private final BasicThermostat thermostat;
-	
-	public TargetHeatingCoolingModeCharacteristic(BasicThermostat thermostat) {
-		super("00000033-0000-1000-8000-0026BB765291", true, "Target Mode");
-		this.thermostat = thermostat;
-	}
+    //	private final BasicThermostat thermostat;
+    public static final String UUID = "00000033-0000-1000-8000-0026BB765291";
 
-	@Override
-	protected int setModeValue(ThermostatMode mode) throws Exception {
-		return thermostat.setTargetMode(mode);
-	}
+    public TargetHeatingCoolingModeCharacteristic() {
+        this(null);
+    }
 
-	@Override
-	protected ListenableFuture<ThermostatMode> getModeValue() {
-		return thermostat.getTargetMode();
-	}
+    public TargetHeatingCoolingModeCharacteristic(CharacteristicCallBack<Integer> callBack) {
+        super(UUID, true, "Target Mode");
 
-	@Override
-	public void subscribe(HomekitCharacteristicChangeCallback callback) {
-		thermostat.subscribeTargetMode(callback);
-	}
-
-	@Override
-	public void unsubscribe() {
-		thermostat.unsubscribeTargetMode();
-	}
-
+        this.mCallBack = callBack;
+    }
 }

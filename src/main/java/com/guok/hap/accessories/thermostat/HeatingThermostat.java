@@ -1,32 +1,34 @@
 package com.guok.hap.accessories.thermostat;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.characteristics.thermostat.HeatingThresholdTemperatureCharacteristic;
+import com.guok.hap.impl.services.ThermostatService;
 
-import com.guok.hap.HomekitCharacteristicChangeCallback;
+public class HeatingThermostat extends BasicThermostat {
 
-public abstract class HeatingThermostat extends BasicThermostat {
+    public HeatingThermostat(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo);
+        getSpecificService(ThermostatService.class).addOptionalCharacteristic(new HeatingThresholdTemperatureCharacteristic());
+    }
 
-	/**
-	 * Retrieves the temperature below which the thermostat should begin heating. 
-	 * @return a future that will contain the threshold temperature, in celsius degrees. 
-	 */
-	public abstract ListenableFuture<Double> getHeatingThresholdTemperature();
+    public HeatingThermostat(int ID, String label) {
+        super(ID, label);
+        getSpecificService(ThermostatService.class).addOptionalCharacteristic(new HeatingThresholdTemperatureCharacteristic());
+    }
 
-	/**
-	 * Sets the temperature below which the thermostat should begin heating. 
-	 * @param value the threshold temperature, in celsius degrees.
-	 * @throws Exception when the threshold temperature cannot be changed.
-	 */
-	public abstract int setHeatingThresholdTemperature(Double value) throws Exception;
-	
-	/**
-	 * Subscribes to changes in the heating threshold.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeHeatingThresholdTemperature(HomekitCharacteristicChangeCallback callback);
+    public HeatingThermostat(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, serviceName);
+        getSpecificService(ThermostatService.class).addOptionalCharacteristic(new HeatingThresholdTemperatureCharacteristic());
+    }
 
-	/**
-	 * Unsubscribes from changes in the heating threshold.
-	 */
-	public abstract void unsubscribeHeatingThresholdTemperature();
+    public HeatingThermostat(int ID, String label, String serviceName) {
+        super(ID, label, serviceName);
+        getSpecificService(ThermostatService.class).addOptionalCharacteristic(new HeatingThresholdTemperatureCharacteristic());
+    }
+
+    public HeatingThermostat setHeatingThresholdTemperatureCallback(CharacteristicCallBack<Double> callback) {
+        getSpecificService(ThermostatService.class).getSpecificCharact(HeatingThresholdTemperatureCharacteristic.class).setCallBack(callback);
+        return this;
+    }
 }

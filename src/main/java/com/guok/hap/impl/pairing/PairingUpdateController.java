@@ -6,6 +6,9 @@ import com.guok.hap.impl.http.HttpRequest;
 import com.guok.hap.impl.http.HttpResponse;
 import com.guok.hap.impl.pairing.TypeLengthValueUtils.DecodeResult;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
@@ -14,6 +17,8 @@ import java.nio.charset.StandardCharsets;
  * pairing.
  */
 public class PairingUpdateController {
+
+    private final static Logger logger = LoggerFactory.getLogger(PairingUpdateController.class);
 
     private final BridgeAuthInfo authInfo;
     private final IAdvertiser advertiser;
@@ -27,6 +32,7 @@ public class PairingUpdateController {
         DecodeResult d = TypeLengthValueUtils.decode(request.getBody());
 
         int method = d.getByte(MessageType.METHOD);
+        logger.info("request Uri: " + request.getUri() + "  method: " + method);
         if (method == PairMethods.ADD_PAIRING.getKey()) { //Add pairing
             byte[] username = d.getBytes(MessageType.IDENTIFIER);
             byte[] ltpk = d.getBytes(MessageType.PUBLIC_KEY);
@@ -47,7 +53,8 @@ public class PairingUpdateController {
         } else if (method == PairMethods.LIST_PAIRINGS.getKey()) { //Listing pairing
 
         } else {
-            throw new RuntimeException("Unrecognized method: " + method);
+            String err = "Unrecognized method: " + method;
+            return TypeLengthValueUtils.createTLVErrorResponse(err, (short) 2, TLVError.AUTHENTICATION);
         }
         return new PairingResponse(new byte[]{0x06, 0x01, 0x02});
     }

@@ -71,6 +71,7 @@ class NettyHomekitHttpService {
                         throw new RuntimeException("Unknown socket address type: " + socketAddress.getClass().getName());
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     portFuture.setException(e);
                 }
             }

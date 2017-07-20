@@ -1,33 +1,34 @@
 package com.guok.hap.accessories.thermostat;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.characteristics.thermostat.CoolingThresholdTemperatureCharact;
+import com.guok.hap.impl.services.ThermostatService;
 
-import com.guok.hap.HomekitCharacteristicChangeCallback;
+public class CoolingThermostat extends BasicThermostat {
 
-public abstract class CoolingThermostat extends BasicThermostat {
+    public CoolingThermostat(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo);
+        getSpecificService(ThermostatService.class).addOptionalCharacteristic(new CoolingThresholdTemperatureCharact());
+    }
 
-	/**
-	 * Retrieves the temperature above which the thermostat should begin cooling.
-	 * @return a future that will contain the threshold temperature, in celsius degrees.
-	 */
-	public abstract ListenableFuture<Double> getCoolingThresholdTemperature();
+    public CoolingThermostat(int ID, String label) {
+        super(ID, label);
+        getSpecificService(ThermostatService.class).addOptionalCharacteristic(new CoolingThresholdTemperatureCharact());
+    }
 
-	/**
-	 * Sets the temperature above which the thermostat should begin cooling. 
-	 * @param value the threshold temperature, in celsius degrees.
-	 * @return 0 when set successfully. {@link com.guok.hap.impl.responses.HapStatusCodes} when set failure.
-	 * @throws Exception when the threshold temperature cannot be changed.
-	 */
-	public abstract int setCoolingThresholdTemperature(Double value) throws Exception;
-	
-	/**
-	 * Subscribes to changes in the cooling threshold.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeCoolingThresholdTemperature(HomekitCharacteristicChangeCallback callback);
+    public CoolingThermostat(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, serviceName);
+        getSpecificService(ThermostatService.class).addOptionalCharacteristic(new CoolingThresholdTemperatureCharact());
+    }
 
-	/**
-	 * Unsubscribes from changes in the cooling threshold.
-	 */
-	public abstract void unsubscribeCoolingThresholdTemperature();
+    public CoolingThermostat(int ID, String label, String serviceName) {
+        super(ID, label, serviceName);
+        getSpecificService(ThermostatService.class).addOptionalCharacteristic(new CoolingThresholdTemperatureCharact());
+    }
+
+    public CoolingThermostat setCurrentTemperatureCallback(CharacteristicCallBack<Double> callback) {
+        getSpecificService(ThermostatService.class).getSpecificCharact(CoolingThresholdTemperatureCharact.class).setCallBack(callback);
+        return this;
+    }
 }

@@ -1,85 +1,51 @@
 package com.guok.hap.accessories;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitAccessory;
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.Service;
-import com.guok.hap.accessories.properties.DoorState;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.accessories.BaseAccessory;
+import com.guok.hap.impl.characteristics.common.ObstructionDetectedCharacteristic;
+import com.guok.hap.impl.characteristics.garage.CurrentDoorStateCharacteristic;
+import com.guok.hap.impl.characteristics.garage.TargetDoorStateCharacteristic;
 import com.guok.hap.impl.services.GarageDoorService;
-
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * A garage door opener, with control and status of a garage door
  *
- * @author Andy Lintner
+ * @author guokai
  */
-public abstract class GarageDoor implements HomekitAccessory {
+public class GarageDoor extends BaseAccessory {
 
-	/**
-	 * Retrieves the current state of the door
-	 * @return a future which will contain the door's state
-	 */
-	public abstract ListenableFuture<DoorState> getCurrentDoorState();
-	
-	/**
-	 * Retrieves the targeted state of the door
-	 * @return a future which will contain the door's targeted state
-	 */
-	public abstract ListenableFuture<DoorState> getTargetDoorState();
-	
-	/**
-	 * Retrieves an indicator of an obstruction detected by the door
-	 * @return a future which will contain the indicator
-	 */
-	public abstract ListenableFuture<Boolean> getObstructionDetected();
-	
-	/**
-	 * Sets the targeted state of the door.
-	 * @param state the targeted state
-	 * @return a future that completes when the change is made
-	 * @throws Exception when the change cannot be made
-	 */
-	public abstract ListenableFuture<Integer> setTargetDoorState(DoorState state) throws Exception;
+    public GarageDoor(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo, new GarageDoorService());
+    }
 
-	/**
-	 * Subscribes to changes in the door's state
-	 * @param callback the function to call when the state changes
-	 */
-	public abstract void subscribeCurrentDoorState(HomekitCharacteristicChangeCallback callback);
-	
-	/**
-	 * Subscribes to changes in the door's targeted state
-	 * @param callback the function to call when the targeted state changes
-	 */
-	public abstract void subscribeTargetDoorState(HomekitCharacteristicChangeCallback callback);
-	
-	/**
-	 * Subscribes to changes in the obstruction detected indicator
-	 * @param callback the function to call when the indicator chnages
-	 */
-	public abstract void subscribeObstructionDetected(HomekitCharacteristicChangeCallback callback);
+    public GarageDoor(int ID, String label) {
+        super(ID, label, new GarageDoorService());
+    }
 
-	/**
-	 * Unsubscribes from changes in the door's state
-	 */
-	public abstract void unsubscribeCurrentDoorState();
-	
-	/**
-	 * Unsubscribes from changes in the door's targeted state
-	 */
-	public abstract void unsubscribeTargetDoorState();
-	
-	/**
-	 * Unsubscribes from changes in the door's obstruction detected indicator
-	 */
-	public abstract void unsubscribeObstructionDetected();
+    public GarageDoor(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, new GarageDoorService(serviceName));
+    }
 
+    public GarageDoor(int ID, String label, String serviceName) {
+        super(ID, label, new GarageDoorService(serviceName));
+    }
 
-	@Override
-	public Collection<Service> getServices() {
-		return Collections.singleton((Service) new GarageDoorService(this));
-	}
+    public GarageDoor setCurrentDoorStateCallback(CharacteristicCallBack<Integer> callBack) {
+        getSpecificService(GarageDoorService.class).
+                getSpecificCharact(CurrentDoorStateCharacteristic.class).setCallBack(callBack);
+        return this;
+    }
+
+    public GarageDoor setTargetDoorStateCallback(CharacteristicCallBack<Integer> callBack) {
+        getSpecificService(GarageDoorService.class).
+                getSpecificCharact(TargetDoorStateCharacteristic.class).setCallBack(callBack);
+        return this;
+    }
+
+    public GarageDoor setObstructionDetectedCallback(CharacteristicCallBack<Boolean> callBack) {
+        getSpecificService(GarageDoorService.class).
+                getSpecificCharact(ObstructionDetectedCharacteristic.class).setCallBack(callBack);
+        return this;
+    }
 }

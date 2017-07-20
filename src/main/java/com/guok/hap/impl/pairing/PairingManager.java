@@ -46,7 +46,7 @@ public class PairingManager {
             if (!advertiser.getDiscoverable()){
                 String err = "bridge is already paired!";
                 return TypeLengthValueUtils.createTLVErrorResponse(err, TLVState.M2.getKey(), TLVError.UNAVAILABLE);
-            }
+            }//gk
             logger.info("Starting pair for " + registry.getLabel());
             srpHandler = new SrpHandler(authInfo.getPin());
             return srpHandler.handle(req);

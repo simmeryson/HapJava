@@ -14,6 +14,7 @@ public interface HomekitCharacteristicChangeCallback {
 
 	/**
 	 * Call when the value of the characteristic that was subscribed to when this object was passed changes.
+	 * iOS could receive new value via this method
 	 */
 	void changed();
 }

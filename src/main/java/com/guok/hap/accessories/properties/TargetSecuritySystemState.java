@@ -31,8 +31,8 @@ public enum TargetSecuritySystemState {
 
     private final static Map<Integer, TargetSecuritySystemState> reverse;
     static {
-//        reverse = Arrays.stream(TargetSecuritySystemState.values()).collect(Collectors
-//                .toMap(TargetSecuritySystemState::getCode, t -> t));
+//        reverse = Arrays.stream(TargetSecuritySystemStateCharact.values()).collect(Collectors
+//                .toMap(TargetSecuritySystemStateCharact::getCode, t -> t));
         reverse = new HashMap<>();
         for (TargetSecuritySystemState state : TargetSecuritySystemState.values()) {
             reverse.put(state.getCode(), state);

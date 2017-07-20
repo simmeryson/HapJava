@@ -1,7 +1,6 @@
 package com.guok.hap.impl.services;
 
 import com.google.common.util.concurrent.ListenableFuture;
-
 import com.guok.hap.HomekitAccessory;
 import com.guok.hap.HomekitCharacteristicChangeCallback;
 import com.guok.hap.Service;
@@ -12,6 +11,9 @@ import com.guok.hap.impl.Supplier;
 import com.guok.hap.impl.characteristics.common.BatteryLevelCharacteristic;
 import com.guok.hap.impl.characteristics.common.Name;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -19,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 abstract class AbstractServiceImpl implements Service {
 
+    private final static Logger logger = LoggerFactory.getLogger(AbstractServiceImpl.class);
     private final String type;
     private final Map<String, Characteristic> characteristics = new ConcurrentHashMap<>();
 
@@ -86,7 +89,6 @@ abstract class AbstractServiceImpl implements Service {
         }
     }
 
-    @Override
     public Collection<Characteristic> getCharacteristics() {
         return Collections.unmodifiableCollection(characteristics.values());
     }
@@ -98,10 +100,12 @@ abstract class AbstractServiceImpl implements Service {
 
     protected void addCharacteristic(Characteristic characteristic) {
         if (characteristics.size() > 99) {
-            throw new RuntimeException("A service must not have more than 100!");
+            logger.error("A service must not have more than 100 characteristics!");
+            return;
         }
         if (characteristics.containsKey(characteristic.getType())) {
-            throw new RuntimeException("Duplicate characteristic!");
+            logger.error("Duplicate characteristic!");
+            return;
         }
         this.characteristics.put(characteristic.getType(), characteristic);
     }

@@ -1,40 +1,33 @@
 package com.guok.hap.impl.characteristics.windowcovering;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
 import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.accessories.VerticalTiltingWindowCovering;
+import com.guok.hap.characteristics.CharacteristicCallBack;
 import com.guok.hap.characteristics.CharacteristicUnits;
 import com.guok.hap.characteristics.EventableCharacteristic;
 import com.guok.hap.characteristics.IntegerCharacteristic;
 
 public class TargetVerticalTiltAngleCharacteristic extends IntegerCharacteristic implements EventableCharacteristic {
 
-	private final VerticalTiltingWindowCovering windowCovering;
-	
-	public TargetVerticalTiltAngleCharacteristic(VerticalTiltingWindowCovering windowCovering) {
-		super("0000007D-0000-1000-8000-0026BB765291", true, true, "The target vertical tilt angle", -90, 90, CharacteristicUnits.arcdegrees);
-		this.windowCovering = windowCovering;
-	}
+    //    private final VerticalTiltingWindowCovering windowCovering;
+    public static final String UUID = "0000007D-0000-1000-8000-0026BB765291";
 
-	@Override
-	protected int setValue(Integer value) throws Exception {
-		return windowCovering.setTargetVerticalTiltAngle(value).get();
-	}
+    public TargetVerticalTiltAngleCharacteristic() {
+        this(null);
+    }
 
-	@Override
-	protected ListenableFuture<Integer> getValue() {
-		return windowCovering.getTargetVerticalTiltAngle();
-	}
+    public TargetVerticalTiltAngleCharacteristic(CharacteristicCallBack<Integer> callBack) {
+        super(UUID, true, true, "The target vertical tilt angle", -90, 90, CharacteristicUnits.arcdegrees);
 
-	@Override
-	public void subscribe(HomekitCharacteristicChangeCallback callback) {
-		windowCovering.subscribeTargetVerticalTiltAngle(callback);
-	}
+        this.mCallBack = callBack;
+    }
 
-	@Override
-	public void unsubscribe() {
-		windowCovering.unsubscribeTargetVerticalTiltAngle();
-	}
+    @Override
+    public void subscribe(HomekitCharacteristicChangeCallback callback) {
+        this.subcribeCallback = callback;
+    }
 
+    @Override
+    public void unsubscribe() {
+        this.subcribeCallback = null;
+    }
 }

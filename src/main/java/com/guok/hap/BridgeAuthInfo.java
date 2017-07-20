@@ -1,7 +1,5 @@
 package com.guok.hap;
 
-import java.util.Map;
-
 /**
  * refer the concatenate of AccessoryX, AccessoryPairingID, AccessoryLTPK.
  * Authentication info that must be provided when constructing a new {@link HomekitServer}. You will need to implement
@@ -76,21 +74,9 @@ public interface BridgeAuthInfo {
      */
     boolean hasUser();
 
-
-    /**
-     * Bridge mac must be initially set by default. This should persist.
-     */
-    String initMac();
-
-    /**
-     * PrivateKey must be initially set by default. This should persist.
-     */
-    byte[] initPrivateKey();
-
-    /**
-     * Paired PublicKey and pairingID must be initially set by default. This should persist as pairs after pairSetup done.
-     */
-    Map initUsernamePublicKey();
-
     void initPairParams();
+
+    int getPort();
+
+    String getPIN();
 }

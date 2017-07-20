@@ -1,42 +1,38 @@
 package com.guok.hap.accessories;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitAccessory;
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.Service;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.accessories.BaseAccessory;
+import com.guok.hap.impl.characteristics.humiditysensor.CurrentRelativeHumidityCharacteristic;
 import com.guok.hap.impl.services.HumiditySensorService;
-
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * A humidity sensor that reports the current relative humidity.
  *
- * @author Andy Lintner
+ * @author guokai
  */
-public abstract class HumiditySensor implements HomekitAccessory {
+public class HumiditySensor extends BaseAccessory {
 
-	/**
-	 * Retrieves the current relative humidity.
-	 * @return a future that will contain the humidity as a value between 0 and 100
-	 */
-	public abstract ListenableFuture<Double> getCurrentRelativeHumidity();
-	
-	@Override
-	public Collection<Service> getServices() {
-		return Collections.singleton((Service)new HumiditySensorService(this));
-	}
-	
-	/**
-	 * Subscribes to changes in the current relative humidity.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeCurrentRelativeHumidity(HomekitCharacteristicChangeCallback callback);
+    public HumiditySensor(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo, new HumiditySensorService());
+    }
 
-	/**
-	 * Unsubscribes from changes in the current relative humidity.
-	 */
-	public abstract void unsubscribeCurrentRelativeHumidity();
-	
+    public HumiditySensor(int ID, String label) {
+        super(ID, label, new HumiditySensorService());
+    }
+
+    public HumiditySensor(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, new HumiditySensorService(serviceName));
+    }
+
+    public HumiditySensor(int ID, String label, String serviceName) {
+        super(ID, label, new HumiditySensorService(serviceName));
+    }
+
+    public HumiditySensor setCurrentRelativeHumidityCallback(CharacteristicCallBack<Double> onCallbask) {
+        getSpecificService(HumiditySensorService.class).
+                getSpecificCharact(CurrentRelativeHumidityCharacteristic.class).setCallBack(onCallbask);
+        return this;
+    }
+
 }

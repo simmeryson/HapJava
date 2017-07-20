@@ -1,22 +1,20 @@
 package com.guok.hap.impl.services;
 
-import com.guok.hap.accessories.LockMechanism;
-import com.guok.hap.accessories.LockableLockMechanism;
-import com.guok.hap.impl.characteristics.lock.mechanism.CurrentLockMechanismStateCharacteristic;
-import com.guok.hap.impl.characteristics.lock.mechanism.TargetLockMechanismStateCharacteristic;
+import com.guok.hap.impl.characteristics.lock.mechanism.LockCurrentStateCharacteristic;
+import com.guok.hap.impl.characteristics.lock.mechanism.LockTargetStateCharacteristic;
 
-public class LockMechanismService extends AbstractServiceImpl {
+public class LockMechanismService extends BaseService {
 
-	public LockMechanismService(LockMechanism lock) {
-		this(lock, lock.getLabel());
-	}
+    public static final String UUID = "00000045-0000-1000-8000-0026BB765291";
 
-	public LockMechanismService(LockMechanism lock, String serviceName) {
-		super("00000045-0000-1000-8000-0026BB765291", lock, serviceName);
-		addCharacteristic(new CurrentLockMechanismStateCharacteristic(lock));
-		
-		if (lock instanceof LockableLockMechanism) {
-			addCharacteristic(new TargetLockMechanismStateCharacteristic((LockableLockMechanism) lock));
-		}
-	}
+    public LockMechanismService() {
+        this(null);
+    }
+
+    public LockMechanismService(String serviceName) {
+        super(UUID, serviceName);
+
+        addCharacteristic(new LockCurrentStateCharacteristic());
+        addCharacteristic(new LockTargetStateCharacteristic());
+    }
 }

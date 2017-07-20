@@ -1,16 +1,21 @@
 package com.guok.hap.impl.services;
 
-import com.guok.hap.accessories.CarbonMonoxideSensor;
 import com.guok.hap.impl.characteristics.carbonmonoxide.CarbonMonoxideDetectedCharacteristic;
 
-public class CarbonMonoxideSensorService extends AbstractServiceImpl {
+/**
+ * @author guok
+ */
+public class CarbonMonoxideSensorService extends BaseService {
 
-    public CarbonMonoxideSensorService(CarbonMonoxideSensor carbonMonoxideSensor) {
-        this(carbonMonoxideSensor, carbonMonoxideSensor.getLabel());
+    public static final String UUID = "0000007F-0000-1000-8000-0026BB765291";
+
+    public CarbonMonoxideSensorService() {
+        this(null);
     }
 
-    public CarbonMonoxideSensorService(CarbonMonoxideSensor carbonMonoxideSensor, String serviceName) {
-        super("0000007F-0000-1000-8000-0026BB765291", carbonMonoxideSensor, serviceName);
-        addCharacteristic(new CarbonMonoxideDetectedCharacteristic(carbonMonoxideSensor));
+    public CarbonMonoxideSensorService(String serviceName) {
+        super(UUID, serviceName);
+
+        addCharacteristic(new CarbonMonoxideDetectedCharacteristic());
     }
 }

@@ -5,10 +5,10 @@ import com.guok.hap.characteristics.StaticStringCharacteristic;
 
 public class Manufacturer extends StaticStringCharacteristic {
 
-	public Manufacturer(HomekitAccessory accessory) throws Exception {
-		super("00000020-0000-1000-8000-0026BB765291", 
-				"The name of the manufacturer",
-				accessory.getManufacturer());
-	}
+    public static final String UUID = "00000020-0000-1000-8000-0026BB765291";
+
+    public Manufacturer(HomekitAccessory accessory) throws Exception {
+        super(UUID, "The name of the manufacturer", accessory.getManufacturer());
+    }
 
 }

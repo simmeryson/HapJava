@@ -1,46 +1,48 @@
 package com.guok.hap.accessories;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import com.guok.hap.HomekitAccessory;
-import com.guok.hap.HomekitCharacteristicChangeCallback;
-import com.guok.hap.Service;
-import com.guok.hap.accessories.properties.LockMechanismState;
+import com.guok.hap.AccessoryDisplayInfo;
+import com.guok.hap.characteristics.CharacteristicCallBack;
+import com.guok.hap.impl.accessories.BaseAccessory;
+import com.guok.hap.impl.characteristics.lock.mechanism.LockCurrentStateCharacteristic;
+import com.guok.hap.impl.characteristics.lock.mechanism.LockTargetStateCharacteristic;
 import com.guok.hap.impl.services.LockMechanismService;
-
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * <p>A lock capable of exposing its binary locked state. For a lock that can be locked/unlocked, use
  * {@link LockableLockMechanism}.</p>
- *
+ * <p>
  * <p>Locks that run on batteries will need to implement this interface and also
  * implement {@link BatteryAccessory}.</p>
  *
- * @author Andy Lintner
+ * @author guokai
  */
-public abstract class LockMechanism implements HomekitAccessory {
+public class LockMechanism extends BaseAccessory {
 
-	/**
-	 * Retrieves the current binary state of the lock.
-	 * @return a future that will contain the binary state.
-	 */
-	public abstract ListenableFuture<LockMechanismState> getCurrentMechanismState();
+    public LockMechanism(int ID, AccessoryDisplayInfo displayInfo) {
+        super(ID, displayInfo, new LockMechanismService());
+    }
 
-	/**
-	 * Subscribes to changes in the binary state of the lock.
-	 * @param callback the function to call when the state changes.
-	 */
-	public abstract void subscribeCurrentMechanismState(HomekitCharacteristicChangeCallback callback);
+    public LockMechanism(int ID, String label) {
+        super(ID, label, new LockMechanismService());
+    }
 
-	/**
-	 * Unsubscribes from changes in the binary state of the lock.
-	 */
-	public abstract void unsubscribeCurrentMechanismState();
+    public LockMechanism(int ID, AccessoryDisplayInfo displayInfo, String serviceName) {
+        super(ID, displayInfo, new LockMechanismService(serviceName));
+    }
 
-	@Override
-	public Collection<Service> getServices() {
-		return Collections.singleton((Service)new LockMechanismService(this));
-	}
+    public LockMechanism(int ID, String label, String serviceName) {
+        super(ID, label, new LockMechanismService(serviceName));
+    }
+
+    public LockMechanism setLockCurrentStateCallback(CharacteristicCallBack<Integer> callbask) {
+        getSpecificService(LockMechanismService.class).
+                getSpecificCharact(LockCurrentStateCharacteristic.class).setCallBack(callbask);
+        return this;
+    }
+
+    public LockMechanism setLockTargetStateCallback(CharacteristicCallBack<Integer> callbask) {
+        getSpecificService(LockMechanismService.class).
+                getSpecificCharact(LockTargetStateCharacteristic.class).setCallBack(callbask);
+        return this;
+    }
 }
