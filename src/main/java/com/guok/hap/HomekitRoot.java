@@ -151,7 +151,7 @@ public class HomeKitRoot {
      * @throws IOException if there is an error in the underlying protocol, such as a TCP error
      */
     public void refreshAuthInfo() throws IOException {
-        advertiser.setDiscoverable(!authInfo.hasUser());
+//        advertiser.setDiscoverable(!authInfo.hasUser());
 //        advertiser.setDiscoverable(true); //gk
     }
 

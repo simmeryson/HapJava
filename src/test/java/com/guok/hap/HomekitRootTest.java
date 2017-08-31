@@ -20,13 +20,16 @@ import static org.mockito.Mockito.when;
 public class HomekitRootTest {
 
     private HomekitAccessory accessory;
-    private HomekitRoot root;
+    private HomeKitRoot root;
     private HomekitWebHandler webHandler;
     private AbstractAdvertiser advertiser;
     private BridgeAuthInfo authInfo;
 
     private final static int PORT = 12345;
     private final static String LABEL = "Test Label";
+
+
+    AccessoryDisplayInfo displayInfo ;
 
     @Before
     public void setup() throws Exception {
@@ -36,7 +39,8 @@ public class HomekitRootTest {
         when(webHandler.start(any(HomekitClientConnectionFactory.class))).thenReturn(Futures.immediateFuture(PORT));
         advertiser = mock(AbstractAdvertiser.class);
         authInfo = mock(BridgeAuthInfo.class);
-        root = new HomekitRoot(LABEL, webHandler, authInfo, advertiser);
+        displayInfo = mock(AccessoryDisplayInfo.class);
+        root = new HomeKitRoot(displayInfo, webHandler, authInfo, advertiser);
     }
 
     @Test
@@ -69,6 +73,7 @@ public class HomekitRootTest {
     public void testAdvertiserStarts() throws Exception {
         String mac = "00:00:00:00:00:00";
         when(authInfo.getMac()).thenReturn(mac);
+        when(displayInfo.getLabel()).thenReturn(LABEL);
         root.start();
         verify(advertiser).advertise(eq(LABEL), eq(mac), eq(PORT), eq(1));
     }
