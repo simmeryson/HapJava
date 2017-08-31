@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
             public void serverPerpared(HomeKitRoot bridge) {
                 if (bridge != null) {
                     MediaPlayer player = bridge.addAccessory(new MediaPlayer(2, "GKPlayer"));
-                    player.setOnCallback(new BroadcastCharactCallback<Boolean>(MediaPlayer.TARGET, MediaPlayer.OBJ_POWER));
-                    player.setBrightCallback(new BroadcastCharactCallback<Integer>(MediaPlayer.TARGET, MediaPlayer.OBJ_VOLUME));
+                    player.setOnCallback(new BroadcastCharactCallback<Boolean>(MediaPlayer.DOMAIN, MediaPlayer.TARGET_POWER));
+                    player.setBrightCallback(new BroadcastCharactCallback<Integer>(MediaPlayer.DOMAIN, MediaPlayer.TARGET_VOLUME));
 
 //                    SearchEngine searcher = bridge.addAccessory(new SearchEngine(3, "GKSearcher"));
-//                    searcher.setOnCallback(new BroadcastCharactCallback<String>(SearchEngine.TARGET, SearchEngine.OBJ_KEYWORD));
+//                    searcher.setOnCallback(new BroadcastCharactCallback<String>(SearchEngine.DOMAIN, SearchEngine.OBJ_KEYWORD));
                 }
             }
         });
@@ -150,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
         Boolean subs = subscribes.get("power");
         if (subs != null && subs) {
             HapValueVO<Boolean> vo = new HapValueVO<>();
-            vo.setObject("power");
+            vo.setTarget("power");
             vo.setValue(this.power);
-            vo.setTarget("player");
+            vo.setDomain("player");
             vo.setSubscribe(true);
             sendToHomekit(vo);
         }
@@ -167,9 +167,9 @@ public class MainActivity extends AppCompatActivity {
         Boolean subs = subscribes.get("volume");
         if (subs != null && subs) {
             HapValueVO<Integer> vo = new HapValueVO<>();
-            vo.setObject("volume");
+            vo.setTarget("volume");
             vo.setValue(this.volume);
-            vo.setTarget("player");
+            vo.setDomain("player");
             vo.setSubscribe(true);
             sendToHomekit(vo);
         }
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             }
             List<String> targets = decoder.parameters().get("target");
             if (targets != null && targets.size() > 0 && targets.get(0).length() > 0)
-                valueVO.setTarget(targets.get(0));
+                valueVO.setDomain(targets.get(0));
             else {
                 return null;
             }
@@ -256,12 +256,12 @@ public class MainActivity extends AppCompatActivity {
                 String s = objects.get(0);
                 if ("power".equals(s)) {
                     HapValueVO<Boolean> vo = new HapValueVO<>();
-                    vo.setObject(s);
+                    vo.setTarget(s);
                     vo.setValue(power);
                     return vo;
                 } else if ("volume".equals(s)) {
                     HapValueVO<Integer> vo = new HapValueVO<>();
-                    vo.setObject(s);
+                    vo.setTarget(s);
                     vo.setValue(volume);
                     return vo;
                 }
@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
     private void sendToHomekit(HapValueVO valueVO) {
         String json = JSON.toJSONString(valueVO);
         Intent sender = new Intent(BroadcastCharactCallback.RECEIVE_ACTION);
-        sender.putExtra(valueVO.getTarget() + valueVO.getObject(), json);
+        sender.putExtra(valueVO.getDomain() + valueVO.getTarget(), json);
         MainActivity.this.sendBroadcast(sender);
         System.out.println("MainActivity send player powser: " + json);
     }

@@ -10,9 +10,9 @@ import com.guok.hap.impl.accessories.BaseAccessory;
 
 public class SearchEngine extends BaseAccessory {
 
-    public static final String TARGET = "searcher";
-    public static final String OBJ_KEYWORD = "keyword";
-    public static final String OBJ_POWER = "power";
+    public static final String DOMAIN = "searcher";
+    public static final String TARGET_KEYWORD = "keyword";
+    public static final String TARGET_POWER = "power";
 
     public SearchEngine(int ID, AccessoryDisplayInfo displayInfo) {
         super(ID, displayInfo, new KeywordService());

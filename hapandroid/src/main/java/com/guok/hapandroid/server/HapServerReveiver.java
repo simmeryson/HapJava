@@ -8,6 +8,7 @@ import android.content.Intent;
 import java.lang.ref.WeakReference;
 
 /**
+ * Restart Bridge
  * @author guok
  */
 

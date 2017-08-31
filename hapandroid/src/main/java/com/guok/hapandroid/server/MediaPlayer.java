@@ -9,9 +9,9 @@ import com.guok.hap.accessories.DimmableLightbulb;
 
 public class MediaPlayer extends DimmableLightbulb {
 
-    public static final String TARGET = "player";
-    public static final String OBJ_VOLUME = "volume";
-    public static final String OBJ_POWER = "power";
+    public static final String DOMAIN = "player";
+    public static final String TARGET_VOLUME = "volume";
+    public static final String TARGET_POWER = "power";
 
 
     public MediaPlayer(int ID, String label) {

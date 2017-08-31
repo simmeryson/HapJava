@@ -46,30 +46,30 @@ public class HomeKitClientRecevier extends BroadcastReceiver {
                     Log.d(TAG, "homekit broadcast receive: " + entry.getKey() + "=" + entry.getValue().get(0));
                 }
 
-                List<String> targets = decoder.parameters().get("target");
-                if (targets == null || targets.size() == 0 || !targets.get(0).equals("player"))
+                List<String> domains = decoder.parameters().get(BroadcastCharactCallback.HAP_DOMAIN);
+                if (domains == null || domains.size() == 0 || TextUtils.isEmpty(domains.get(0)))
                     return;
 
-                String target = targets.get(0);
+                String domain = domains.get(0);
 
                 List<String> methods = decoder.parameters().get("method");
                 if (methods == null || methods.size() == 0 || methods.get(0).length() == 0)
                     return;
 
                 if (methods.get(0).equals("get"))
-                    handleGetRequest(target, decoder);
+                    handleGetRequest(domain, decoder);
                 else if (methods.get(0).equals("set")) {
-                    handleSetRequest(target, decoder);
+                    handleSetRequest(domain, decoder);
                 }
 
                 List<String> subscribe = decoder.parameters().get("subscribe");
                 if (subscribe != null && subscribe.size() > 0 && subscribe.get(0).length() > 0) {
                     String s = subscribe.get(0);
-                    List<String> object = decoder.parameters().get("object");
-                    if (object != null && object.size() > 0 && object.get(0).length() > 0) {
-                        String obj = object.get(0);
+                    List<String> target = decoder.parameters().get(BroadcastCharactCallback.HAP_TARGET);
+                    if (target != null && target.size() > 0 && target.get(0).length() > 0) {
+                        String obj = target.get(0);
                         if ("true".equals(s) || "1".equals(s) || "false".equals(s) || "0".equals(s)) {
-                            HomeKitControl listener = listeners.get(targets.get(0));
+                            HomeKitControl listener = listeners.get(domains.get(0));
                             if (listener != null)
                                 listener.subscribe(obj, Boolean.valueOf(s), new HomeKitControl.SubscribeCallback() {
                                     @Override
@@ -77,7 +77,7 @@ public class HomeKitClientRecevier extends BroadcastReceiver {
                                         sendToHomekit(value);
                                     }
                                 });
-                            Log.d(TAG, "subscribe  " + object.get(0) + ": " + s);
+                            Log.d(TAG, "subscribe  " + target.get(0) + ": " + s);
                         }
                     }
                 }
@@ -89,47 +89,47 @@ public class HomeKitClientRecevier extends BroadcastReceiver {
         }
     }
 
-    private void handleSetRequest(String target, QueryStringDecoder decoder) {
-        if (TextUtils.isEmpty(target))
+    private void handleSetRequest(String domain, QueryStringDecoder decoder) {
+        if (TextUtils.isEmpty(domain))
             return;
 
-        List<String> object = decoder.parameters().get("object");
-        if (object == null || object.size() == 0 || object.get(0).length() == 0)
-            return;
+        List<String> targets = decoder.parameters().get(BroadcastCharactCallback.HAP_TARGET);
+        if (targets == null || targets.size() == 0 || TextUtils.isEmpty(targets.get(0)))
+        return;
 
-        List<String> value = decoder.parameters().get("value");
+        List<String> value = decoder.parameters().get(BroadcastCharactCallback.HAP_VALUE);
         if (value != null && value.size() > 0 && value.get(0).length() > 0) {
-            HomeKitControl listener = listeners.get(target);
+            HomeKitControl listener = listeners.get(domain);
             if (listener != null)
-                listener.setValue(object.get(0), value.get(0));
-            Log.d(TAG, "set player  " + object.get(0) + ": " + value.get(0));
+                listener.setValue(targets.get(0), value.get(0));
+            Log.d(TAG, "set player  " + targets.get(0) + ": " + value.get(0));
         }
     }
 
 
-    private void handleGetRequest(String target, QueryStringDecoder decoder) {
-        if (TextUtils.isEmpty(target))
+    private void handleGetRequest(String domain, QueryStringDecoder decoder) {
+        if (TextUtils.isEmpty(domain))
             return;
 
-        List<String> object = decoder.parameters().get("object");
-        if (object == null || object.size() == 0 || object.get(0).length() == 0)
+        List<String> targets = decoder.parameters().get(BroadcastCharactCallback.HAP_TARGET);
+        if (targets == null || targets.size() == 0 || TextUtils.isEmpty(targets.get(0)))
             return;
 
-        HomeKitControl listener = listeners.get(target);
+        HomeKitControl listener = listeners.get(domain);
         if (listener != null) {
-            HapValueVO valueVO = listener.getValue(object.get(0));
+            HapValueVO valueVO = listener.getValue(targets.get(0));
             if (valueVO != null) {
-                valueVO.setTarget(target);
+                valueVO.setDomain(domain);
                 sendToHomekit(valueVO);
             }
         }
     }
 
     public static void sendToHomekit(HapValueVO valueVO) {
-        if (valueVO != null && valueVO.getTarget() != null && valueVO.getObject() != null) {
+        if (valueVO != null && valueVO.getDomain() != null && valueVO.getTarget() != null) {
             String json = JSON.toJSONString(valueVO);
             Intent sender = new Intent(BroadcastCharactCallback.RECEIVE_ACTION);
-            sender.putExtra(valueVO.getTarget() + valueVO.getObject(), json);
+            sender.putExtra(valueVO.getDomain() + valueVO.getTarget(), json);
             mContext.sendBroadcast(sender);
             Log.d(TAG, "HomeKitClientRecevier send : " + json);
         }

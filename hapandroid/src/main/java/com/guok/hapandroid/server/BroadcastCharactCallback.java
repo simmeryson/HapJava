@@ -33,20 +33,24 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
     public static final String RECEIVE_ACTION = "com.guok.BroadcastCharactCallback.receive";
 
     public static final String HAP_SCHEME = "homekit";
-    public static String URI_FORMAT = HAP_SCHEME + "://com.guok/homekit?target=%s&object=%s&method=%s&value=%s&subscribe=%s";
+    public static final String HAP_DOMAIN = "domain";
+    public static final String HAP_TARGET = "target";
+    public static final String HAP_VALUE = "value";
+    public static String URI_FORMAT = HAP_SCHEME + "://com.guok/homekit?" + HAP_DOMAIN + "=%s&" + HAP_TARGET + "=%s" +
+            "&method=%s&" + HAP_VALUE + "=%s&subscribe=%s";
     public static Escaper queryEscapers = UrlEscapers.urlFormParameterEscaper();
     private static Context mContext;
     private HapReceiver sHapReceiver;
     private volatile CountDownLatch sLatch;
 
+    private final String domain;
     private final String target;
-    private final String object;
 
     private FetchCallBack<T> mFetchCallBack;
 
-    public BroadcastCharactCallback(String target, String object) {
+    public BroadcastCharactCallback(String domain, String target) {
+        this.domain = domain;
         this.target = target;
-        this.object = object;
 
         sHapReceiver = new HapReceiver();
         IntentFilter filter = new IntentFilter(BroadcastCharactCallback.RECEIVE_ACTION);
@@ -61,8 +65,8 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
     public int setValueCallback(T value, boolean subscribe) {
         Log.d("GK", "setValueCallback sendBroadcast!" + value);
         String s = String.format(URI_FORMAT,
+                queryEscapers.escape(this.domain),
                 queryEscapers.escape(this.target),
-                queryEscapers.escape(this.object),
                 queryEscapers.escape("set"),
                 queryEscapers.escape(value.toString()),
                 queryEscapers.escape(subscribe + ""));
@@ -77,8 +81,8 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
         mFetchCallBack = callBack;
         sLatch = new CountDownLatch(1);
         String s = String.format(URI_FORMAT,
+                queryEscapers.escape(this.domain),
                 queryEscapers.escape(this.target),
-                queryEscapers.escape(this.object),
                 queryEscapers.escape("get"),
                 queryEscapers.escape(""),
                 queryEscapers.escape(subscribe + ""));
@@ -97,7 +101,7 @@ public class BroadcastCharactCallback<T> implements CharacteristicCallBack<T> {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && BroadcastCharactCallback.RECEIVE_ACTION.equals(intent.getAction())) {
-                String value1 = intent.getStringExtra(target + object);
+                String value1 = intent.getStringExtra(domain + target);
                 if (value1 == null) return;
                 HapValueVO vo = JSON.parseObject(value1, HapValueVO.class);
                 Log.d("GK", "HapReceiver get response: " + vo.toString());
