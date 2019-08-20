@@ -4,6 +4,9 @@ package com.guok.event;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * 传递的参数。
+ */
 public class ParameterBean implements Parcelable {
     private String key;
     private String value;

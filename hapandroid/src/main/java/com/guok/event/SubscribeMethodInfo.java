@@ -3,6 +3,11 @@ package com.guok.event;
 import com.guok.hapandroid.client.HomeKitControl;
 
 /**
+ * HomeKit订阅方法的封装类。
+ * object 代表需要订阅的对象(domain和target)。
+ * isSubscribe 代表是否订阅。
+ * subscribeCallback 代表订阅回调函数，一般是#HomeKitClientReceiver.sendToHomekit()
+ *
  * @author guok
  */
 

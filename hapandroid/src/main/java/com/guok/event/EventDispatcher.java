@@ -50,6 +50,7 @@ public class EventDispatcher {
      *
      * @param event    事件
      * @param consumed 事件是否消费掉。如果事件被消费就不会发给后面的监听器。可能会引起队列接口的线程阻塞。
+     * @param actionCallback 执行回调。
      */
     public void dispatchEvent(Event event, boolean consumed, ActionCallback actionCallback) {
         if (mEventQueue != null && event != null) {
@@ -59,6 +60,13 @@ public class EventDispatcher {
         }
     }
 
+    /**
+     * 事件分发。根据事件的类型找到监听器，通过队列接口来分发事件。
+     *
+     * @param eventType 事件类型
+     * @param consumed 事件是否消费掉。如果事件被消费就不会发给后面的监听器。可能会引起队列接口的线程阻塞。
+     * @param actionCallback 执行回调。
+     */
     public void dispatchEvent(EventType eventType, boolean consumed, ActionCallback actionCallback) {
         if (mEventQueue != null && eventType != null) {
             Set<EventActionListener> listeners = subscribers.get(eventType.getTarget());
@@ -74,7 +82,7 @@ public class EventDispatcher {
     @Deprecated
     boolean dispatch(Event event) {
         for (EventListener listener : mListeners) {
-            if (listener.onNlpEvent(event)) {
+            if (listener.onEvent(event)) {
                 return true;
             }
         }

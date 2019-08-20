@@ -31,9 +31,9 @@ import io.netty.handler.codec.http.QueryStringDecoder;
  * @author guok
  */
 
-public class HomeKitClientRecevier extends BroadcastReceiver {
+public class HomeKitClientReceiver extends BroadcastReceiver {
 
-    public static final String TAG = HomeKitClientRecevier.class.getSimpleName();
+    public static final String TAG = HomeKitClientReceiver.class.getSimpleName();
     public static final String SETUP_ACTION = "com.guok.hapjava.server.setup";
     public static final String SETUP_KEY = "setup";
 
@@ -42,7 +42,7 @@ public class HomeKitClientRecevier extends BroadcastReceiver {
     private static Context mContext;
     private IServerSetupListener mSetupListener;
 
-    public HomeKitClientRecevier(Context context) {
+    public HomeKitClientReceiver(Context context) {
         mContext = context.getApplicationContext();
         mEventDispatcher.setEventQueue(new EventbusEventQueue());
     }

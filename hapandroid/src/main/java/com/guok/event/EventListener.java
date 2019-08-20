@@ -5,5 +5,5 @@ package com.guok.event;
  */
 
 public interface EventListener {
-    boolean onNlpEvent(Event event);
+    boolean onEvent(Event event);
 }

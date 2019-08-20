@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.guok.hap.AccessoryCategory;
 import com.guok.hap.impl.advertiser.AbstractAdvertiser;
-import com.guok.hapandroid.client.HomeKitClientRecevier;
+import com.guok.hapandroid.client.HomeKitClientReceiver;
 
 /**
  *
@@ -83,7 +83,7 @@ public class AndroidAdvtiser extends AbstractAdvertiser {
     }
 
     private void homeKitServerSetup(boolean setup) {
-        Intent intent = new Intent(HomeKitClientRecevier.SETUP_ACTION, Uri.parse("homekit://com.guok")).putExtra(HomeKitClientRecevier.SETUP_KEY, setup);
+        Intent intent = new Intent(HomeKitClientReceiver.SETUP_ACTION, Uri.parse("homekit://com.guok")).putExtra(HomeKitClientReceiver.SETUP_KEY, setup);
         mContext.sendBroadcast(intent);
     }
 

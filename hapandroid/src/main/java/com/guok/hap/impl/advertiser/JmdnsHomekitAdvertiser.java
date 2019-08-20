@@ -22,10 +22,12 @@ public class JmdnsHomekitAdvertiser extends AbstractAdvertiser {
         jmdns = JmDNS.create(localAddress);
     }
 
+    @Override
     public synchronized void stop() {
         jmdns.unregisterAllServices();
     }
 
+    @Override
     public synchronized void setDiscoverable(boolean discoverable) {
         if (this.discoverable != discoverable) {
             this.discoverable = discoverable;
@@ -37,6 +39,7 @@ public class JmdnsHomekitAdvertiser extends AbstractAdvertiser {
         }
     }
 
+    @Override
     public synchronized void setConfigurationIndex(int revision) {
         if (this.configurationIndex != revision) {
             this.configurationIndex = revision;
@@ -48,6 +51,7 @@ public class JmdnsHomekitAdvertiser extends AbstractAdvertiser {
         }
     }
 
+    @Override
     public void registerService() {
         Map<String, String> props = new HashMap<>();
         props.put("sf", discoverable ? "1" : "0");
